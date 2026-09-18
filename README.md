@@ -132,6 +132,40 @@ Worth knowing before you build a demo on it:
   from the birth date.
 - **`RESULT_VALUE_TEXT` duplicates `ORD_NUM_VALUE`** in all 1,288 rows.
 - ~30 columns are entirely empty (`DEATH_DATE`, `END_DATE`, `COMMENTS`, …).
+- **Note phrasing is template assignment, not clinical fact.** See below.
+
+### Don't build cohorts on note prose
+
+The four note styles are randomly assigned. Template choice predicts nothing —
+chi-square against department, location, insurance, sex, authoring service,
+provider specialty, primary diagnosis and month of visit is null in every case
+(p = 0.12 to 0.93), and age, BP, BMI, condition count, medication count, labs
+ordered and note length all differ by under 0.5 SD between templates. Of the 53
+patients with two encounters, only 11 drew the same template twice — below the
+~14 expected by chance, so it is redrawn per note rather than sticking to a
+patient or provider.
+
+Each template recites a fixed closing, with **no variation within the template**:
+
+| style | notes | patients | lab phrasing | also states |
+|---|---|---|---|---|
+| `Annual Wellness Visit` | 55 | 50 | preventive labs ordered | medication adherence education |
+| `Annual preventive visit` | 41 | 38 | monitoring labs ordered | reports adherence, lifestyle counselling |
+| `AWV encounter` | 33 | 31 | labs reviewed, plan updated | follow-up in 12 months |
+| `Progress Note — AWV` | 24 | 23 | lab orders placed | preventive screening gaps addressed |
+
+So a query like *"which patients received lifestyle counselling?"* returns
+exactly the 38 patients who drew template B on at least one note — an artifact
+of template assignment, not a clinical finding. The same holds for "follow-up
+documented" (template C) and "screening gaps addressed" (template D). **Any
+cohort built on note phrasing is really a cohort of template assignment.**
+
+Note the notes/patients gap: a patient with two encounters can draw two
+different templates, so the same person may be "counselled" in one note and not
+the other.
+
+The six parsed slots in `v_note_extract` are trustworthy — but only because they
+restate the structured tables, which is what query 12 verifies.
 
 ### What's clean
 
