@@ -1,0 +1,13 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# DuckDB — derived artifact, rebuild with `python build_db.py`
+*.duckdb
+*.duckdb.wal
+*.duckdb.tmp/
+
+# macOS
+.DS_Store

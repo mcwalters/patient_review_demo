@@ -1,0 +1,21 @@
+PROV_ID,PROV_NAME,PROV_NAME_WID,NPI,PROV_TYPE,SPECIALTY,DEPT_NAME,source_system,inserted_timestamp
+PROV0001,Miss Adriana Flores,Miss Adriana Flores [PROV0001],6639233214,Physician,Neurology,Psychiatry Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0002,Michael Lee,Michael Lee [PROV0002],8197369935,Physician,Endocrinology,Cardiology Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0003,Gina Powell,Gina Powell [PROV0003],7295181756,Physician,Pulmonology,GI Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0004,Dr. Joseph Costa,Dr. Joseph Costa [PROV0004],0635817839,Physician,Internal Medicine,Pulmonology Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0005,Daniel Mills,Daniel Mills [PROV0005],2327928201,Physician,Cardiology,Endocrinology,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0006,Margaret Schneider,Margaret Schneider [PROV0006],6161249065,NP,Neurology,Endocrinology,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0007,Jordan Contreras,Jordan Contreras [PROV0007],3037486257,Physician,Cardiology,Psychiatry Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0008,Thomas Warren,Thomas Warren [PROV0008],9296111242,NP,Psychiatry,Cardiology Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0009,Tina Wells,Tina Wells [PROV0009],3857341521,PA,Internal Medicine,GI Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0010,Wendy Cortez,Wendy Cortez [PROV0010],0536656665,Physician,Cardiology,Primary Care,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0011,Tyler Hill,Tyler Hill [PROV0011],5673434153,NP,Psychiatry,Pulmonology Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0012,Dean Washington Jr.,Dean Washington Jr. [PROV0012],7176418457,NP,Pulmonology,Endocrinology,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0013,William Mccullough,William Mccullough [PROV0013],4692469973,Physician,Gastroenterology,Cardiology Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0014,Paige Anderson,Paige Anderson [PROV0014],5054324636,PA,Psychiatry,Primary Care,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0015,Breanna Schmitt,Breanna Schmitt [PROV0015],1883084287,NP,Pulmonology,Psychiatry Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0016,Barbara Newman,Barbara Newman [PROV0016],6788994301,PA,Family Medicine,GI Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0017,Dana Williams,Dana Williams [PROV0017],0064589943,Physician,Psychiatry,Endocrinology,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0018,David White,David White [PROV0018],2475227668,NP,Gastroenterology,Pulmonology Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0019,Linda Short,Linda Short [PROV0019],3479627972,Physician,Neurology,Cardiology Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
+PROV0020,Peter Thomas DVM,Peter Thomas DVM [PROV0020],7801571509,PA,Internal Medicine,GI Clinic,EPIC_PROD,2026-05-27 19:21:48.681928
