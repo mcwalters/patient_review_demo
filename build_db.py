@@ -72,9 +72,27 @@ def main():
     LEFT JOIN pat_enc_dx dx ON dx.PAT_ENC_CSN_ID = e.PAT_ENC_CSN_ID AND dx.DX_SEQ = 1
     """)
 
-    # Labs. NOTE: order_results does NOT join to order_proc_awv on ORDER_PROC_ID
-    # (0 of 1288 match). Both tables carry the same LOINC universe, so this view
-    # keys off order_results and links back to the encounter, not the order.
+    # Labs ordered AT the AWV. order_proc_awv carries its own result inline,
+    # so order -> result needs no join. 120 of 588 are still pending.
+    con.execute("""
+    CREATE VIEW v_lab_order AS
+    SELECT p.ORDER_PROC_ID, p.PAT_ID, p.PAT_MRN_ID, p.PAT_ENC_CSN_ID,
+           p.PROC_CODE AS loinc_code, p.PROC_NAME AS test_name,
+           p.ORD_PROV_ID, p.ORD_PROV_NAME, p.ORD_PROV_SPECIALTY,
+           p.ORDER_DATE, p.DAYS_FROM_VISIT,
+           p.RESULT_VALUE AS value, p.RESULT_UNIT AS unit, p.RESULT_DATE,
+           p.RESULT_FLAG_C,
+           (p.RESULT_FLAG_C = 2) AS is_abnormal,
+           (p.RESULT_VALUE IS NULL) AS is_pending,
+           e.CONTACT_DATE AS encounter_date
+    FROM order_proc_awv p
+    LEFT JOIN pat_enc e ON e.PAT_ENC_CSN_ID = p.PAT_ENC_CSN_ID
+    """)
+
+    # Longitudinal lab history, spanning encounter -727 to +345 days. This is a
+    # SEPARATE dataset from order_proc_awv, not its child: ORDER_PROC_ID values
+    # are disjoint and the two disagree on values and dates for the same
+    # encounter+analyte. Keyed to the encounter, never to an order.
     con.execute("""
     CREATE VIEW v_lab_result AS
     SELECT r.RESULT_ID, r.PAT_ID, r.PAT_ENC_CSN_ID, r.COMPONENT_NAME, r.LOINC_CODE,
