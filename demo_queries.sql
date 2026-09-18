@@ -193,3 +193,35 @@ JOIN patient p USING (PAT_ID)
 WHERE n.NOTE_TEXT ILIKE '%asthma%'
 ORDER BY noted DESC
 LIMIT 5;
+
+
+-- 12. Note extraction audit --------------------------------------------------
+-- The progress notes are templated prose generated from the structured tables,
+-- so v_note_extract can be scored against a known answer key. Every field comes
+-- back at 100% -- which is the point: it demonstrates extraction mechanics
+-- against ground truth, not NLP finding something the coded data missed.
+WITH dx AS (
+    SELECT PAT_ENC_CSN_ID, list_sort(list(DISTINCT DX_NAME))      AS coded
+    FROM pat_enc_dx GROUP BY 1
+), rx AS (
+    SELECT PAT_ENC_CSN_ID, list_sort(list(DISTINCT DISPLAY_NAME)) AS coded
+    FROM order_med GROUP BY 1
+), scored AS (
+    SELECT n.systolic  = v.systolic  AND n.diastolic = v.diastolic AS bp_ok,
+           abs(n.bmi - v.bmi) < 0.05                               AS bmi_ok,
+           list_sort(n.conditions)  = dx.coded                     AS dx_ok,
+           list_sort(n.medications) = rx.coded                     AS rx_ok
+    FROM v_note_extract n
+    JOIN v_encounter e USING (PAT_ENC_CSN_ID)
+    JOIN v_vitals    v ON v.PAT_ID = n.PAT_ID AND v.RECORD_DATE = e.CONTACT_DATE
+    LEFT JOIN dx USING (PAT_ENC_CSN_ID)
+    LEFT JOIN rx USING (PAT_ENC_CSN_ID)
+)
+SELECT field, notes, matched, round(100.0 * matched / notes, 1) AS pct_agreement
+FROM (
+    SELECT 'blood pressure' AS field, count(*) AS notes, count(*) FILTER (WHERE bp_ok)  AS matched FROM scored
+    UNION ALL SELECT 'BMI',            count(*), count(*) FILTER (WHERE bmi_ok) FROM scored
+    UNION ALL SELECT 'conditions',     count(*), count(*) FILTER (WHERE dx_ok)  FROM scored
+    UNION ALL SELECT 'medications',    count(*), count(*) FILTER (WHERE rx_ok)  FROM scored
+)
+ORDER BY field;
