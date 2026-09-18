@@ -80,6 +80,7 @@ so they don't silently become `VARCHAR`.
 | `v_lab_result` | 1,288 | longitudinal labs with reference ranges and `is_abnormal` |
 | `v_medication` | 522 | med orders + RxNorm + daily frequency |
 | `v_diagnosis` | 939 | the three dx sources unioned, keyed on ICD-10 |
+| `v_note_extract` | 153 | progress notes parsed into structured slots |
 
 ### Why the views exist
 
@@ -95,6 +96,24 @@ Four quirks in the source data make the raw tables awkward to query directly:
    diagnosis identifier.
 4. **`GPI` is row-random too** — 522 distinct values for 54 drugs. Use
    `MEDICATION_ID` → `RXNORM_CODE` (100% coverage), as `v_medication` does.
+
+### Progress notes are generated from the structured data
+
+`hno_info.NOTE_TEXT` looks like free text but is templated prose in four styles
+(`Annual Wellness Visit` ×55, `Annual preventive visit` ×41, `AWV encounter` ×33,
+`Progress Note — AWV` ×24), each with the same six slots. `v_note_extract`
+parses them into `note_style`, `conditions[]`, `medications[]`, `systolic`,
+`diastolic`, `bmi` and `followup_months`.
+
+Query 12 scores that extraction against the structured tables and every field
+comes back at **100%** — the notes agree exactly with `ip_flwsht_meas`,
+`pat_enc_dx` and `order_med`, because they were rendered from them.
+
+So the notes are useful for demonstrating extraction *mechanics* against a known
+answer key, but they contain **no information that isn't already in a column**.
+There is no negation, hedging, social history, symptom or exam narrative to
+find. `followup_months` is always 12, and note style is unrelated to the
+authoring service.
 
 ---
 

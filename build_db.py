@@ -132,6 +132,42 @@ def main():
     FROM medical_hx
     """)
 
+    # Progress notes are templated prose generated FROM the structured tables:
+    # four note styles, six slots, and every value agrees exactly with
+    # ip_flwsht_meas / pat_enc_dx / order_med. Parsing them recovers structure
+    # rather than discovering anything new -- see query 12 for the audit.
+    con.execute(r"""
+    CREATE VIEW v_note_extract AS
+    WITH parsed AS (
+        SELECT NOTE_ID, PAT_ID, PAT_ENC_CSN_ID, AUTHOR_PROV_NAME, AUTHOR_SERVICE,
+               ENTRY_TIME, NOTE_TEXT,
+               trim(split_part(NOTE_TEXT, '.', 1))                   AS note_style,
+               regexp_extract(NOTE_TEXT,
+                   '(?:Active conditions:|Chronic conditions:|Problem list active:|Patient is managed for)\s*(.+?)\.\s+(?:Medications reconciled:|Medication list:|Medications:|Current drug regimen includes)',
+                   1)                                               AS cond_raw,
+               regexp_extract(NOTE_TEXT,
+                   '(?:Medications reconciled:|Medication list:|Medications:|Current drug regimen includes)\s*(.+?)\.\s+(?:Vitals|Today|BP\s)',
+                   1)                                               AS meds_raw,
+               regexp_extract(NOTE_TEXT, 'BP[:\s]+([0-9]+)/([0-9]+)', 1) AS sys_raw,
+               regexp_extract(NOTE_TEXT, 'BP[:\s]+([0-9]+)/([0-9]+)', 2) AS dia_raw,
+               -- the '.' must stay OUT of the character class, or the capture
+               -- swallows the sentence-ending period and the cast to DOUBLE fails
+               regexp_extract(NOTE_TEXT, 'BMI[:\s]+([0-9]+(?:\.[0-9]+)?)', 1) AS bmi_raw,
+               regexp_extract(NOTE_TEXT, 'Follow-up in ([0-9]+) months', 1) AS fu_raw
+        FROM hno_info
+    )
+    SELECT NOTE_ID, PAT_ID, PAT_ENC_CSN_ID, AUTHOR_PROV_NAME, AUTHOR_SERVICE, ENTRY_TIME,
+           note_style,
+           str_split(cond_raw, ' | ')                               AS conditions,
+           str_split(meds_raw, ' | ')                               AS medications,
+           try_cast(sys_raw AS INTEGER)                             AS systolic,
+           try_cast(dia_raw AS INTEGER)                             AS diastolic,
+           try_cast(bmi_raw AS DOUBLE)                              AS bmi,
+           try_cast(nullif(fu_raw, '') AS INTEGER)                  AS followup_months,
+           NOTE_TEXT
+    FROM parsed
+    """)
+
     n = con.execute("SELECT count(*) FROM duckdb_tables() WHERE schema_name='main'").fetchone()[0]
     v = con.execute("SELECT count(*) FROM duckdb_views() WHERE schema_name='main' AND NOT internal").fetchone()[0]
     elapsed = time.time() - t0
