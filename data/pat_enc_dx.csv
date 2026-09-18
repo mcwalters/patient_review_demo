@@ -1,0 +1,356 @@
+PAT_ENC_CSN_ID,DX_SEQ,DX_ID,DX_NAME,DX_ICD_CODE,DX_ICD_DESC,DX_TYPE_C,DX_TYPE_C_NAME,DX_DATE,source_system,inserted_timestamp,last_updated_timestamp
+ENC38381556,1,DX178732,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-05-09,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC38381556,2,DX286446,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Secondary,2026-05-09,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC38381556,3,DX937778,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2026-05-09,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC38381556,4,DX402563,"Severe Persistent Asthma, Uncomplicated",J45.50,"Severe Persistent Asthma, Uncomplicated",1,Secondary,2026-05-09,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC51588692,1,DX395736,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-09-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC51588692,2,DX963794,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2025-09-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC63883141,1,DX212608,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Primary,2025-08-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC50418450,1,DX387735,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Primary,2025-06-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC54171683,1,DX745766,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Primary,2026-04-14,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC47068507,1,DX532855,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Primary,2025-07-17,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC47068507,2,DX838773,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2025-07-17,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC23972867,1,DX283982,Type 2 Diabetes Mellitus,E11.9,Type 2 Diabetes Mellitus,1,Primary,2026-02-04,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62304230,1,DX183372,Type 2 Diabetes Mellitus,E11.9,Type 2 Diabetes Mellitus,1,Primary,2025-06-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC52877604,1,DX234612,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Primary,2025-11-26,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC52877604,2,DX504495,"Mild Intermittent Asthma, Uncomplicated",J45.20,"Mild Intermittent Asthma, Uncomplicated",1,Secondary,2025-11-26,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC52628884,1,DX223773,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-10-12,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC52628884,2,DX534503,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Secondary,2025-10-12,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC52628884,3,DX634665,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Secondary,2025-10-12,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC52628884,4,DX272962,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-10-12,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC26382633,1,DX126246,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Primary,2025-11-16,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC26382633,2,DX219709,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-11-16,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC26382633,3,DX886325,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Secondary,2025-11-16,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC75031946,1,DX769266,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Primary,2026-03-11,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC75031946,2,DX571557,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-03-11,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC75031946,3,DX888872,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Secondary,2026-03-11,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC41247560,1,DX279570,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Primary,2026-02-20,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC41247560,2,DX470433,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-02-20,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC41247560,3,DX788631,Chronic Systolic Heart Failure (HFrEF),I50.32,Chronic Systolic Heart Failure (HFrEF),1,Secondary,2026-02-20,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC29373572,1,DX911136,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Primary,2025-10-14,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC29373572,2,DX490514,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-10-14,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC29373572,3,DX965065,Chronic Systolic Heart Failure (HFrEF),I50.32,Chronic Systolic Heart Failure (HFrEF),1,Secondary,2025-10-14,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC20045037,1,DX736473,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-09-20,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC20045037,2,DX864276,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2025-09-20,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC66901511,1,DX988054,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Primary,2026-04-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC66901511,2,DX234987,COPD with Acute Exacerbation,J44.1,COPD with Acute Exacerbation,1,Secondary,2026-04-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC66901511,3,DX258441,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-04-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC66901511,4,DX697152,Other Persistent Atrial Fibrillation,I48.19,Other Persistent Atrial Fibrillation,1,Secondary,2026-04-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25773594,1,DX552994,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Primary,2025-09-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25773594,2,DX837794,COPD with Acute Exacerbation,J44.1,COPD with Acute Exacerbation,1,Secondary,2025-09-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25773594,3,DX483849,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-09-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25773594,4,DX692719,Other Persistent Atrial Fibrillation,I48.19,Other Persistent Atrial Fibrillation,1,Secondary,2025-09-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59311379,1,DX990852,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Primary,2026-02-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62065569,1,DX511229,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Primary,2025-05-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62065569,2,DX378244,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2025-05-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62065569,3,DX989509,Menopausal and Female Climacteric States,N95.1,Menopausal and Female Climacteric States,1,Secondary,2025-05-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC23943869,1,DX844455,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-12-09,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC23943869,2,DX655706,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-12-09,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC28897963,1,DX537350,Essential Hypertension,I10,Essential Hypertension,1,Primary,2026-02-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC28897963,2,DX976190,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-02-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC49550620,1,DX368195,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-09-14,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC49550620,2,DX947488,Type 2 Diabetes Mellitus,E11.9,Type 2 Diabetes Mellitus,1,Secondary,2025-09-14,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC64247603,1,DX165746,Essential Hypertension,I10,Essential Hypertension,1,Primary,2026-05-19,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC46963251,1,DX900143,Essential Hypertension,I10,Essential Hypertension,1,Primary,2026-03-17,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC72803626,1,DX402878,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-10-27,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC72803626,2,DX105973,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2025-10-27,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62443035,1,DX468002,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-11-12,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62443035,2,DX706733,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Secondary,2025-11-12,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62443035,3,DX944997,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2025-11-12,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32011616,1,DX474163,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-11-11,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32011616,2,DX832019,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Secondary,2025-11-11,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32011616,3,DX383346,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2025-11-11,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC78325145,1,DX671805,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Primary,2025-08-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62193757,1,DX314829,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Primary,2025-06-01,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC36338730,1,DX459137,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Primary,2025-06-26,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC67305094,1,DX668508,Type 2 Diabetes Mellitus,E11.9,Type 2 Diabetes Mellitus,1,Primary,2026-01-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC67305094,2,DX303882,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-01-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC67305094,3,DX364423,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2026-01-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC34507329,1,DX471244,COPD with Acute Lower Respiratory Infection,J44.0,COPD with Acute Lower Respiratory Infection,1,Primary,2026-02-25,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC34507329,2,DX980396,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Secondary,2026-02-25,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC20474172,1,DX913935,COPD with Acute Lower Respiratory Infection,J44.0,COPD with Acute Lower Respiratory Infection,1,Primary,2025-06-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC20474172,2,DX935437,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Secondary,2025-06-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC37812308,1,DX216484,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-09-17,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC73231412,1,DX529472,Essential Hypertension,I10,Essential Hypertension,1,Primary,2026-03-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC54001027,1,DX776276,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-09-26,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC54001027,2,DX465011,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2025-09-26,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC54001027,3,DX122148,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2025-09-26,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC54001027,4,DX954861,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2025-09-26,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC31262964,1,DX441230,Essential Hypertension,I10,Essential Hypertension,1,Primary,2026-01-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC31262964,2,DX485512,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2026-01-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC31262964,3,DX678526,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2026-01-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC31262964,4,DX504183,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2026-01-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC24202273,1,DX210398,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Primary,2025-07-17,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC24202273,2,DX658309,COPD with Acute Lower Respiratory Infection,J44.0,COPD with Acute Lower Respiratory Infection,1,Secondary,2025-07-17,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25732417,1,DX873065,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Primary,2026-04-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25732417,2,DX317297,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-04-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25732417,3,DX131964,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-04-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25732417,4,DX429695,"Hypothyroidism, Unspecified",E03.9,"Hypothyroidism, Unspecified",1,Secondary,2026-04-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25977760,1,DX719170,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Primary,2026-04-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25977760,2,DX403470,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-04-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25977760,3,DX467007,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-04-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC25977760,4,DX786718,"Hypothyroidism, Unspecified",E03.9,"Hypothyroidism, Unspecified",1,Secondary,2026-04-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC80902205,1,DX307614,Essential Hypertension,I10,Essential Hypertension,1,Primary,2026-05-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC80902205,2,DX856186,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2026-05-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC57854992,1,DX100386,Type 2 Diabetes Mellitus,E11.9,Type 2 Diabetes Mellitus,1,Primary,2026-04-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC27013030,1,DX588581,Type 2 Diabetes Mellitus,E11.9,Type 2 Diabetes Mellitus,1,Primary,2025-12-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC57342224,1,DX421069,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-05-19,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC57342224,2,DX572100,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2026-05-19,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC43222899,1,DX891961,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-04-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC43222899,2,DX943617,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2026-04-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC34042935,1,DX983525,Essential Hypertension,I10,Essential Hypertension,1,Primary,2026-02-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC34042935,2,DX449594,"Major Depressive Disorder, Recurrent",F33.0,"Major Depressive Disorder, Recurrent",1,Secondary,2026-02-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC34042935,3,DX555763,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2026-02-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC71377603,1,DX656597,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Primary,2025-06-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC71377603,2,DX940588,Other Persistent Atrial Fibrillation,I48.19,Other Persistent Atrial Fibrillation,1,Secondary,2025-06-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC27660592,1,DX525335,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Primary,2026-05-04,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC27660592,2,DX404594,Other Persistent Atrial Fibrillation,I48.19,Other Persistent Atrial Fibrillation,1,Secondary,2026-05-04,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC63776306,1,DX725579,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Primary,2026-03-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC63776306,2,DX666257,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Secondary,2026-03-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC63776306,3,DX207645,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-03-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC50961012,1,DX866430,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Primary,2025-08-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC50961012,2,DX366695,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Secondary,2025-08-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC50961012,3,DX118035,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-08-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC38854058,1,DX880406,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Primary,2026-02-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC38854058,2,DX386025,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2026-02-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC38854058,3,DX234601,COPD with Acute Lower Respiratory Infection,J44.0,COPD with Acute Lower Respiratory Infection,1,Secondary,2026-02-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC88822219,1,DX521567,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-06-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC88822219,2,DX739010,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2025-06-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC88822219,3,DX982159,"Mild Intermittent Asthma, Uncomplicated",J45.20,"Mild Intermittent Asthma, Uncomplicated",1,Secondary,2025-06-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC88822219,4,DX367353,Longstanding Persistent Atrial Fibrillation,I48.11,Longstanding Persistent Atrial Fibrillation,1,Secondary,2025-06-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC41956824,1,DX246276,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Primary,2026-02-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC41956824,2,DX926693,"Mild Intermittent Asthma, Uncomplicated",J45.20,"Mild Intermittent Asthma, Uncomplicated",1,Secondary,2026-02-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC41956824,3,DX308310,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Secondary,2026-02-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69660168,1,DX260010,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-07-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69660168,2,DX402170,Chronic Atrial Fibrillation,I48.2,Chronic Atrial Fibrillation,1,Secondary,2025-07-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC21477659,1,DX999273,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-09-20,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC21477659,2,DX497562,Chronic Atrial Fibrillation,I48.2,Chronic Atrial Fibrillation,1,Secondary,2025-09-20,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC24919103,1,DX506711,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-03-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC85855938,1,DX315215,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Primary,2026-01-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC85855938,2,DX899542,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2026-01-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC56157897,1,DX558025,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Primary,2026-05-16,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC56157897,2,DX221538,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2026-05-16,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32162519,1,DX566847,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-09-26,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32162519,2,DX461456,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Secondary,2025-09-26,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32162519,3,DX668966,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2025-09-26,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC63840200,1,DX606211,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-08-01,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC63840200,2,DX867765,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Secondary,2025-08-01,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC63840200,3,DX740156,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2025-08-01,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC31010765,1,DX172482,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Primary,2025-11-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC31010765,2,DX232518,Menopausal and Female Climacteric States,N95.1,Menopausal and Female Climacteric States,1,Secondary,2025-11-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC48952806,1,DX405385,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Primary,2026-01-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC48952806,2,DX321686,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-01-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC48952806,3,DX396433,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Secondary,2026-01-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC49197182,1,DX471771,COPD with Acute Lower Respiratory Infection,J44.0,COPD with Acute Lower Respiratory Infection,1,Primary,2026-03-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69258076,1,DX646686,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-10-25,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69258076,2,DX675932,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Secondary,2025-10-25,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69258076,3,DX584527,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2025-10-25,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC73574003,1,DX674903,Essential Hypertension,I10,Essential Hypertension,1,Primary,2026-01-20,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC73574003,2,DX333811,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Secondary,2026-01-20,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC73574003,3,DX156499,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2026-01-20,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC71388343,1,DX593346,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-08-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC71388343,2,DX962294,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Secondary,2025-08-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC71388343,3,DX265153,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2025-08-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC39503866,1,DX481814,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Primary,2026-04-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC80704226,1,DX363714,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Primary,2026-01-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC44348265,1,DX132966,Type 2 Diabetes Mellitus,E11.9,Type 2 Diabetes Mellitus,1,Primary,2026-01-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC44348265,2,DX731182,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2026-01-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC44348265,3,DX976076,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2026-01-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC44348265,4,DX332943,Acute on Chronic Systolic Heart Failure,I50.33,Acute on Chronic Systolic Heart Failure,1,Secondary,2026-01-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC21347362,1,DX803945,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-02-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59340440,1,DX768973,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-08-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59340440,2,DX446163,"Major Depressive Disorder, Recurrent",F33.0,"Major Depressive Disorder, Recurrent",1,Secondary,2025-08-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59340440,3,DX102238,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2025-08-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59340440,4,DX265620,"Severe Persistent Asthma, Uncomplicated",J45.50,"Severe Persistent Asthma, Uncomplicated",1,Secondary,2025-08-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32842701,1,DX123826,Essential Hypertension,I10,Essential Hypertension,1,Primary,2026-01-04,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32842701,2,DX150201,"Major Depressive Disorder, Recurrent",F33.0,"Major Depressive Disorder, Recurrent",1,Secondary,2026-01-04,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32842701,3,DX953018,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-01-04,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32842701,4,DX219604,"Severe Persistent Asthma, Uncomplicated",J45.50,"Severe Persistent Asthma, Uncomplicated",1,Secondary,2026-01-04,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC49025961,1,DX389910,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-12-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC49025961,2,DX935291,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Secondary,2025-12-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32648507,1,DX698388,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-06-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32648507,2,DX984192,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Secondary,2025-06-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC81613683,1,DX936743,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-12-16,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC71402056,1,DX504781,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Primary,2025-10-01,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC29291836,1,DX491744,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Primary,2025-07-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC27173510,1,DX936470,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-10-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC27173510,2,DX459919,Type 2 Diabetes Mellitus,E11.9,Type 2 Diabetes Mellitus,1,Secondary,2025-10-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC27173510,3,DX314542,Chronic Systolic Heart Failure (HFrEF),I50.32,Chronic Systolic Heart Failure (HFrEF),1,Secondary,2025-10-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC73689078,1,DX931925,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Primary,2025-11-01,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC28941741,1,DX985051,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Primary,2025-07-03,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC56027448,1,DX828139,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Primary,2025-06-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59703410,1,DX858512,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-11-04,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59703410,2,DX771170,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2025-11-04,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59703410,3,DX888941,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2025-11-04,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59703410,4,DX854204,"Hypothyroidism, Unspecified",E03.9,"Hypothyroidism, Unspecified",1,Secondary,2025-11-04,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32898212,1,DX612727,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-05-14,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32898212,2,DX231133,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2026-05-14,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32898212,3,DX571583,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2026-05-14,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32898212,4,DX147986,"Hypothyroidism, Unspecified",E03.9,"Hypothyroidism, Unspecified",1,Secondary,2026-05-14,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC51830349,1,DX920690,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Primary,2026-01-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC35110769,1,DX650559,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-12-25,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC35110769,2,DX454394,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2025-12-25,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC64896598,1,DX828912,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-05-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC64896598,2,DX264429,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2025-05-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC86398838,1,DX188743,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-10-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC65589469,1,DX223173,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-10-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC46082523,1,DX368450,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-10-05,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC82737273,1,DX371776,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-08-09,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC75289232,1,DX519163,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Primary,2025-06-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC35899910,1,DX468548,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Primary,2026-03-26,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC44425720,1,DX706901,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Primary,2026-02-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC51282204,1,DX335986,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-01-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC51282204,2,DX270626,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Secondary,2026-01-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC51282204,3,DX194050,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-01-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC51282204,4,DX924708,COPD with Acute Lower Respiratory Infection,J44.0,COPD with Acute Lower Respiratory Infection,1,Secondary,2026-01-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62782524,1,DX273812,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-02-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62782524,2,DX196530,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Secondary,2026-02-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62782524,3,DX429310,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-02-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62782524,4,DX264112,COPD with Acute Lower Respiratory Infection,J44.0,COPD with Acute Lower Respiratory Infection,1,Secondary,2026-02-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC55875055,1,DX559252,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-06-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC55875055,2,DX579124,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2025-06-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC55875055,3,DX392760,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2025-06-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC86776175,1,DX435955,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-11-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC86776175,2,DX289781,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2025-11-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC86776175,3,DX249909,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2025-11-10,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC53374270,1,DX965617,Essential Hypertension,I10,Essential Hypertension,1,Primary,2026-02-03,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC53374270,2,DX565394,"Mild Intermittent Asthma, Uncomplicated",J45.20,"Mild Intermittent Asthma, Uncomplicated",1,Secondary,2026-02-03,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32022945,1,DX180247,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Primary,2025-06-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32022945,2,DX701585,Chronic Atrial Fibrillation,I48.2,Chronic Atrial Fibrillation,1,Secondary,2025-06-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC70678061,1,DX961340,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Primary,2025-11-30,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC70678061,2,DX675226,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Secondary,2025-11-30,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC29193507,1,DX848261,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Primary,2026-05-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC29193507,2,DX315242,Menopausal and Female Climacteric States,N95.1,Menopausal and Female Climacteric States,1,Secondary,2026-05-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC64625223,1,DX455507,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Primary,2025-12-25,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32604951,1,DX572309,Type 2 Diabetes Mellitus,E11.9,Type 2 Diabetes Mellitus,1,Primary,2025-10-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32604951,2,DX858067,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-10-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC32604951,3,DX899100,Longstanding Persistent Atrial Fibrillation,I48.11,Longstanding Persistent Atrial Fibrillation,1,Secondary,2025-10-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC43714404,1,DX713537,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Primary,2025-10-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC79499847,1,DX385174,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Primary,2025-08-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC79499847,2,DX874373,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2025-08-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC46884726,1,DX945709,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Primary,2026-03-19,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC46884726,2,DX156889,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2026-03-19,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC68967516,1,DX781382,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-07-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC68967516,2,DX427366,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2025-07-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC68967516,3,DX314333,"Mild Intermittent Asthma, Uncomplicated",J45.20,"Mild Intermittent Asthma, Uncomplicated",1,Secondary,2025-07-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC78592776,1,DX695106,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-02-25,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC78592776,2,DX843319,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2026-02-25,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC78592776,3,DX655416,"Mild Intermittent Asthma, Uncomplicated",J45.20,"Mild Intermittent Asthma, Uncomplicated",1,Secondary,2026-02-25,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC89704029,1,DX137293,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-02-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC89704029,2,DX324407,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2026-02-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC89704029,3,DX797038,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-02-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC89704029,4,DX534001,Encounter for Other General Contraceptive Management,Z30.09,Encounter for Other General Contraceptive Management,1,Secondary,2026-02-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59510734,1,DX555894,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-04-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59510734,2,DX288533,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2026-04-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59510734,3,DX113420,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-04-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC59510734,4,DX210210,Encounter for Other General Contraceptive Management,Z30.09,Encounter for Other General Contraceptive Management,1,Secondary,2026-04-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC22745039,1,DX491609,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Primary,2025-11-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC22745039,2,DX351471,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2025-11-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC22745039,3,DX872127,Encounter for Other General Contraceptive Management,Z30.09,Encounter for Other General Contraceptive Management,1,Secondary,2025-11-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC45347550,1,DX749735,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Primary,2026-02-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC45347550,2,DX257766,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2026-02-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC45347550,3,DX886213,Encounter for Other General Contraceptive Management,Z30.09,Encounter for Other General Contraceptive Management,1,Secondary,2026-02-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC60359780,1,DX875012,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-05-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC60359780,2,DX699744,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-05-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC50593735,1,DX814117,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-06-17,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC50593735,2,DX427375,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2025-06-17,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC72155994,1,DX329640,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-03-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62802599,1,DX400503,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-03-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC88159655,1,DX804422,COPD with Acute Lower Respiratory Infection,J44.0,COPD with Acute Lower Respiratory Infection,1,Primary,2025-07-30,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC88159655,2,DX855480,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-07-30,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC60359939,1,DX288849,COPD with Acute Lower Respiratory Infection,J44.0,COPD with Acute Lower Respiratory Infection,1,Primary,2025-07-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC60359939,2,DX301141,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-07-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC56075236,1,DX550012,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Primary,2026-03-29,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC82815848,1,DX736180,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-10-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC82815848,2,DX388171,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2025-10-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC88715527,1,DX193196,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Primary,2025-07-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC39479177,1,DX130626,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Primary,2025-08-03,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC24570182,1,DX719198,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-12-09,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC24570182,2,DX608346,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2025-12-09,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69195995,1,DX581295,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Primary,2026-03-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69195995,2,DX247052,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2026-03-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69195995,3,DX846418,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-03-02,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC27837552,1,DX401720,Generalized Anxiety Disorder,F41.1,Generalized Anxiety Disorder,1,Primary,2025-11-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC27837552,2,DX335904,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Secondary,2025-11-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC27837552,3,DX317835,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-11-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC26821037,1,DX878329,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-07-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC26821037,2,DX779325,"Major Depressive Disorder, Recurrent",F33.0,"Major Depressive Disorder, Recurrent",1,Secondary,2025-07-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC26821037,3,DX807902,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2025-07-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC26821037,4,DX848542,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2025-07-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC39007284,1,DX646377,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-06-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC39007284,2,DX220220,"Major Depressive Disorder, Recurrent",F33.0,"Major Depressive Disorder, Recurrent",1,Secondary,2025-06-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC39007284,3,DX210688,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2025-06-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC39007284,4,DX920804,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2025-06-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC78054737,1,DX196342,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Primary,2025-07-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC78054737,2,DX454494,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2025-07-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC78054737,3,DX585970,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-07-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC47958075,1,DX374264,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Primary,2025-11-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC47958075,2,DX208888,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2025-11-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC47958075,3,DX190660,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-11-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC53149750,1,DX553748,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-03-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC53149750,2,DX655939,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2026-03-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC53149750,3,DX515894,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-03-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC72953409,1,DX522979,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-06-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC72953409,2,DX124051,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Secondary,2025-06-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC72953409,3,DX275524,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-06-24,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC36741950,1,DX375727,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Primary,2026-02-11,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC36741950,2,DX210122,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2026-02-11,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC36741950,3,DX746092,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Secondary,2026-02-11,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC89963364,1,DX136700,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Primary,2025-10-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC89963364,2,DX459325,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2025-10-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC89963364,3,DX442809,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Secondary,2025-10-31,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC66926205,1,DX252156,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Primary,2026-02-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC66926205,2,DX249816,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Secondary,2026-02-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC66926205,3,DX236412,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Secondary,2026-02-23,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC79756922,1,DX256045,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Primary,2026-02-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC79756922,2,DX394535,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Secondary,2026-02-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC79756922,3,DX192273,Subclinical Iodine-Deficiency Hypothyroidism,E02,Subclinical Iodine-Deficiency Hypothyroidism,1,Secondary,2026-02-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC86126155,1,DX746718,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-08-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC86126155,2,DX481107,Autoimmune Thyroiditis (Hashimoto's),E06.3,Autoimmune Thyroiditis (Hashimoto's),1,Secondary,2025-08-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC86245781,1,DX863842,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-09-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC86245781,2,DX663975,Autoimmune Thyroiditis (Hashimoto's),E06.3,Autoimmune Thyroiditis (Hashimoto's),1,Secondary,2025-09-06,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC81331313,1,DX204643,"Heart Failure, Unspecified",I50.9,"Heart Failure, Unspecified",1,Primary,2025-10-19,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC64174893,1,DX732452,"Heart Failure, Unspecified",I50.9,"Heart Failure, Unspecified",1,Primary,2026-02-17,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC89729610,1,DX116647,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-09-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC89729610,2,DX640246,"Major Depressive Disorder, Recurrent",F33.0,"Major Depressive Disorder, Recurrent",1,Secondary,2025-09-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC89729610,3,DX191782,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2025-09-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC89729610,4,DX483838,COPD with Acute Lower Respiratory Infection,J44.0,COPD with Acute Lower Respiratory Infection,1,Secondary,2025-09-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69608662,1,DX345052,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-05-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69608662,2,DX438104,"Major Depressive Disorder, Recurrent",F33.0,"Major Depressive Disorder, Recurrent",1,Secondary,2026-05-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69608662,3,DX318302,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-05-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC69608662,4,DX459017,COPD with Acute Lower Respiratory Infection,J44.0,COPD with Acute Lower Respiratory Infection,1,Secondary,2026-05-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC38545523,1,DX215508,Other Persistent Atrial Fibrillation,I48.19,Other Persistent Atrial Fibrillation,1,Primary,2026-02-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC74360298,1,DX154958,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Primary,2026-02-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC74360298,2,DX270666,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-02-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC74360298,3,DX875439,Encounter for Initial Prescription of Contraceptive Pills,Z30.011,Encounter for Initial Prescription of Contraceptive Pills,1,Secondary,2026-02-22,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC70949566,1,DX549403,Type 2 DM with Hyperglycaemia,E11.65,Type 2 DM with Hyperglycaemia,1,Primary,2025-08-30,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC70949566,2,DX292396,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-08-30,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC70949566,3,DX609197,Encounter for Initial Prescription of Contraceptive Pills,Z30.011,Encounter for Initial Prescription of Contraceptive Pills,1,Secondary,2025-08-30,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC43051617,1,DX758162,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2025-11-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC43051617,2,DX872525,"Major Depressive Disorder, Unspecified",F32.9,"Major Depressive Disorder, Unspecified",1,Secondary,2025-11-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC43051617,3,DX857901,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2025-11-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC43051617,4,DX217376,Encounter for Other General Contraceptive Management,Z30.09,Encounter for Other General Contraceptive Management,1,Secondary,2025-11-18,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62901718,1,DX752505,"Hyperlipidaemia, Unspecified",E78.5,"Hyperlipidaemia, Unspecified",1,Primary,2025-12-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC62901718,2,DX188150,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2025-12-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC39672995,1,DX573487,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-05-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC39672995,2,DX665995,"Major Depressive Disorder, Recurrent",F33.0,"Major Depressive Disorder, Recurrent",1,Secondary,2026-05-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC39672995,3,DX886067,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-05-07,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC40183932,1,DX351738,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-05-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC40183932,2,DX665725,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Secondary,2026-05-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC40183932,3,DX399592,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2026-05-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC40183932,4,DX943391,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-05-08,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC66845724,1,DX531879,"Hypertensive Heart Disease, Unspecified",I11.9,"Hypertensive Heart Disease, Unspecified",1,Primary,2026-04-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC66845724,2,DX310842,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Secondary,2026-04-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC66845724,3,DX388991,Type 2 DM with Diabetic Peripheral Neuropathy,E11.51,Type 2 DM with Diabetic Peripheral Neuropathy,1,Secondary,2026-04-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC66845724,4,DX427898,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2026-04-13,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC58472851,1,DX981662,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Primary,2025-08-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC58472851,2,DX317382,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-08-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC72502474,1,DX510316,"Anxiety Disorder, Unspecified",F41.9,"Anxiety Disorder, Unspecified",1,Primary,2025-12-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC72502474,2,DX907028,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2025-12-21,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC61937043,1,DX328435,Essential Hypertension,I10,Essential Hypertension,1,Primary,2025-11-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC61937043,2,DX286666,Pure Hypercholesterolaemia,E78.00,Pure Hypercholesterolaemia,1,Secondary,2025-11-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC61937043,3,DX121379,GERD with Oesophagitis,K21.0,GERD with Oesophagitis,1,Secondary,2025-11-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC61937043,4,DX126158,Longstanding Persistent Atrial Fibrillation,I48.11,Longstanding Persistent Atrial Fibrillation,1,Secondary,2025-11-28,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC61472178,1,DX296356,Pure Hypertriglyceridaemia,E78.1,Pure Hypertriglyceridaemia,1,Primary,2026-04-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC61472178,2,DX930990,GERD without Oesophagitis,K21.9,GERD without Oesophagitis,1,Secondary,2026-04-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
+ENC61472178,3,DX728752,Other Persistent Atrial Fibrillation,I48.19,Other Persistent Atrial Fibrillation,1,Secondary,2026-04-15,EPIC_PROD,2026-05-27 19:21:48.681928,2026-05-27 19:21:48.681928
