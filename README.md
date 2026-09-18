@@ -10,10 +10,11 @@ python -m venv .venv && ./.venv/bin/pip install -r requirements.txt
 
 `ehr.duckdb` is derived and gitignored — rebuild it any time from `data/`.
 
-Eleven worked examples live in [`demo_queries.sql`](demo_queries.sql) — panel
+Thirteen worked examples live in [`demo_queries.sql`](demo_queries.sql) — panel
 snapshot, chronic-condition registry, care gaps (uncontrolled hypertension,
 heart failure missing guideline-directed therapy, AFib without anticoagulation),
-lab trajectories, outstanding orders, polypharmacy, and note search:
+lab trajectories, outstanding orders, polypharmacy, note search, and two on the
+notes themselves (an extraction audit and the template distribution):
 
 ```bash
 duckdb ehr.duckdb -f demo_queries.sql

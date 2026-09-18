@@ -225,3 +225,24 @@ FROM (
     UNION ALL SELECT 'medications',    count(*), count(*) FILTER (WHERE rx_ok)  FROM scored
 )
 ORDER BY field;
+
+
+-- 13. Note template distribution ---------------------------------------------
+-- How the four documentation styles are spread, with a clinical profile beside
+-- each. The profile columns are the point: they are flat across all four
+-- templates, which is why note phrasing must not be used to build cohorts.
+-- See the "Don't build cohorts on note prose" section of README.md.
+SELECT n.note_style,
+       count(*)                                                 AS notes,
+       count(DISTINCT n.PAT_ID)                                 AS patients,
+       round(100.0 * count(*) / sum(count(*)) OVER (), 1)       AS pct_of_notes,
+       round(avg(e.PAT_AGE), 1)                                 AS avg_age,
+       round(avg(n.systolic), 1)                                AS avg_systolic,
+       round(avg(n.bmi), 1)                                     AS avg_bmi,
+       round(avg(len(n.conditions)), 2)                         AS avg_conditions,
+       round(avg(len(n.medications)), 2)                        AS avg_meds,
+       round(avg(length(n.NOTE_TEXT)))                          AS avg_chars
+FROM v_note_extract n
+JOIN v_encounter e USING (PAT_ENC_CSN_ID)
+GROUP BY 1
+ORDER BY notes DESC;
