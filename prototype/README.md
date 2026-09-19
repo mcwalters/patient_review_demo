@@ -63,6 +63,32 @@ cannot reach the database.
 | `preflight.py` | The clinical plausibility linter |
 | `app.py` | Streamlit demo |
 
+## Styling
+
+The UI uses the Qualified Health brand, extracted from `PPT Template.pptx`
+rather than eyeballed — `prototype/theme.py` and `.streamlit/config.toml` carry
+the values from the deck's own `ppt/theme/theme1.xml`:
+
+| Token | Value | Used for |
+|---|---|---|
+| `accent1` | `#0A3D63` | navy — headings, buttons, primary |
+| `accent2` | `#058BE8` | bright blue — links, hover |
+| — | `#518AE1` | the lighter blue of slide titles |
+| `dk2` | `#5C6C80` | slate body text |
+| `accent4` | `#C1CFD8` | borders and rules |
+| `lt2` | `#F9FCFF` | page background |
+| `accent6` | `#ED8D02` | orange — medium-severity warnings |
+| *added* | `#B42318` | red for high-severity findings |
+
+Type is Helvetica Neue (Arial fallback), as used on the slides. The header
+reproduces the deck's two-tone title pattern — light-blue phrase, thin rule,
+navy phrase — and the footer reproduces the content-slide furniture with the
+logo lifted from `ppt/media/`.
+
+**The red is an addition.** The template has no red at all; a clinical safety UI
+needs one, so it is introduced only for high-severity findings and used nowhere
+else.
+
 ## Safety properties
 
 **Hallucinated codes cannot reach SQL.** Registration rejects any value absent

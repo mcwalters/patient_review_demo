@@ -17,11 +17,13 @@ import pandas as pd
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from prototype import preflight                      # noqa: E402
+from prototype import preflight, theme               # noqa: E402
 from prototype.screener import screen_async          # noqa: E402
 from prototype.tools import ScreeningSession         # noqa: E402
 
-st.set_page_config(page_title="Eligibility Screening", layout="wide")
+st.set_page_config(page_title="Eligibility Screening — Qualified Health",
+                   page_icon=str(theme.ASSETS / "q-mark.png"), layout="wide")
+theme.apply()
 
 EXAMPLES = {
     "Hypertension intensification": """Adults aged 18 to 75 with a diagnosis of hypertension who are already on at
@@ -36,9 +38,10 @@ cholesterol is still above 100. Exclude anyone already on a PCSK9 inhibitor.""",
 Exclude heart failure and anyone already on a GLP-1 receptor agonist.""",
 }
 
-st.title("Eligibility screening from a free-text protocol")
-st.caption("Gemini 2.5 Pro on Vertex AI · ADC auth · 100-patient synthetic EHR · "
-           "the model grounds concepts, deterministic code runs every query")
+theme.title("Eligibility screening", "from a free-text protocol",
+            "Gemini 2.5 Pro on Vertex AI · application default credentials · "
+            "100-patient synthetic EHR · the model grounds clinical concepts, "
+            "deterministic code runs every query")
 
 tab_screen, tab_preflight, tab_data = st.tabs(
     ["Screen a protocol", "Pre-flight data audit", "What the model may select"])
@@ -72,7 +75,7 @@ with tab_preflight:
     if bad:
         st.dataframe(pd.DataFrame(
             [{"patient": p, "impossible values": "; ".join(v)} for p, v in bad.items()]),
-            use_container_width=True, hide_index=True)
+            width='stretch', hide_index=True)
 
 # ------------------------------------------------------------------ vocabulary
 with tab_data:
@@ -84,9 +87,9 @@ with tab_data:
     c1.metric("Diagnoses", len(v.conditions))
     c2.metric("Drug classes", len(v.med_classes))
     c3.metric("Lab analytes", len(v.analytes))
-    st.dataframe(pd.DataFrame(v.conditions), use_container_width=True, hide_index=True, height=260)
+    st.dataframe(pd.DataFrame(v.conditions), width='stretch', hide_index=True, height=260)
     st.dataframe(pd.DataFrame([{**m, "agents": ", ".join(m["agents"])} for m in v.med_classes]),
-                 use_container_width=True, hide_index=True, height=260)
+                 width='stretch', hide_index=True, height=260)
 
 # --------------------------------------------------------------------- screen
 with tab_screen:
@@ -125,7 +128,7 @@ with tab_screen:
                 "type": c["kind"], "bound to": ", ".join(c["codes"]) or c["field_name"],
                 "range": rng, "met": imp["met"], "no data": imp["unknown"],
                 "why these codes": c["rationale"]})
-        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(rows), width='stretch', hide_index=True)
 
         # ---- cohort
         st.subheader("Cohort")
@@ -153,16 +156,18 @@ with tab_screen:
                               f"Needs review ({counts['needs_review']})",
                               f"Excluded ({counts['excluded']})"])
         with t1:
-            st.dataframe(table("eligible"), use_container_width=True, hide_index=True)
+            st.dataframe(table("eligible"), width='stretch', hide_index=True)
         with t2:
             st.caption("These patients are not ineligible. A criterion could not be "
                        "evaluated because the data is missing. Missing is not a pass.")
-            st.dataframe(table("needs_review"), use_container_width=True, hide_index=True)
+            st.dataframe(table("needs_review"), width='stretch', hide_index=True)
         with t3:
-            st.dataframe(table("excluded"), use_container_width=True, hide_index=True)
+            st.dataframe(table("excluded"), width='stretch', hide_index=True)
 
         with st.expander("Agent trace — every tool call, in order"):
             for i, c in enumerate(trace, 1):
                 st.code(f"{i:>2}. {c['tool']}({json.dumps(c['args'])[:160]})", language=None)
         with st.expander("Agent's closing summary"):
             st.write(final)
+
+theme.footer()
