@@ -573,6 +573,20 @@ open, and why it still matters. Be brief.
 FOLLOWUP_INSTRUCTION += NO_STOP_DATES
 
 
+# Which analytes monitor which DRUG. An INR monitors warfarin, not apixaban;
+# a digoxin level monitors digoxin. The agent kept getting this from memory and
+# getting it wrong -- one run reported "stale INR for a patient on warfarin"
+# when the patient was on a DOAC and the other had no anticoagulant at all.
+# Same rule as everywhere else: no model computes what code can compute.
+_ANALYTE_MONITORS_DRUG = {
+    "INR / PT": ("VKA", "INR monitors warfarin. It is NOT the monitoring test for "
+                        "a DOAC -- ordering it for a DOAC patient is an error, and "
+                        "ordering it for a patient on no anticoagulant needs a reason."),
+    "aPTT": ("VKA", "aPTT does not monitor DOAC therapy either."),
+    "Digoxin Level": ("__digoxin__", "A digoxin level is only meaningful in a patient "
+                                     "taking digoxin."),
+}
+
 # Which analytes monitor which conditions. Used to decide, deterministically,
 # whether an unreturned test still has a live indication.
 _ANALYTE_INDICATION = {
@@ -618,6 +632,27 @@ def _pending_orders() -> dict:
                 "SELECT count(*) FROM v_lab_result WHERE PAT_ID = ? "
                 "AND COMPONENT_NAME = ? AND RESULT_DATE > ?",
                 [pid, test, ordered]).fetchone()[0] > 0
+            # Does this test monitor a drug, and is the patient actually on it?
+            drug_check = None
+            if test in _ANALYTE_MONITORS_DRUG:
+                cls, note = _ANALYTE_MONITORS_DRUG[test]
+                if cls == "__digoxin__":
+                    on_it = con.execute(
+                        "SELECT count(*) FROM v_medication WHERE PAT_ID = ? "
+                        "AND lower(DISPLAY_NAME) LIKE '%digoxin%'", [pid]).fetchone()[0] > 0
+                    actual = "digoxin" if on_it else None
+                else:
+                    on_it = con.execute(
+                        "SELECT count(*) FROM v_medication WHERE PAT_ID = ? "
+                        "AND generic_class = ?", [pid, cls]).fetchone()[0] > 0
+                    actual = ",".join(r[0] for r in con.execute(
+                        "SELECT DISTINCT generic_class FROM v_medication WHERE PAT_ID = ? "
+                        "AND generic_class IN ('VKA','DOAC')", [pid]).fetchall()) or None
+                drug_check = {"test_monitors": cls.strip("_") if cls != "__digoxin__" else "digoxin",
+                              "patient_is_on_it": on_it,
+                              "patient_actually_on": actual or "nothing of that kind",
+                              "note": note}
+
             pattern = _ANALYTE_INDICATION.get(test)
             if pattern is None:
                 indication = None          # not a condition-specific monitor
@@ -625,10 +660,13 @@ def _pending_orders() -> dict:
                 indication = con.execute(
                     "SELECT count(*) FROM v_diagnosis WHERE PAT_ID = ? AND icd10 LIKE ?",
                     [pid, pattern]).fetchone()[0] > 0
-            out.append({"patient": name, "pat_id": pid, "test": test,
-                        "ordered": str(ordered), "months_open": months,
-                        "superseded_by_later_result": superseded,
-                        "patient_has_the_condition_it_monitors": indication})
+            rec = {"patient": name, "pat_id": pid, "test": test,
+                   "ordered": str(ordered), "months_open": months,
+                   "superseded_by_later_result": superseded,
+                   "patient_has_the_condition_it_monitors": indication}
+            if drug_check:
+                rec["drug_monitoring_check"] = drug_check
+            out.append(rec)
     finally:
         con.close()
 
@@ -645,6 +683,10 @@ def _pending_orders() -> dict:
                    "no_live_indication": len(no_ind)},
         "REVIEW_ALL_ACTIONABLE": "Every actionable order is listed. Work the list; "
                                  "do not sample it, and say how many you judged.",
+        "DRUG_MONITORING": "Where an order carries drug_monitoring_check, that field "
+                           "is authoritative about which drug the test monitors and "
+                           "what the patient is actually on. Use it verbatim. Do not "
+                           "state a drug class from memory.",
         "actionable": actionable,
         "superseded": superseded[:15],
         "no_live_indication": no_ind[:15],
