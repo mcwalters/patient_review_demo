@@ -57,9 +57,11 @@ def build_brief_pack(patient: str, findings: list[dict] | None = None) -> dict:
 
         last = con.execute("SELECT max(CONTACT_DATE) FROM pat_enc WHERE PAT_ID = ?",
                            [pid]).fetchone()[0]
-        encounters = con.execute(
-            "SELECT CONTACT_DATE, DEPARTMENT_NAME, VISIT_PROV_NAME, INSURANCE "
-            "FROM pat_enc WHERE PAT_ID = ? ORDER BY CONTACT_DATE DESC", [pid]).fetchall()
+        encounters = con.execute("""
+            SELECT e.CONTACT_DATE, e.DEPARTMENT_NAME, e.VISIT_PROV_NAME, e.INSURANCE,
+                   pr.SPECIALTY, pr.PROV_TYPE
+            FROM pat_enc e LEFT JOIN provider pr ON pr.PROV_ID = e.VISIT_PROV_ID
+            WHERE e.PAT_ID = ? ORDER BY e.CONTACT_DATE DESC""", [pid]).fetchall()
 
         dx = con.execute(
             "SELECT DISTINCT icd10, dx_name FROM v_diagnosis WHERE PAT_ID = ? "
@@ -131,10 +133,16 @@ def build_brief_pack(patient: str, findings: list[dict] | None = None) -> dict:
     return {
         "patient": {"pat_id": pid, "name": name, "age": age, "sex": sex,
                     "birth_date": str(dob)},
-        "visit": _due_status(last) | {"encounters_on_file": len(encounters),
-                                      "history": [{"date": str(e[0]), "department": e[1],
-                                                   "provider": e[2], "insurance": e[3]}
-                                                  for e in encounters]},
+        "visit": _due_status(last) | {
+            "encounters_on_file": len(encounters),
+            "last_visit": ({"date": str(encounters[0][0]),
+                            "department": encounters[0][1],
+                            "provider": encounters[0][2],
+                            "provider_specialty": encounters[0][4],
+                            "provider_type": encounters[0][5],
+                            "insurance": encounters[0][3]} if encounters else None),
+            "history": [{"date": str(e[0]), "department": e[1], "provider": e[2],
+                         "specialty": e[4], "insurance": e[3]} for e in encounters]},
         "data_quality": {
             "flags": flags,
             "medication_caveat":
@@ -206,18 +214,31 @@ Structure, in this order and no other:
    for the rest of the brief. If there are no flags, omit this section entirely
    rather than writing a reassuring sentence.
 
-2. **Why this patient, now** -- two or three sentences. The single most
-   important thing, and whether their AWV is due. Say "derived" if you mention
-   the due date; it is calculated from the last visit, not booked.
+2. **Last seen** -- one line: the date of their last visit, who saw them, and
+   that clinician's specialty, taken from visit.last_visit. Then whether their
+   next AWV is due; say "derived" if you give the date, because it is calculated
+   from the last visit rather than booked.
 
-3. **What to raise** -- at most four items, ordered. Group things that are one
+3. **Why this patient, now** -- two or three sentences. The single most
+   important thing about them.
+
+4. **What to raise** -- at most four items, ordered. Group things that are one
    conversation: an overdue kidney screen in a diabetic who is also missing a
    statin is one discussion about their diabetes, not two bullets. Each item
    says what to raise and why it matters for THIS patient.
 
-4. **What you cannot tell from the record** -- short. Always mention that the
+5. **Against the clinician's note** -- only if note_reconciliation reports
+   conflicts. State what the note says and that the brief above may be wrong on
+   that point. Omit the section entirely when there are none; do not write a
+   sentence saying everything agreed.
+
+6. **What you cannot tell from the record** -- short. Always mention that the
    medication list shows what was started, never what was stopped, if the
    patient has any medications.
+
+Use the patient's name exactly as recorded and never add a title. No Mr, Ms,
+Mrs or Dr. The record has a sex field if that ever matters; inferring one from a
+first name is how a clinical tool misgenders somebody.
 
 Never recommend a drug, a dose or a titration. You raise topics for a clinician;
 you do not prescribe. Do not pad: a patient with little going on gets a short
@@ -234,6 +255,10 @@ async def write_brief_async(patient: str, findings: list[dict] | None = None) ->
     pack = build_brief_pack(patient, findings)
     if "error" in pack:
         return "", pack
+    # Reconciliation runs as part of writing the brief rather than as a button.
+    # A control the reader has to remember to press is not a control.
+    from .reconcile import reconcile_async
+    pack["note_reconciliation"] = await reconcile_async(pack, "", None)
     prompt = ("Write the pre-visit brief for this patient.\n\n"
               + json.dumps(pack, indent=1, default=str))
     try:

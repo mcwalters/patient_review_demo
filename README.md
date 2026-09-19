@@ -172,6 +172,15 @@ Worth knowing before you build a demo on it:
 
   Genuine severity is also rarer than it looks: only **5 of 100** patients reach
   hypertensive crisis (>180 or >120) on ACC/AHA 2017 categories.
+- **Prescribing is statistically independent of provider specialty**, so
+  scope-of-practice analysis is not supportable. A chi-square across specialty ×
+  drug class gives **χ²/df = 0.94**, where 1.0 is what random assignment
+  produces. Statins are spread across all seven specialties; SSRIs are
+  prescribed more often by Internal Medicine and Cardiology than by Psychiatry;
+  one PA prescribes 32 of the 42 drug classes. Any "provider prescribing outside
+  their scope" report built on this would be confident, specific and fabricated.
+  Use the provider fields for routing — *who do I chase about this order* — not
+  for judgement.
 - **Vitals don't change between visits.** For all 53 patients with two
   encounters, systolic, diastolic, temperature, weight, and BMI are identical
   across both. Only heart rate varies. **No vitals-trending demo.** Labs *do*
