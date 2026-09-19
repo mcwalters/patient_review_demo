@@ -33,6 +33,23 @@ def connect() -> duckdb.DuckDBPyConnection:
         return duckdb.connect(tmp, read_only=True)
 
 
+# Hard physiologic limits. Deterministic backstop to the LLM plausibility
+# linter: a value outside these is not a rare finding, it is a bad record.
+# The linter (prototype/preflight.py) reasons about *rates* and *combinations*,
+# which need clinical knowledge; these are the bounds that never need judgment.
+PHYSIOLOGIC_LIMITS = {
+    "SpO2": (50, 100),                 # a saturation above 100% is impossible
+    "Sodium": (110, 160),
+    "CBC — Hemoglobin": (4, 22),
+    "LDL Cholesterol": (10, 400),
+    "Total Cholesterol": (50, 500),
+    "HDL Cholesterol": (10, 150),
+    "Triglycerides": (20, 1500),
+    "HbA1c": (3, 20),
+    "Potassium": (2.0, 8.0),
+    "eGFR": (3, 150),
+}
+
 KINDS = ("diagnosis", "medication", "lab", "vital", "demographic")
 POLARITIES = ("include", "exclude")
 
@@ -257,6 +274,21 @@ class ScreeningSession:
                 out[p] = {"status": "unknown", "evidence": "no data on file"}
         return out
 
+    def implausible_patients(self) -> dict[str, list[str]]:
+        """Patients holding at least one physiologically impossible lab value."""
+        con = connect()
+        try:
+            out: dict[str, list[str]] = {}
+            for analyte, (lo, hi) in PHYSIOLOGIC_LIMITS.items():
+                for pid, val in con.execute(
+                    "SELECT PAT_ID, value FROM v_lab_result "
+                    "WHERE COMPONENT_NAME = ? AND (value < ? OR value > ?)",
+                    [analyte, lo, hi]).fetchall():
+                    out.setdefault(pid, []).append(f"{analyte}={val} (limit {lo}-{hi})")
+        finally:
+            con.close()
+        return out
+
     def run_screening(self) -> dict:
         """Combine every registered criterion into a cohort. Deterministic."""
         if not self.criteria:
@@ -269,6 +301,7 @@ class ScreeningSession:
         finally:
             con.close()
 
+        bad_data = self.implausible_patients()
         eligible, excluded, review = [], [], []
         for pid in sorted(names):
             detail, verdict = {}, "eligible"
@@ -286,7 +319,8 @@ class ScreeningSession:
                 elif not ok:
                     verdict = "excluded"
             row = {"pat_id": pid, "name": names[pid], "age": ages[pid],
-                   "verdict": verdict, "criteria": detail}
+                   "verdict": verdict, "criteria": detail,
+                   "data_quality_flags": bad_data.get(pid, [])}
             {"eligible": eligible, "excluded": excluded, "needs_review": review}[verdict].append(row)
 
         # Per-criterion impact, and a deterministic flag for exclusions that remove
@@ -339,8 +373,20 @@ class ScreeningSession:
                                f"They are routed to review, not passed.",
                     "rationale": c.rationale})
 
+        # A cohort built partly on impossible records should say so.
+        tainted = [r for r in eligible + review if r["data_quality_flags"]]
+        if tainted:
+            warnings.append({
+                "criterion_id": "_data_quality", "severity": "high",
+                "message": f"{len(tainted)} patient(s) in the eligible/review set hold a "
+                           f"physiologically impossible lab value. Their eligibility rests "
+                           f"partly on records that cannot be correct: "
+                           f"{[r['name'] for r in tainted][:5]}",
+                "rationale": "Deterministic physiologic-range check, independent of the model."})
+
         return {"eligible": eligible, "needs_review": review, "excluded": excluded,
                 "counts": {"eligible": len(eligible), "needs_review": len(review),
-                           "excluded": len(excluded), "total": n},
+                           "excluded": len(excluded), "total": n,
+                           "with_data_quality_flags": len(tainted)},
                 "impact": impact, "warnings": warnings,
                 "criteria": {cid: vars(c) for cid, c in self.criteria.items()}}
