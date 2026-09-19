@@ -36,6 +36,40 @@ from .tools import AS_OF, ScreeningSession, connect
 
 MODEL = "gemini-2.5-pro"
 
+# Vertex list price for gemini-2.5-pro, USD per 1M tokens, as configured for this
+# project. Update if the rate changes; the token counts are measured either way.
+PRICE_IN_PER_M = 1.25
+PRICE_OUT_PER_M = 10.00
+
+
+class Usage:
+    """Token and latency accounting for one run.
+
+    A product lead who cannot answer "what does a run cost?" has not finished the
+    product. The counts come from the API's own usage_metadata, not an estimate.
+    """
+
+    def __init__(self) -> None:
+        self.calls: list[dict] = []
+
+    def add(self, agent: str, prompt: int, output: int, seconds: float) -> None:
+        self.calls.append({"agent": agent, "input_tokens": prompt,
+                           "output_tokens": output, "seconds": round(seconds, 1)})
+
+    def summary(self) -> dict:
+        tin = sum(c["input_tokens"] for c in self.calls)
+        tout = sum(c["output_tokens"] for c in self.calls)
+        cost = tin / 1e6 * PRICE_IN_PER_M + tout / 1e6 * PRICE_OUT_PER_M
+        per_agent: dict[str, dict] = {}
+        for c in self.calls:
+            a = per_agent.setdefault(c["agent"], {"calls": 0, "in": 0, "out": 0})
+            a["calls"] += 1
+            a["in"] += c["input_tokens"]
+            a["out"] += c["output_tokens"]
+        return {"model_calls": len(self.calls), "input_tokens": tin,
+                "output_tokens": tout, "usd": round(cost, 4),
+                "per_agent": per_agent}
+
 
 class ExtractedFinding(BaseModel):
     headline: str = Field(description="one line naming the problem")
@@ -693,21 +727,30 @@ def _pending_orders() -> dict:
     }
 
 
-async def _run_agent(agent: LlmAgent, prompt: str, app: str) -> str:
+async def _run_agent(agent: LlmAgent, prompt: str, app: str,
+                     usage: "Usage | None" = None) -> str:
     """Run one agent to completion and return its final text."""
+    import time as _time
     runner = InMemoryRunner(agent=agent, app_name=app)
     sess = await runner.session_service.create_session(app_name=app, user_id="demo")
-    out = ""
+    out, t0 = "", _time.time()
     async for ev in runner.run_async(
         user_id="demo", session_id=sess.id,
         new_message=types.Content(role="user", parts=[types.Part(text=prompt)])
     ):
+        # every model turn carries its own usage; sum them rather than guess
+        um = getattr(ev, "usage_metadata", None)
+        if um is not None and usage is not None:
+            usage.add(agent.name,
+                      getattr(um, "prompt_token_count", 0) or 0,
+                      getattr(um, "candidates_token_count", 0) or 0,
+                      _time.time() - t0)
         if ev.is_final_response() and ev.content:
             out = "".join(p.text for p in ev.content.parts if getattr(p, "text", None))
     return out
 
 
-async def _extract(report: str) -> list[dict]:
+async def _extract(report: str, usage: "Usage | None" = None) -> list[dict]:
     """Turn a specialist's prose into structured findings.
 
     Recording used to be a tool the specialist called, which made it optional --
@@ -721,7 +764,7 @@ async def _extract(report: str) -> list[dict]:
     extractor = LlmAgent(name="finding_extractor", model=MODEL,
                          instruction=EXTRACTOR_INSTRUCTION,
                          output_schema=ExtractedFindings)
-    raw = await _run_agent(extractor, f"Specialist report:\n\n{report}", "extract")
+    raw = await _run_agent(extractor, f"Specialist report:\n\n{report}", "extract", usage)
     try:
         return [f.model_dump() for f in
                 ExtractedFindings.model_validate_json(raw).findings]
@@ -741,9 +784,11 @@ def _tracer(trace: list, agent_name: str):
 
 
 def build_supervisor(trace: list | None = None,
-                     findings: "Findings | None" = None) -> LlmAgent:
+                     findings: "Findings | None" = None,
+                     usage: "Usage | None" = None) -> LlmAgent:
     trace = trace if trace is not None else []
     findings = findings if findings is not None else Findings()
+    usage = usage if usage is not None else Usage()
 
     def get_agent_activity() -> dict:
         """Which specialists ran and how many tool calls each made.
@@ -804,8 +849,8 @@ def build_supervisor(trace: list | None = None,
                find_patients, medication_timeline, patient_snapshot])
 
     async def _consult(agent: LlmAgent, name: str, request: str) -> dict:
-        report = await _run_agent(agent, request, f"spec_{name}")
-        rows = await _extract(report)
+        report = await _run_agent(agent, request, f"spec_{name}", usage)
+        rows = await _extract(report, usage)
         for r in rows:
             findings.record(name, **r)
         return {"specialist": name, "findings_recorded": len(rows),
@@ -915,10 +960,14 @@ you could not determine from this data. A short, honest list beats a long one.
                find_patients, patient_snapshot])
 
 
-async def review_async(goal: str, verbose: bool = True) -> tuple[str, list, list]:
+async def review_async(goal: str, verbose: bool = True) -> tuple[str, list, list, dict]:
     trace: list = []
     findings = Findings()
-    runner = InMemoryRunner(agent=build_supervisor(trace, findings), app_name="panel")
+    usage = Usage()
+    import time as _time
+    _t0 = _time.time()
+    runner = InMemoryRunner(agent=build_supervisor(trace, findings, usage),
+                            app_name="panel")
     s = await runner.session_service.create_session(app_name="panel", user_id="demo")
     final = ""
     async for ev in runner.run_async(
@@ -934,10 +983,16 @@ async def review_async(goal: str, verbose: bool = True) -> tuple[str, list, list
                     if verbose:
                         a = {k: v for k, v in call["args"].items() if k != "request"}
                         print(f"  [{call['agent']:<20}] -> {call['tool']}({str(a)[:60]})")
+        um = getattr(ev, "usage_metadata", None)
+        if um is not None:
+            usage.add("panel_review", getattr(um, "prompt_token_count", 0) or 0,
+                      getattr(um, "candidates_token_count", 0) or 0, 0)
         if ev.is_final_response() and ev.content:
             final = "".join(p.text for p in ev.content.parts if getattr(p, "text", None))
-    return final, trace, findings.all()
+    return final, trace, findings.all(), usage.summary() | {
+        "wall_clock_seconds": round(_time.time() - _t0, 1)}
 
 
 def review(goal: str = "Who on this panel needs attention this week?", verbose: bool = True):
+    """Returns (report, trace, findings, usage)."""
     return asyncio.run(review_async(goal, verbose))
