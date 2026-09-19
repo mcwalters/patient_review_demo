@@ -231,6 +231,82 @@ def cohort_statistic(metric: str) -> dict:
         con.close()
 
 
+def blood_pressure_staging() -> dict:
+    """Every patient's latest BP, staged against the named ACC/AHA thresholds.
+
+    Use this instead of judging blood pressure by eye. An earlier run labelled
+    five patients with "severe hypertension" when only two met any severe
+    threshold and one of the five was 111/104 -- a reading that is not
+    hypertension at all. Severity against a published cut-off is arithmetic, so
+    it is computed here; deciding what to DO about a stage is your job.
+
+    Also checks pulse pressure. Systolic and diastolic appear to have been
+    generated independently in this extract, so many pairs are not physiologically
+    possible -- report those as data defects, not as blood-pressure findings.
+
+    Returns:
+        thresholds used, a count per stage, and the patients in each of the
+        stages that matter, plus implausible readings called out separately.
+    """
+    con = connect()
+    try:
+        rows = con.execute("""
+            SELECT p.PAT_NAME, v.systolic, v.diastolic, v.RECORD_DATE,
+                   v.systolic - v.diastolic AS pulse_pressure
+            FROM (SELECT *, row_number() OVER (PARTITION BY PAT_ID
+                           ORDER BY RECORD_DATE DESC) rn FROM v_vitals) v
+            JOIN patient p USING (PAT_ID)
+            WHERE v.rn = 1 ORDER BY v.systolic DESC""").fetchall()
+    finally:
+        con.close()
+
+    def stage(sys_, dia):
+        if sys_ > 180 or dia > 120:
+            return "hypertensive crisis"
+        if sys_ >= 140 or dia >= 90:
+            return "stage 2"
+        if sys_ >= 130 or dia >= 80:
+            return "stage 1"
+        if sys_ >= 120:
+            return "elevated"
+        return "normal"
+
+    staged, implausible, counts = [], [], {}
+    for name, sys_, dia, date, pp in rows:
+        st = stage(sys_, dia)
+        counts[st] = counts.get(st, 0) + 1
+        rec = {"patient": name, "bp": f"{sys_}/{dia}", "stage": st,
+               "pulse_pressure": pp, "recorded": str(date)}
+        if pp <= 0:
+            rec["data_defect"] = "diastolic >= systolic; physically impossible"
+            implausible.append(rec)
+        elif pp < 20 or pp > 100:
+            rec["data_defect"] = f"pulse pressure {pp} outside the plausible 20-100 range"
+            implausible.append(rec)
+        else:
+            staged.append(rec)
+
+    return {
+        "thresholds": {
+            "hypertensive crisis": "systolic > 180 or diastolic > 120",
+            "stage 2": "systolic >= 140 or diastolic >= 90",
+            "stage 1": "systolic 130-139 or diastolic 80-89",
+            "elevated": "systolic 120-129 and diastolic < 80",
+            "normal": "below 120/80",
+            "source": "ACC/AHA 2017 categories",
+        },
+        "counts_all_readings": counts,
+        "USE_THESE_LABELS": "Call a patient 'hypertensive crisis' or 'stage 2' only "
+                            "if this tool says so. Do not invent words like 'severe'.",
+        "crisis": [r for r in staged if r["stage"] == "hypertensive crisis"],
+        "stage_2": [r for r in staged if r["stage"] == "stage 2"][:20],
+        "implausible_readings": implausible,
+        "implausible_note": f"{len(implausible)} patients have a latest BP whose "
+                            f"pulse pressure is not physiologically possible. Treat "
+                            f"these as data defects, not clinical findings.",
+    }
+
+
 def medication_timeline(patient: str) -> dict:
     """Every medication order for one patient with its start date, in order.
 
@@ -358,6 +434,17 @@ def patients_with_value(analyte: str, below: str, above: str) -> dict:
             "unit": r[2], "date": str(r[3])} for r in rows]}
 
 
+SEVERITY_WORDS = """\
+DO NOT INVENT SEVERITY LABELS FOR BLOOD PRESSURE. Call blood_pressure_staging
+and use the stage it returns. An earlier run reported "unaddressed severe
+hypertension" for five patients, ranked them first through fifth, and only two
+met any severe threshold -- one was 111/104, which is not hypertension. Only 7
+of 153 readings in this panel reach hypertensive crisis.
+
+The same tool flags readings whose pulse pressure is impossible. Those are data
+defects and belong in a data-quality finding, not a blood-pressure one.
+"""
+
 NO_STOP_DATES = """\
 ONE TRAP THAT CATCHES EVERY AGENT HERE. A patient holding two agents of the
 same class is NOT evidence of concurrent therapy in this extract. Nothing is
@@ -403,7 +490,7 @@ whether it is one record or systematic, and what it would break for a panel
 manager acting on this data. Say explicitly when a suspicion did NOT hold up.
 """
 
-INTEGRITY_INSTRUCTION += NO_STOP_DATES
+INTEGRITY_INSTRUCTION += NO_STOP_DATES + SEVERITY_WORDS
 
 GUIDELINE_INSTRUCTION = """\
 You check whether this panel's care matches guideline recommendations.
@@ -435,7 +522,7 @@ that is not in the record.
 Rank what you found by how likely it is to matter, and keep it short.
 """
 
-GUIDELINE_INSTRUCTION += NO_STOP_DATES
+GUIDELINE_INSTRUCTION += NO_STOP_DATES + SEVERITY_WORDS
 
 FOLLOWUP_INSTRUCTION = """\
 You find care that was started and never finished.
@@ -578,7 +665,7 @@ def build_supervisor(trace: list | None = None,
         before_tool_callback=_tracer(trace, "data_integrity"),
         tools=[cohort_statistic,
                patients_with_value, find_patients, medication_timeline,
-               patient_snapshot])
+               blood_pressure_staging, patient_snapshot])
 
     guideline = LlmAgent(
         name="guideline_concordance", model=MODEL,
@@ -588,7 +675,7 @@ def build_supervisor(trace: list | None = None,
         before_tool_callback=_tracer(trace, "guideline_concordance"),
         tools=[list_guidelines,
                check_guideline, find_patients, medication_timeline,
-               patient_snapshot])
+               blood_pressure_staging, patient_snapshot])
 
     followup = LlmAgent(
         name="followup", model=MODEL,
