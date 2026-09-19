@@ -19,6 +19,8 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from prototype import preflight, theme               # noqa: E402
+from prototype.guidelines import (                   # noqa: E402
+    DISCLAIMER, GUIDELINES, check_guideline)
 from prototype.panel import review_async             # noqa: E402
 from prototype.screener import screen_async          # noqa: E402
 from prototype.tools import ScreeningSession         # noqa: E402
@@ -61,9 +63,9 @@ theme.title("Eligibility screening", "from a free-text protocol",
             "100-patient synthetic EHR · the model grounds clinical concepts, "
             "deterministic code runs every query")
 
-tab_panel, tab_screen, tab_preflight, tab_data = st.tabs(
+tab_panel, tab_screen, tab_preflight, tab_data, tab_guides = st.tabs(
     ["Panel review", "Screen a protocol", "Pre-flight data audit",
-     "What the model may select"])
+     "What the model may select", "Guidelines used"])
 
 # ------------------------------------------------------------- panel review
 with tab_panel:
@@ -270,5 +272,71 @@ with tab_screen:
                 st.code(f"{i:>2}. {c['tool']}({json.dumps(c['args'])[:160]})", language=None)
         with st.expander("Agent's closing summary"):
             st.write(final)
+
+
+# ------------------------------------------------------------ guidelines used
+@st.cache_data(show_spinner=False)
+def _guideline_coverage() -> dict:
+    """Deterministic population / concordance counts per guideline."""
+    return {g["id"]: check_guideline(g["id"]) for g in GUIDELINES}
+
+
+with tab_guides:
+    st.subheader("What guideline_concordance checks against")
+    st.warning(f"**{DISCLAIMER}**")
+    st.caption(
+        "The division of labour matters. This pack supplies **what is recommended**. "
+        "Deterministic SQL in `guidelines.py` supplies **who the patient is** — who "
+        "falls in the population and what they are actually prescribed. The model "
+        "supplies the judgment neither encodes: whether a recommendation genuinely "
+        "applies, whether an apparent gap has a defensible reason, and whether it is "
+        "worth a clinician's scarce attention. Nothing here is a lookup table for care."
+    )
+
+    cov = _guideline_coverage()
+    st.dataframe(pd.DataFrame([{
+        "id": g["id"],
+        "guideline": g["title"],
+        "population": g["population"],
+        "in panel": cov[g["id"]].get("in_population", 0),
+        "concordant": cov[g["id"]].get("concordant_count", 0),
+        "gaps": cov[g["id"]].get("gap_count", 0),
+        "source": g["source"],
+    } for g in GUIDELINES]), width='stretch', hide_index=True)
+
+    st.markdown("#### The recommendations in full")
+    for g in GUIDELINES:
+        c = cov[g["id"]]
+        gaps, pop = c.get("gap_count", 0), c.get("in_population", 0)
+        with st.expander(f"{g['id']} · {g['title']}  —  {gaps} of {pop} in population"):
+            st.markdown(f"**Recommendation**  {g['recommendation']}")
+            st.markdown(f"**Population**  {g['population']}")
+            if g.get("caveat"):
+                st.info(f"**Caveat**  {g['caveat']}")
+            matched = ", ".join(g.get("icd10_any", [])) or \
+                      ", ".join(g.get("requires_classes", []))
+            expected = ", ".join(g.get("expected_classes", [])) or \
+                       g.get("expected_analyte", "")
+            st.markdown(f"**Identified by**  `{matched}`  ·  "
+                        f"**Satisfied by**  `{expected}`")
+            st.caption(f"Source: {g['source']}")
+            if c.get("gaps"):
+                st.markdown("**Patients the deterministic check flags as gaps** — "
+                            "these are candidates for the model to judge, not "
+                            "conclusions:")
+                st.dataframe(pd.DataFrame([{
+                    "patient": x["name"], "age": x["age"],
+                    "full regimen": "; ".join(x["full_regimen"]) or "(no medications)",
+                } for x in c["gaps"]]), width='stretch', hide_index=True)
+
+    st.divider()
+    st.caption(
+        "**Why so few, and why these.** Eight recommendations covering the "
+        "conditions this panel actually has. A real deployment would carry a "
+        "maintained guideline library with versioning and an owner; the point here "
+        "is the mechanism, not the coverage. Note that G5 cannot be fully evaluated "
+        "— CHA₂DS₂-VASc needs prior stroke and vascular disease, and neither is in "
+        "this dataset."
+    )
 
 theme.footer()
