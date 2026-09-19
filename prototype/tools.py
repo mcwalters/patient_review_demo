@@ -16,6 +16,8 @@ import shutil
 import tempfile
 from dataclasses import dataclass, field
 
+from datetime import date
+
 import duckdb
 
 from . import vocab
@@ -49,6 +51,11 @@ PHYSIOLOGIC_LIMITS = {
     "Potassium": (2.0, 8.0),
     "eGFR": (3, 150),
 }
+
+# The extract's snapshot date. Every "months open" / "how stale" calculation in
+# the prototype measures from here, so the panel view and the patient brief can
+# never disagree about how old something is.
+AS_OF = date(2026, 5, 27)
 
 KINDS = ("diagnosis", "medication", "lab", "vital", "demographic")
 POLARITIES = ("include", "exclude")
