@@ -133,7 +133,40 @@ Worth knowing before you build a demo on it:
   from the birth date.
 - **`RESULT_VALUE_TEXT` duplicates `ORD_NUM_VALUE`** in all 1,288 rows.
 - ~30 columns are entirely empty (`DEATH_DATE`, `END_DATE`, `COMMENTS`, …).
+- **Provider attribution is random.** See below.
+- **Provider name fields carry titles and credentials.** Four of 20: `Peter
+  Thomas DVM` (a veterinary doctorate on someone `PROV_TYPE` says is a PA),
+  `Miss Adriana Flores`, `Dr. Joseph Costa`, `Dean Washington Jr.` Patient names
+  are clean, so the two tables came from different generator calls. The provider
+  name is denormalized into five other tables — 155 rows of
+  `order_proc_awv.ORD_PROV_NAME`, 41 each of `pat_enc.VISIT_PROV_NAME` and
+  `hno_info.AUTHOR_PROV_NAME`, 33 of `pat_enc.PROV_NAME_WID`, 22 of
+  `patient.CUR_PCP_PROV_NAME` — so 292 rows carry a dirty string. **Join on
+  `PROV_ID`, never on `PROV_NAME`**, and read credentials from `PROV_TYPE`
+  rather than parsing the name.
 - **Note phrasing is template assignment, not clinical fact.** See below.
+
+### Provider attribution is random
+
+The 20 providers (10 Physician, 6 NP, 4 PA) span eight specialties, but nothing
+about who saw whom holds together:
+
+- **Specialty does not match home department** for 19 of 20 — a Cardiologist
+  staffing Endocrinology, Family Medicine in the GI Clinic.
+- **Visit department does not match provider specialty** — Neurology running
+  Annual Wellness Visits in the OB/GYN Clinic.
+- **Only 9 of 153 visits** are with the patient's own `CUR_PCP_PROV_ID`.
+- Only 4 of 20 providers are primary care at all, yet all 153 visits are AWVs.
+- **NPIs are random 10-digit numbers.** Just 1 of 20 passes the standard Luhn
+  check with the `80840` prefix, which is chance. There are no NUCC taxonomy
+  codes, licence numbers or board certifications anywhere in the dataset.
+
+Note authorship itself is consistent — the note author is the visit provider in
+153 of 153, and `AUTHOR_SERVICE` equals `provider.SPECIALTY` in 153 of 153 — so
+the randomness is in the *assignment*, not the bookkeeping.
+
+Anything that depends on provider routing, panel attribution, referral logic or
+care-team structure has no signal to work with here.
 
 ### Don't build cohorts on note prose
 
