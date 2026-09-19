@@ -2,8 +2,27 @@
 
 THE GUIDELINE PACK BELOW IS A DEMO SUBSET, NOT A CLINICAL REFERENCE. Each entry
 is a paraphrase of a widely accepted recommendation, written for this prototype
-and attributed to its source body. It is deliberately small, it omits the
-caveats real guidelines carry, and it must not be used to make care decisions.
+and attributed to its source body. It omits the caveats real guidelines carry
+and must not be used to make care decisions.
+
+FOUR recommendations, chosen so each is defensible rather than merely available.
+The population is small, the recommendation is unambiguous, and the absence is
+worth a clinician's time. Four were cut for failing that test:
+
+  anticoagulation in AF    its own caveat disqualified it -- CHA2DS2-VASc needs
+                           prior stroke and vascular disease, and neither is in
+                           this extract
+  metformin first-line     21 gaps in a population of 28, and the
+                           contraindications that would explain them are not
+                           recorded
+  statin in hyperlipidaemia  31 gaps in a population of 50; at that volume it is
+                           a population-health campaign, not a weekly worklist,
+                           and the supervisor set it aside on every run
+  TSH monitoring           real but minor, and not worth another surface to
+                           defend
+
+A real deployment carries a maintained library with a version and an owner. The
+point here is the mechanism, not the coverage.
 
 The division of labour matters. The pack supplies WHAT is recommended. The
 deterministic tools supply WHO the patient is. The model supplies the judgment
@@ -57,51 +76,6 @@ GUIDELINES = [
         "source": "ACC/AHA/HFSA heart failure guideline",
         "icd10_any": ["I50.32", "I50.33", "I50.9"],
         "expected_classes": ["SGLT2i"],
-    },
-    {
-        "id": "G5",
-        "title": "Anticoagulation in atrial fibrillation",
-        "population": "atrial fibrillation with elevated stroke risk",
-        "recommendation": "Oral anticoagulation is recommended for AF patients at "
-                          "elevated stroke risk; a DOAC is preferred over warfarin "
-                          "for most. Risk scoring is required and is NOT computable "
-                          "from this dataset.",
-        "source": "ACC/AHA/ACCP/HRS atrial fibrillation guideline",
-        "icd10_any": ["I48.2", "I48.11", "I48.19"],
-        "expected_classes": ["DOAC", "VKA"],
-        "caveat": "CHA2DS2-VASc cannot be computed here -- several components "
-                  "(prior stroke, vascular disease) are absent from the data.",
-    },
-    {
-        "id": "G6",
-        "title": "Metformin as first-line therapy in type 2 diabetes",
-        "population": "type 2 diabetes",
-        "recommendation": "Metformin is first-line pharmacotherapy for most adults "
-                          "with type 2 diabetes unless contraindicated.",
-        "source": "ADA Standards of Care",
-        "icd10_any": ["E11.9", "E11.51", "E11.65"],
-        "expected_classes": ["Biguanide"],
-    },
-    {
-        "id": "G7",
-        "title": "Statin therapy in established hyperlipidaemia",
-        "population": "lipid disorder",
-        "recommendation": "Statin therapy is the foundation of lipid-lowering "
-                          "treatment; non-statin agents are added rather than "
-                          "substituted in most patients.",
-        "source": "ACC/AHA cholesterol guideline",
-        "icd10_any": ["E78.00", "E78.1", "E78.5"],
-        "expected_classes": ["Statin"],
-    },
-    {
-        "id": "G8",
-        "title": "TSH monitoring on thyroid hormone replacement",
-        "population": "on levothyroxine or liothyronine",
-        "recommendation": "TSH should be monitored periodically in patients on "
-                          "thyroid hormone replacement to guide dose titration.",
-        "source": "ATA hypothyroidism guideline",
-        "requires_classes": ["Thyroid Hormone", "T3 Supplement"],
-        "expected_analyte": "TSH",
     },
 ]
 
