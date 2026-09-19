@@ -107,6 +107,22 @@ cannot tell you what any patient is currently taking.** `cohort_statistic(
 a `medication_timeline` tool, and the data-integrity agent is told to check the
 dates before calling anything duplicate therapy.
 
+A second correction of the same kind: the panel agent reported "unaddressed
+severe hypertension" for five patients and ranked them first through fifth. One
+met a severe threshold. One was 111/104 — a pulse pressure of 7, which is not a
+blood pressure. `blood_pressure_staging` now computes the ACC/AHA stage and
+returns physiologically impossible readings separately, which reclassified two
+of the five out of the clinical finding entirely.
+
+Both corrections have the same root cause, and it is the sharpest statement of
+this prototype's architecture: **no model should compute what code can compute.**
+Every bug in this build came from asking the model for a judgment that was
+actually arithmetic — is this duplicate therapy (start-date spread), how many
+patients have bad sodium (a count), did the specialist find anything (a call
+log), is this blood pressure severe (a threshold). The fix each time was to take
+the arithmetic away and leave the model only the part that genuinely needs
+judgment.
+
 The lesson generalises past this dataset: an alarming finding that no one
 questions is the most dangerous output the system can produce, because its
 alarm is what stops people checking it.

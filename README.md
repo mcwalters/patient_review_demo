@@ -140,6 +140,27 @@ authoring service.
 
 Worth knowing before you build a demo on it:
 
+- **Systolic and diastolic were generated independently, so many blood pressures
+  are not physiologically possible.** Pulse pressure (systolic − diastolic)
+  should sit roughly between 20 and 100 mmHg. **27 of 100 patients** have a
+  latest reading outside that, and `Cervantes, Stephen` reads **108/111** —
+  diastolic above systolic, which cannot occur.
+
+  | reading | pulse pressure | |
+  |---|---|---|
+  | `Cervantes, Stephen` 108/111 | **−3** | impossible |
+  | `Bender, Jessica` 111/104 | 7 | not a blood pressure |
+  | `Ware, Cassandra` 180/61 | 119 | implausibly wide |
+
+  This is a generator flaw affecting a quarter of the panel, not a handful of
+  bad rows, and it undermines any query keyed on a BP threshold — including the
+  "uncontrolled hypertension, BP ≥ 140/90" cohort in `demo_queries.sql`. Some of
+  those patients do not have a real blood pressure. Screen on pulse pressure
+  before treating a BP as usable. `prototype.panel.blood_pressure_staging()`
+  does this and returns implausible readings separately from staged ones.
+
+  Genuine severity is also rarer than it looks: only **5 of 100** patients reach
+  hypertensive crisis (>180 or >120) on ACC/AHA 2017 categories.
 - **Vitals don't change between visits.** For all 53 patients with two
   encounters, systolic, diastolic, temperature, weight, and BMI are identical
   across both. Only heart rate varies. **No vitals-trending demo.** Labs *do*
