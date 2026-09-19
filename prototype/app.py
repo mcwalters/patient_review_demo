@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from prototype import preflight, theme               # noqa: E402
 from prototype.guidelines import (                   # noqa: E402
     DISCLAIMER, GUIDELINES, check_guideline)
+from prototype.brief import write_brief_async        # noqa: E402
 from prototype.panel import review_async             # noqa: E402
 from prototype.screener import screen_async          # noqa: E402
 from prototype.tools import ScreeningSession         # noqa: E402
@@ -124,6 +125,84 @@ with tab_panel:
                 "action": f.get("recommended_action", ""),
             } for f in sorted(pfindings, key=lambda x: order.get(x.get("severity"), 3))]
             st.dataframe(pd.DataFrame(rows), width='stretch', hide_index=True, height=340)
+
+        # ---- pick a patient, get their brief --------------------------------
+        named = sorted({p for f in pfindings for p in (f.get("patients") or [])})
+        if named:
+            st.subheader("Pre-visit brief")
+            st.caption("Select a patient to see everything on file for them. The "
+                       "facts are assembled deterministically; the model only "
+                       "decides what to raise first and writes it.")
+            picker = pd.DataFrame([{
+                "patient": n,
+                "findings": sum(1 for f in pfindings if n in (f.get("patients") or [])),
+                "highest severity": min(
+                    (f.get("severity") for f in pfindings
+                     if n in (f.get("patients") or [])),
+                    key=lambda x: {"high": 0, "medium": 1, "low": 2}.get(x, 3)),
+            } for n in named])
+            sel = st.dataframe(picker, width='stretch', hide_index=True, height=220,
+                               on_select="rerun", selection_mode="single-row",
+                               key="brief_picker")
+            rows = sel.selection.rows if sel and sel.selection else []
+            if rows:
+                who = picker.iloc[rows[0]]["patient"]
+                cache = st.session_state.setdefault("briefs", {})
+                if who not in cache:
+                    with st.spinner(f"Assembling the brief for {who}…"):
+                        cache[who] = asyncio.run(write_brief_async(who, pfindings))
+                narrative, pack = cache[who]
+
+                if "error" in pack:
+                    st.error(pack["error"])
+                else:
+                    p_, v_ = pack["patient"], pack["visit"]
+                    st.markdown(f"### {p_['name']}  ·  {p_['age']}  ·  {p_['sex']}")
+                    k1, k2, k3, k4 = st.columns(4)
+                    k1.metric("Next AWV (derived)", v_["status"], v_["detail"],
+                              delta_color="off", help=v_["basis"])
+                    k2.metric("Conditions", len(pack["conditions"]))
+                    k3.metric("Abnormal labs", len(pack["labs"]["abnormal"]))
+                    k4.metric("Open orders", len(pack["outstanding_orders"]))
+
+                    # data-quality flags go ABOVE the clinical content, always
+                    for flag in pack["data_quality"]["flags"]:
+                        st.error(f"**Do not trust this record:** {flag}")
+
+                    left, right = st.columns([3, 2])
+                    with left:
+                        st.markdown(narrative)
+                    with right:
+                        st.caption("**The facts behind it** — every number above "
+                                   "comes from here, not from the model.")
+                        with st.expander("Conditions", expanded=True):
+                            for d in pack["conditions"]:
+                                st.write(f"`{d['icd10']}`  {d['name']}")
+                        with st.expander("Medications"):
+                            st.caption(pack["data_quality"]["medication_caveat"])
+                            for cls, agents in pack["medications"]["by_class"].items():
+                                st.write(f"**{cls}** — " + ", ".join(
+                                    f"{a['agent']} (from {a['started']})" for a in agents))
+                        with st.expander("Abnormal labs"):
+                            if pack["labs"]["abnormal"]:
+                                st.dataframe(pd.DataFrame(pack["labs"]["abnormal"]),
+                                             width='stretch', hide_index=True)
+                            else:
+                                st.write("None.")
+                        with st.expander("Open orders"):
+                            if pack["outstanding_orders"]:
+                                st.dataframe(pd.DataFrame(pack["outstanding_orders"]),
+                                             width='stretch', hide_index=True)
+                            else:
+                                st.write("None.")
+                        with st.expander("Care gaps"):
+                            for g in pack["care_gaps"]:
+                                st.write(f"**{g['id']}** {g['title']}")
+                                st.caption(g["source"])
+                            if not pack["care_gaps"]:
+                                st.write("None against the eight-guideline pack.")
+                    st.caption("Prompts a conversation; does not replace chart review. "
+                               "No drug or dose is recommended anywhere in this brief.")
 
         with st.expander("Delegation trace — which specialist did what, in order"):
             for i, t in enumerate(ptrace, 1):

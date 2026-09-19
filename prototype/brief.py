@@ -169,3 +169,79 @@ def build_brief_pack(patient: str, findings: list[dict] | None = None) -> dict:
             for f in (findings or []) if name in (f.get("patients") or [])
         ],
     }
+
+
+# ---------------------------------------------------------------------------
+# Narrative layer. The pack above is complete and readable on its own; this
+# turns it into something a nurse can act on in thirty seconds.
+#
+# The model's job here is the one thing code cannot do: decide that an
+# eleven-month-old kidney test, a diabetes diagnosis and a missing statin are
+# ONE conversation rather than three list items, and write it that way. It
+# computes nothing -- every number it uses is already in the pack.
+# ---------------------------------------------------------------------------
+import asyncio  # noqa: E402
+import json  # noqa: E402
+import os  # noqa: E402
+
+os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "1")
+os.environ.setdefault("GOOGLE_CLOUD_PROJECT", "accorded-lake")
+os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "us-west1")
+
+from google.adk.agents import LlmAgent  # noqa: E402
+
+from .panel import MODEL, _run_agent  # noqa: E402
+
+BRIEF_INSTRUCTION = """\
+You write the briefing a panel manager reads in the thirty seconds before they
+phone a patient. Everything you need is in the pack you are given.
+
+WRITE NO NUMBER THAT IS NOT IN THE PACK. Not a count, not a lab value, not a
+duration. If it is not there, leave it out. Quote the pack's numbers exactly.
+
+Structure, in this order and no other:
+
+1. **Before you read on** -- only if data_quality.flags is non-empty. State
+   plainly which of this patient's records cannot be correct and what that means
+   for the rest of the brief. If there are no flags, omit this section entirely
+   rather than writing a reassuring sentence.
+
+2. **Why this patient, now** -- two or three sentences. The single most
+   important thing, and whether their AWV is due. Say "derived" if you mention
+   the due date; it is calculated from the last visit, not booked.
+
+3. **What to raise** -- at most four items, ordered. Group things that are one
+   conversation: an overdue kidney screen in a diabetic who is also missing a
+   statin is one discussion about their diabetes, not two bullets. Each item
+   says what to raise and why it matters for THIS patient.
+
+4. **What you cannot tell from the record** -- short. Always mention that the
+   medication list shows what was started, never what was stopped, if the
+   patient has any medications.
+
+Never recommend a drug, a dose or a titration. You raise topics for a clinician;
+you do not prescribe. Do not pad: a patient with little going on gets a short
+brief, and that is the correct output.
+"""
+
+
+def _agent() -> LlmAgent:
+    return LlmAgent(name="previsit_brief", model=MODEL, instruction=BRIEF_INSTRUCTION)
+
+
+async def write_brief_async(patient: str, findings: list[dict] | None = None) -> tuple[str, dict]:
+    """Return (narrative, pack). The pack is always returned, even if the model fails."""
+    pack = build_brief_pack(patient, findings)
+    if "error" in pack:
+        return "", pack
+    prompt = ("Write the pre-visit brief for this patient.\n\n"
+              + json.dumps(pack, indent=1, default=str))
+    try:
+        text = await _run_agent(_agent(), prompt, "brief")
+    except Exception as exc:                      # the pack alone is still useful
+        text = f"_Narrative unavailable ({type(exc).__name__}). The structured pack below is complete._"
+    return text, pack
+
+
+def write_brief(patient: str, findings: list[dict] | None = None) -> tuple[str, dict]:
+    return asyncio.run(write_brief_async(patient, findings))
