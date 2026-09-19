@@ -104,6 +104,20 @@ with tab_screen:
 
     if "r" in st.session_state:
         results, final, trace = st.session_state["r"]
+
+        # The agent can finish without registering anything -- an unparseable
+        # protocol, or every concept rejected as absent from the dataset. Say so
+        # plainly instead of crashing on a missing key.
+        if "counts" not in results:
+            st.error(results.get("error", "The agent registered no criteria."))
+            st.caption("Nothing was screened. The trace below shows what it tried.")
+            with st.expander("Agent trace", expanded=True):
+                for i, c in enumerate(trace, 1):
+                    st.code(f"{i:>2}. {c['tool']}({json.dumps(c['args'])[:160]})", language=None)
+            if final:
+                st.write(final)
+            st.stop()
+
         counts = results["counts"]
 
         # ---- warnings first: they are the reason a human is in the loop
@@ -117,7 +131,11 @@ with tab_screen:
         st.caption("Approve this before the cohort. An over-broad exclusion is invisible "
                    "in a patient list but obvious here.")
         rows = []
-        for cid, c in results["criteria"].items():
+        # inclusions first, then exclusions, each in id order -- registration
+        # order is whatever the agent happened to do and reads as noise
+        ordered = sorted(results["criteria"].items(),
+                         key=lambda kv: (kv[1]["polarity"] != "include", kv[0]))
+        for cid, c in ordered:
             imp = results["impact"][cid]
             rng = ""
             if c["min_value"] is not None or c["max_value"] is not None:
