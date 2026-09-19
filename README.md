@@ -175,6 +175,29 @@ Worth knowing before you build a demo on it:
   patients, half of them not on a statin; real-world use is 1–2% of a lipid
   population and near-always statin-refractory. Useful for making a mechanism
   legible, not for citing as epidemiology.
+- **There is almost no coverage data, and `COVERAGE_ID` is not a coverage key.**
+  The entire footprint is two columns on `pat_enc`. `INSURANCE` holds three
+  lowercase payer categories — `medicare` (82 encounters / 51 patients),
+  `commercial` (43 / 31), `medicaid` (28 / 18) — with no nulls and no casing
+  variants, but it is a *category*, not a plan. `COVERAGE_ID` has 153 distinct
+  values over 153 encounters and **no patient shares one across their two
+  visits**, so it is a row id, not a policy.
+
+  Absent entirely: plan or product name, group number, member id, subscriber,
+  effective and term dates, eligibility, benefit tier, copay or deductible,
+  secondary payer or COB, plan type (HMO/PPO/EPO), line of business, contract or
+  risk arrangement, Medicare Advantage vs FFS, and attribution.
+
+  Payer is stable per patient (53 of 53 keep the same one across both visits)
+  but is assigned independently of age — **45 of 81 under-65 patients are on
+  medicare, and 13 of 19 patients aged 65+ are not**; the medicare cohort has
+  the *youngest* median age at 37. Payer is also uncorrelated with diagnosis
+  count, medication count and labs ordered.
+
+  So anything financial or contractual is out of reach: value-based care and
+  risk contracts, Medicare Advantage or Stars, prior authorisation and
+  formulary, cost or reimbursement modelling, coverage-gap and churn analysis,
+  and payer-mix segmentation of any clinical finding.
 - **Note phrasing is template assignment, not clinical fact.** See below.
 
 ### Provider attribution is random
