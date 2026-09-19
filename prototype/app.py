@@ -115,7 +115,9 @@ with tab_panel:
                 "severity": f.get("severity", ""),
                 "agent": f.get("agent", ""),
                 "finding": f.get("headline", ""),
-                "patients": ", ".join(f.get("patients") or []) or "(panel-level)",
+                # Names are recorded "Last, First", so a comma-joined list reads as
+                # twice as many people. Semicolons keep each patient distinct.
+                "patients": "; ".join(f.get("patients") or []) or "(panel-level)",
                 "evidence": f.get("evidence", ""),
                 "action": f.get("recommended_action", ""),
             } for f in sorted(pfindings, key=lambda x: order.get(x.get("severity"), 3))]

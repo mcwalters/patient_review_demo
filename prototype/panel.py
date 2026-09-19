@@ -25,13 +25,44 @@ os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "us-west1")
 
 from google.adk.agents import LlmAgent
 from google.adk.runners import InMemoryRunner
-from google.adk.tools.agent_tool import AgentTool
 from google.genai import types
+
+from typing import Literal
+
+from pydantic import BaseModel, Field
 
 from .guidelines import check_guideline, list_guidelines
 from .tools import ScreeningSession, connect
 
 MODEL = "gemini-2.5-pro"
+
+
+class ExtractedFinding(BaseModel):
+    headline: str = Field(description="one line naming the problem")
+    patients: list[str] = Field(default_factory=list,
+                                description="names exactly as written; [] if panel-level")
+    severity: Literal["high", "medium", "low"]
+    evidence: str = Field(description="the numbers and facts the report gave")
+    recommended_action: str
+
+
+class ExtractedFindings(BaseModel):
+    findings: list[ExtractedFinding]
+
+
+EXTRACTOR_INSTRUCTION = """\
+You convert a specialist's report into structured findings. You add nothing and
+you drop nothing.
+
+Emit one finding per distinct problem the report describes, including ones
+stated only in passing. Copy patient names exactly as written. Copy the numbers
+from the report; never supply one it did not give. If the report explicitly says
+a suspicion did NOT hold up, record that too, at severity low -- a checked and
+dismissed hypothesis is a result.
+
+Do not merge two problems into one finding because they share a patient, and do
+not split one problem into several because it names several patients.
+"""
 
 
 class Findings:
@@ -350,9 +381,9 @@ panel, is this prescribing rate plausible for an expensive specialist drug, are
 there combinations that should never co-occur, do demographics line up with
 coverage and visit type, are values physiologically possible.
 
-RECORD EVERY FINDING with record_finding as you go. Your chat reply is NOT read
-by the supervisor -- only recorded findings reach it. A finding you merely
-describe in prose is lost.
+STATE EVERY FINDING IN YOUR REPLY. Your report is parsed into structured
+findings automatically, so anything you write down is captured -- but only what
+you write down. Do not leave a conclusion implicit.
 
 ALWAYS NAME THE PATIENTS. A finding without names cannot be acted on, and the
 supervisor cannot recover names you leave out. Give the name exactly as recorded
@@ -385,9 +416,9 @@ history, no contraindication list, no patient preference, and no note content
 beyond templated prose. So you can identify a gap worth a human looking at; you
 cannot conclude that care was wrong. Say so.
 
-RECORD EVERY FINDING with record_finding as you go. Your chat reply is NOT read
-by the supervisor -- only recorded findings reach it. A finding you merely
-describe in prose is lost.
+STATE EVERY FINDING IN YOUR REPLY. Your report is parsed into structured
+findings automatically, so anything you write down is captured -- but only what
+you write down. Do not leave a conclusion implicit.
 
 ALWAYS NAME THE PATIENTS. A finding without names cannot be acted on, and the
 supervisor cannot recover names you leave out. Give the name exactly as recorded
@@ -415,9 +446,9 @@ matter -- say how many you checked and on what basis you chose them. Returning
 "none found" when the tool handed you 120 rows is a failure, not a clean bill
 of health.
 
-RECORD EVERY FINDING with record_finding as you go. Your chat reply is NOT read
-by the supervisor -- only recorded findings reach it. A finding you merely
-describe in prose is lost.
+STATE EVERY FINDING IN YOUR REPLY. Your report is parsed into structured
+findings automatically, so anything you write down is captured -- but only what
+you write down. Do not leave a conclusion implicit.
 
 ALWAYS NAME THE PATIENTS. A finding without names cannot be acted on, and the
 supervisor cannot recover names you leave out. Give the name exactly as recorded
@@ -451,25 +482,40 @@ def _pending_orders() -> dict:
                         "ordered": str(r[3]), "months_open": r[4]} for r in rows]}
 
 
-def _recorder(findings: "Findings", agent_name: str):
-    """Build a record_finding tool bound to one specialist."""
-    def record_finding(headline: str, patients: list[str], severity: str,
-                       evidence: str, recommended_action: str) -> dict:
-        """Record one finding. Everything you want the supervisor to see must go here.
+async def _run_agent(agent: LlmAgent, prompt: str, app: str) -> str:
+    """Run one agent to completion and return its final text."""
+    runner = InMemoryRunner(agent=agent, app_name=app)
+    sess = await runner.session_service.create_session(app_name=app, user_id="demo")
+    out = ""
+    async for ev in runner.run_async(
+        user_id="demo", session_id=sess.id,
+        new_message=types.Content(role="user", parts=[types.Part(text=prompt)])
+    ):
+        if ev.is_final_response() and ev.content:
+            out = "".join(p.text for p in ev.content.parts if getattr(p, "text", None))
+    return out
 
-        Args:
-            headline: one line, e.g. "HFrEF without an SGLT2 inhibitor".
-            patients: names exactly as recorded, [] for a panel-level finding.
-            severity: "high", "medium" or "low".
-            evidence: the numbers the tools returned that support this.
-            recommended_action: what the panel manager should actually do.
-        Returns:
-            confirmation and the running total.
-        """
-        return findings.record(agent_name, headline=headline, patients=patients,
-                               severity=severity, evidence=evidence,
-                               recommended_action=recommended_action)
-    return record_finding
+
+async def _extract(report: str) -> list[dict]:
+    """Turn a specialist's prose into structured findings.
+
+    Recording used to be a tool the specialist called, which made it optional --
+    one run described Schwartz, Mary's eleven-month-old potassium order in prose
+    and never called record_finding, so the finding did not exist as far as the
+    supervisor was concerned. Extraction is now unconditional: the specialist
+    just reports, and everything it reports is structured on the way out.
+    """
+    if not report.strip():
+        return []
+    extractor = LlmAgent(name="finding_extractor", model=MODEL,
+                         instruction=EXTRACTOR_INSTRUCTION,
+                         output_schema=ExtractedFindings)
+    raw = await _run_agent(extractor, f"Specialist report:\n\n{report}", "extract")
+    try:
+        return [f.model_dump() for f in
+                ExtractedFindings.model_validate_json(raw).findings]
+    except Exception:
+        return []
 
 
 def _tracer(trace: list, agent_name: str):
@@ -523,7 +569,7 @@ def build_supervisor(trace: list | None = None,
                     "Ask it before acting on any patient list.",
         instruction=INTEGRITY_INSTRUCTION,
         before_tool_callback=_tracer(trace, "data_integrity"),
-        tools=[_recorder(findings, "data_integrity"), cohort_statistic,
+        tools=[cohort_statistic,
                patients_with_value, find_patients, medication_timeline,
                patient_snapshot])
 
@@ -533,7 +579,7 @@ def build_supervisor(trace: list | None = None,
                     "judges whether each apparent gap is real.",
         instruction=GUIDELINE_INSTRUCTION,
         before_tool_callback=_tracer(trace, "guideline_concordance"),
-        tools=[_recorder(findings, "guideline_concordance"), list_guidelines,
+        tools=[list_guidelines,
                check_guideline, find_patients, medication_timeline,
                patient_snapshot])
 
@@ -543,8 +589,58 @@ def build_supervisor(trace: list | None = None,
                     "that never returned a result.",
         instruction=FOLLOWUP_INSTRUCTION,
         before_tool_callback=_tracer(trace, "followup"),
-        tools=[_recorder(findings, "followup"), _pending_orders, cohort_statistic,
+        tools=[_pending_orders, cohort_statistic,
                find_patients, medication_timeline, patient_snapshot])
+
+    async def _consult(agent: LlmAgent, name: str, request: str) -> dict:
+        report = await _run_agent(agent, request, f"spec_{name}")
+        rows = await _extract(report)
+        for r in rows:
+            findings.record(name, **r)
+        return {"specialist": name, "findings_recorded": len(rows),
+                "note": "Its findings are already in the store. Read them with "
+                        "get_all_findings; do not rely on this summary."}
+
+    async def consult_data_integrity(request: str) -> dict:
+        """Ask the data-integrity specialist which records cannot be trusted.
+
+        It investigates panel statistics, chases suspicions to specific patients,
+        and reports what held up and what did not. Its findings are recorded
+        automatically.
+
+        Args:
+            request: what you want it to look into.
+        Returns:
+            how many findings it recorded. Read them with get_all_findings.
+        """
+        return await _consult(integrity, "data_integrity", request)
+
+    async def consult_guideline_concordance(request: str) -> dict:
+        """Ask the guideline specialist who is missing recommended therapy.
+
+        It checks the guideline pack against the panel and judges each apparent
+        gap against the patient's full regimen. Findings are recorded
+        automatically.
+
+        Args:
+            request: what you want it to check.
+        Returns:
+            how many findings it recorded. Read them with get_all_findings.
+        """
+        return await _consult(guideline, "guideline_concordance", request)
+
+    async def consult_followup(request: str) -> dict:
+        """Ask the follow-up specialist what was started and never finished.
+
+        Chiefly the orders that never returned a result. Findings are recorded
+        automatically.
+
+        Args:
+            request: what you want it to look for.
+        Returns:
+            how many findings it recorded. Read them with get_all_findings.
+        """
+        return await _consult(followup, "followup", request)
 
     return LlmAgent(
         name="panel_review", model=MODEL,
@@ -603,12 +699,8 @@ name, the single reason they are on the list, and what the panel manager should
 actually do. Then state plainly what you deliberately left off and why, and what
 you could not determine from this data. A short, honest list beats a long one.
 """,
-        # Summarisation is left ON. With it off the supervisor short-circuited
-        # and returned a specialist's report verbatim as its own answer. The
-        # prose reply is now just a status line -- the substance travels in the
-        # Findings store, which get_all_findings reads back intact.
-        tools=[AgentTool(agent=integrity), AgentTool(agent=guideline),
-               AgentTool(agent=followup), get_all_findings, get_agent_activity,
+        tools=[consult_data_integrity, consult_guideline_concordance,
+               consult_followup, get_all_findings, get_agent_activity,
                find_patients, patient_snapshot])
 
 
