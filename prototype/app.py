@@ -154,11 +154,12 @@ if view == "Panel review":
         "Who on this panel needs my attention this week? I can review about a dozen.")
     if st.button("Run panel review", type="primary", key="run_panel"):
         with st.spinner("Supervisor consulting specialists… (3–5 min)"):
-            report, ptrace, pfindings = asyncio.run(review_async(goal, verbose=False))
-        st.session_state["panel"] = (report, ptrace, pfindings)
+            report, ptrace, pfindings, pusage = asyncio.run(
+                review_async(goal, verbose=False))
+        st.session_state["panel"] = (report, ptrace, pfindings, pusage)
 
     if "panel" in st.session_state:
-        report, ptrace, pfindings = st.session_state["panel"]
+        report, ptrace, pfindings, pusage = st.session_state["panel"]
 
         # Who actually did the work. Shown because a run once claimed a
         # specialist had been "silent" while using three of its findings --
@@ -197,6 +198,23 @@ if view == "Panel review":
             } for f in sorted(pfindings, key=lambda x: order.get(x.get("severity"), 3))]
             st.dataframe(pd.DataFrame(rows), width='stretch', hide_index=True, height=340)
 
+        with st.expander("What this run cost"):
+            u1, u2, u3, u4 = st.columns(4)
+            u1.metric("Model calls", pusage.get("model_calls", 0))
+            u2.metric("Input tokens", f"{pusage.get('input_tokens', 0):,}")
+            u3.metric("Output tokens", f"{pusage.get('output_tokens', 0):,}")
+            u4.metric("Cost", f"${pusage.get('usd', 0):.2f}",
+                      f"{pusage.get('wall_clock_seconds', 0):.0f}s",
+                      delta_color="off")
+            if pusage.get("per_agent"):
+                st.dataframe(pd.DataFrame([
+                    {"agent": a, "calls": v["calls"], "input": v["in"],
+                     "output": v["out"]} for a, v in pusage["per_agent"].items()]),
+                    width='stretch', hide_index=True)
+            st.caption("Token counts come from the API's usage_metadata, not an "
+                       "estimate. Cost uses the Vertex list price for "
+                       "gemini-2.5-pro at the rates in panel.py.")
+
         with st.expander("Delegation trace — which specialist did what, in order"):
             for i, t in enumerate(ptrace, 1):
                 st.code(f"{i:>2}. [{t['agent']}] {t['tool']}"
@@ -220,7 +238,7 @@ if view == "Patient brief":
     if who != current:
         st.session_state["brief_patient"] = who
 
-    findings_ctx = st.session_state.get("panel", (None, None, []))[2] or []
+    findings_ctx = st.session_state.get("panel", (None, None, [], {}))[2] or []
     cache = st.session_state.setdefault("briefs", {})
     if who not in cache:
         with st.spinner(f"Assembling the brief for {who}…"):
