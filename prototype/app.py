@@ -184,42 +184,49 @@ if view == "Panel review":
         worker = threading.Thread(target=_work, daemon=True)
         worker.start()
 
-        LABEL = {"data_integrity": "Checking which records can be trusted",
-                 "guideline_concordance": "Checking who is missing recommended therapy",
-                 "followup": "Checking what was started and never finished",
-                 "panel_review": "Supervisor deciding what to consult",
-                 "guaranteed": "Guaranteed findings"}
+        LABEL = {"data_integrity": "which records can be trusted",
+                 "guideline_concordance": "who is missing recommended therapy",
+                 "followup": "what was started and never finished",
+                 "panel_review": "supervisor deciding what to consult",
+                 "guaranteed": "guaranteed findings"}
         started = time.time()
-        with st.status("Starting the panel review…", expanded=True) as status:
-            log = st.empty()
-            while worker.is_alive():
-                seen = list(live_trace)
-                n_find = len(live_findings.all())
-                by_agent: dict[str, int] = {}
-                for t in seen:
-                    by_agent[t["agent"]] = by_agent.get(t["agent"], 0) + 1
-                current = seen[-1]["agent"] if seen else "panel_review"
-                status.update(label=f"{LABEL.get(current, current)} · "
-                                    f"{len(seen)} tool calls · {n_find} findings · "
-                                    f"{int(time.time() - started)}s")
-                lines = [f"**{LABEL.get(a, a)}** — {n} call(s)"
-                         for a, n in by_agent.items()]
-                if seen:
-                    recent = "  \n".join(
-                        f"`{t['agent']}` → {t['tool']}" for t in seen[-6:])
-                    lines.append("")
-                    lines.append(recent)
-                log.markdown("  \n".join(lines) or "Seeding the guaranteed findings…")
-                time.sleep(1.0)
-            worker.join()
-            if "error" in box:
-                status.update(label="The run failed", state="error")
-                st.error(box["error"])
-                st.stop()
-            status.update(label=f"Done — {len(live_trace)} tool calls, "
-                                f"{len(live_findings.all())} findings, "
-                                f"{int(time.time() - started)}s", state="complete",
-                          expanded=False)
+
+        # A plain placeholder, not st.status. The loop re-renders once a second,
+        # and any expander inside something re-rendered on a timer collapses the
+        # moment the user opens it. Everything here stays visible instead; the
+        # trace gets a proper expander once the run is over and nothing is
+        # redrawing it.
+        progress = st.empty()
+        while worker.is_alive():
+            seen = list(live_trace)
+            n_find = len(live_findings.all())
+            by_agent: dict[str, int] = {}
+            for t in seen:
+                by_agent[t["agent"]] = by_agent.get(t["agent"], 0) + 1
+            current = seen[-1]["agent"] if seen else "panel_review"
+            with progress.container(border=True):
+                st.markdown(f"**Checking {LABEL.get(current, current)}**")
+                m1, m2, m3 = st.columns(3)
+                m1.metric("Elapsed", f"{int(time.time() - started)}s")
+                m2.metric("Tool calls", len(seen))
+                m3.metric("Findings", n_find)
+                if by_agent:
+                    st.caption("  ·  ".join(
+                        f"{LABEL.get(a, a)}: {n}" for a, n in by_agent.items()))
+                for t in seen[-5:]:
+                    st.markdown(
+                        f"<span style='color:#5C6C80;font-size:0.85rem'>"
+                        f"<code>{t['agent']}</code> → {t['tool']}</span>",
+                        unsafe_allow_html=True)
+            time.sleep(1.0)
+        worker.join()
+
+        if "error" in box:
+            progress.error(box["error"])
+            st.stop()
+        progress.success(
+            f"Done in {int(time.time() - started)}s · {len(live_trace)} tool calls · "
+            f"{len(live_findings.all())} findings")
         st.session_state["panel"] = box["result"]
 
     if "panel" in st.session_state:
