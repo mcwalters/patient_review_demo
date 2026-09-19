@@ -32,7 +32,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 from .guidelines import check_guideline, list_guidelines
-from .tools import ScreeningSession, connect
+from .tools import AS_OF, ScreeningSession, connect
 
 MODEL = "gemini-2.5-pro"
 
@@ -537,10 +537,25 @@ later result for the same analyte exists. Check before concluding.
 
 _pending_orders returns ALL of them with the triage already computed: months
 open, whether a later result supersedes the order, and whether the patient still
-has the condition the test monitors. Work the whole actionable list -- it is not
-a sample and you must not treat it as one. Say how many you judged and how many
-you are reporting. Returning "none found" when the tool handed you a populated
-actionable list is a failure, not a clean bill of health.
+has the condition the test monitors.
+
+REVIEW ALL OF THEM. REPORT FEW. Those are different things, and getting the
+second wrong destroys the value of the first. You are writing for someone who
+can work about fifteen patients a week, so a finding per open order is the same
+as no list at all -- one run recorded twenty-six, which is a transcript, not
+triage.
+
+Record an order individually only when it clears a real bar: the test is
+high-stakes for that patient (a potassium on an ACE inhibitor plus a diuretic,
+a kidney screen in diabetes, a level for a narrow-therapeutic-index drug), or
+it has been open long enough that the original clinical question is now
+unanswered. At most EIGHT individual findings.
+
+Fold everything else into ONE grouped finding -- "N further open orders,
+routine monitoring, none individually urgent" -- with the count and a couple of
+examples. Say how many you reviewed and how many you are reporting
+individually; reviewing seventy-four and surfacing six is the right shape of
+answer.
 
 STATE EVERY FINDING IN YOUR REPLY. Your report is parsed into structured
 findings automatically, so anything you write down is captured -- but only what
