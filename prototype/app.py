@@ -24,7 +24,7 @@ from prototype.guidelines import (                   # noqa: E402
 from prototype.brief import write_brief_async        # noqa: E402
 from prototype.panel import review_async             # noqa: E402
 from prototype.screener import screen_async          # noqa: E402
-from prototype.tools import ScreeningSession         # noqa: E402
+from prototype.tools import ScreeningSession, connect  # noqa: E402
 
 FINDINGS_ANCHOR = "findings-the-specialists-recorded"
 
@@ -64,12 +64,51 @@ theme.title("Eligibility screening", "from a free-text protocol",
             "100-patient synthetic EHR · the model grounds clinical concepts, "
             "deterministic code runs every query")
 
-tab_panel, tab_screen, tab_preflight, tab_data, tab_guides = st.tabs(
-    ["Panel review", "Screen a protocol", "Pre-flight data audit",
-     "What the model may select", "Guidelines used"])
+VIEWS = ["Panel review", "Patient brief", "Screen a protocol",
+         "Pre-flight data audit", "What the model may select", "Guidelines used"]
+
+# Navigation is session state rather than st.tabs, because a patient name has to
+# be able to send you to another view. st.tabs cannot be switched in code.
+# The URL carries it, so a link in a table is a real link.
+_qp = st.query_params
+if _qp.get("patient"):
+    st.session_state["brief_patient"] = _qp["patient"]
+    st.session_state["view"] = "Patient brief"
+    st.query_params.clear()
+elif _qp.get("view") in VIEWS:
+    st.session_state["view"] = _qp["view"]
+    st.query_params.clear()
+
+view = st.segmented_control("Section", VIEWS, key="view", label_visibility="collapsed",
+                            default=st.session_state.get("view", VIEWS[0]))
+view = view or st.session_state.get("view") or VIEWS[0]
+
+
+@st.cache_data(show_spinner=False)
+def all_patient_names() -> list[str]:
+    con = connect()
+    try:
+        return [r[0] for r in con.execute(
+            "SELECT PAT_NAME FROM patient ORDER BY 1").fetchall()]
+    finally:
+        con.close()
+
+
+def patient_link_column(df, name_col: str = "patient"):
+    """Turn a patient-name column into links that open that patient's brief.
+
+    The name itself is the link: the URL carries the name unencoded and
+    LinkColumn's display_text pulls it back out, so the cell reads as the
+    patient rather than as a URL.
+    """
+    out = df.copy()
+    out[name_col] = out[name_col].map(lambda n: f"?patient={n}")
+    return out, {name_col: st.column_config.LinkColumn(
+        name_col, display_text=r"\?patient=(.*)",
+        help="open this patient's pre-visit brief")}
 
 # ------------------------------------------------------------- panel review
-with tab_panel:
+if view == "Panel review":
     st.subheader("Who needs attention this week?")
     st.caption("A supervisor agent decides which specialists to consult and in what "
                "order — nothing scripts its path. It is told to check data integrity "
@@ -126,83 +165,22 @@ with tab_panel:
             } for f in sorted(pfindings, key=lambda x: order.get(x.get("severity"), 3))]
             st.dataframe(pd.DataFrame(rows), width='stretch', hide_index=True, height=340)
 
-        # ---- pick a patient, get their brief --------------------------------
+        # Patients named in these findings, each linking to their brief.
         named = sorted({p for f in pfindings for p in (f.get("patients") or [])})
         if named:
-            st.subheader("Pre-visit brief")
-            st.caption("Select a patient to see everything on file for them. The "
-                       "facts are assembled deterministically; the model only "
-                       "decides what to raise first and writes it.")
-            picker = pd.DataFrame([{
+            st.subheader("Patients named")
+            st.caption("Click a name to open their pre-visit brief.")
+            sev_rank = {"high": 0, "medium": 1, "low": 2}
+            tbl = pd.DataFrame([{
                 "patient": n,
                 "findings": sum(1 for f in pfindings if n in (f.get("patients") or [])),
                 "highest severity": min(
-                    (f.get("severity") for f in pfindings
-                     if n in (f.get("patients") or [])),
-                    key=lambda x: {"high": 0, "medium": 1, "low": 2}.get(x, 3)),
+                    (f.get("severity") for f in pfindings if n in (f.get("patients") or [])),
+                    key=lambda x: sev_rank.get(x, 3)),
             } for n in named])
-            sel = st.dataframe(picker, width='stretch', hide_index=True, height=220,
-                               on_select="rerun", selection_mode="single-row",
-                               key="brief_picker")
-            rows = sel.selection.rows if sel and sel.selection else []
-            if rows:
-                who = picker.iloc[rows[0]]["patient"]
-                cache = st.session_state.setdefault("briefs", {})
-                if who not in cache:
-                    with st.spinner(f"Assembling the brief for {who}…"):
-                        cache[who] = asyncio.run(write_brief_async(who, pfindings))
-                narrative, pack = cache[who]
-
-                if "error" in pack:
-                    st.error(pack["error"])
-                else:
-                    p_, v_ = pack["patient"], pack["visit"]
-                    st.markdown(f"### {p_['name']}  ·  {p_['age']}  ·  {p_['sex']}")
-                    k1, k2, k3, k4 = st.columns(4)
-                    k1.metric("Next AWV (derived)", v_["status"], v_["detail"],
-                              delta_color="off", help=v_["basis"])
-                    k2.metric("Conditions", len(pack["conditions"]))
-                    k3.metric("Abnormal labs", len(pack["labs"]["abnormal"]))
-                    k4.metric("Open orders", len(pack["outstanding_orders"]))
-
-                    # data-quality flags go ABOVE the clinical content, always
-                    for flag in pack["data_quality"]["flags"]:
-                        st.error(f"**Do not trust this record:** {flag}")
-
-                    left, right = st.columns([3, 2])
-                    with left:
-                        st.markdown(narrative)
-                    with right:
-                        st.caption("**The facts behind it** — every number above "
-                                   "comes from here, not from the model.")
-                        with st.expander("Conditions", expanded=True):
-                            for d in pack["conditions"]:
-                                st.write(f"`{d['icd10']}`  {d['name']}")
-                        with st.expander("Medications"):
-                            st.caption(pack["data_quality"]["medication_caveat"])
-                            for cls, agents in pack["medications"]["by_class"].items():
-                                st.write(f"**{cls}** — " + ", ".join(
-                                    f"{a['agent']} (from {a['started']})" for a in agents))
-                        with st.expander("Abnormal labs"):
-                            if pack["labs"]["abnormal"]:
-                                st.dataframe(pd.DataFrame(pack["labs"]["abnormal"]),
-                                             width='stretch', hide_index=True)
-                            else:
-                                st.write("None.")
-                        with st.expander("Open orders"):
-                            if pack["outstanding_orders"]:
-                                st.dataframe(pd.DataFrame(pack["outstanding_orders"]),
-                                             width='stretch', hide_index=True)
-                            else:
-                                st.write("None.")
-                        with st.expander("Care gaps"):
-                            for g in pack["care_gaps"]:
-                                st.write(f"**{g['id']}** {g['title']}")
-                                st.caption(g["source"])
-                            if not pack["care_gaps"]:
-                                st.write("None against the eight-guideline pack.")
-                    st.caption("Prompts a conversation; does not replace chart review. "
-                               "No drug or dose is recommended anywhere in this brief.")
+            linked, cfg = patient_link_column(tbl)
+            st.dataframe(linked, column_config=cfg, width='stretch',
+                         hide_index=True, height=260)
 
         with st.expander("Delegation trace — which specialist did what, in order"):
             for i, t in enumerate(ptrace, 1):
@@ -210,8 +188,87 @@ with tab_panel:
                         f"({json.dumps(t['args'])[:120]})", language=None)
 
 
+
+# ------------------------------------------------------------- patient brief
+if view == "Patient brief":
+    st.subheader("Pre-visit brief")
+    st.caption("Everything on file for one patient. The facts are assembled "
+               "deterministically; the model only decides what to raise first and "
+               "writes it. Reached by clicking a name anywhere in the app, or pick "
+               "one here.")
+
+    current = st.session_state.get("brief_patient")
+    who = st.selectbox("Patient", all_patient_names(),
+                       index=(all_patient_names().index(current)
+                              if current in all_patient_names() else 0),
+                       key="brief_patient_select")
+    if who != current:
+        st.session_state["brief_patient"] = who
+
+    findings_ctx = st.session_state.get("panel", (None, None, []))[2] or []
+    cache = st.session_state.setdefault("briefs", {})
+    if who not in cache:
+        with st.spinner(f"Assembling the brief for {who}…"):
+            cache[who] = asyncio.run(write_brief_async(who, findings_ctx))
+    narrative, pack = cache[who]
+
+    if "error" in pack:
+        st.error(pack["error"])
+    else:
+        p_, v_ = pack["patient"], pack["visit"]
+        st.markdown(f"### {p_['name']}  ·  {p_['age']}  ·  {p_['sex']}")
+        k1, k2, k3, k4 = st.columns(4)
+        k1.metric("Next AWV (derived)", v_["status"], v_["detail"],
+                  delta_color="off", help=v_["basis"])
+        k2.metric("Conditions", len(pack["conditions"]))
+        k3.metric("Abnormal labs", len(pack["labs"]["abnormal"]))
+        k4.metric("Open orders", len(pack["outstanding_orders"]))
+
+        for flag in pack["data_quality"]["flags"]:
+            st.error(f"**Do not trust this record:** {flag}")
+
+        left, right = st.columns([3, 2])
+        with left:
+            st.markdown(narrative)
+            if pack["panel_findings"]:
+                st.caption("**From the last panel review**")
+                for f in pack["panel_findings"]:
+                    st.write(f"`{f['finding_id']}` [{f['severity']}] {f['headline']}")
+        with right:
+            st.caption("**The facts behind it** — every number opposite comes from "
+                       "here, not from the model.")
+            with st.expander("Conditions", expanded=True):
+                for d in pack["conditions"]:
+                    st.write(f"`{d['icd10']}`  {d['name']}")
+            with st.expander("Medications"):
+                st.caption(pack["data_quality"]["medication_caveat"])
+                for cls, agents in pack["medications"]["by_class"].items():
+                    st.write(f"**{cls}** — " + ", ".join(
+                        f"{a['agent']} (from {a['started']})" for a in agents))
+            with st.expander("Abnormal labs"):
+                if pack["labs"]["abnormal"]:
+                    st.dataframe(pd.DataFrame(pack["labs"]["abnormal"]),
+                                 width='stretch', hide_index=True)
+                else:
+                    st.write("None.")
+            with st.expander("Open orders"):
+                if pack["outstanding_orders"]:
+                    st.dataframe(pd.DataFrame(pack["outstanding_orders"]),
+                                 width='stretch', hide_index=True)
+                else:
+                    st.write("None.")
+            with st.expander("Care gaps"):
+                for g in pack["care_gaps"]:
+                    st.write(f"**{g['id']}** {g['title']}")
+                    st.caption(g["source"])
+                if not pack["care_gaps"]:
+                    st.write("None against the eight-guideline pack.")
+        st.caption("Prompts a conversation; does not replace chart review. No drug "
+                   "or dose is recommended anywhere in this brief.")
+
+
 # ---------------------------------------------------------------- pre-flight
-with tab_preflight:
+if view == "Pre-flight data audit":
     st.subheader("Clinical plausibility of the extract")
     st.caption("Run before trusting any cohort. Schema validation catches type errors; "
                "this catches records no clinician would believe.")
@@ -242,7 +299,7 @@ with tab_preflight:
             width='stretch', hide_index=True)
 
 # ------------------------------------------------------------------ vocabulary
-with tab_data:
+if view == "What the model may select":
     st.subheader("The vocabulary the agent selects from")
     st.caption("The model cannot name a code outside these lists. Registration rejects "
                "anything absent from the dataset, so a hallucinated code cannot reach SQL.")
@@ -256,7 +313,7 @@ with tab_data:
                  width='stretch', hide_index=True, height=260)
 
 # --------------------------------------------------------------------- screen
-with tab_screen:
+if view == "Screen a protocol":
     pick = st.selectbox("Start from an example, or write your own", list(EXAMPLES))
     protocol = st.text_area("Protocol", EXAMPLES[pick], height=150)
     go = st.button("Screen the panel", type="primary")
@@ -337,14 +394,23 @@ with tab_screen:
         t1, t2, t3 = st.tabs([f"Eligible ({counts['eligible']})",
                               f"Needs review ({counts['needs_review']})",
                               f"Excluded ({counts['excluded']})"])
+        def _linked(group: str):
+            df = table(group)
+            if df.empty:
+                return st.write("None.")
+            linked, cfg = patient_link_column(df)
+            return st.dataframe(linked, column_config=cfg, width='stretch',
+                                hide_index=True)
+
         with t1:
-            st.dataframe(table("eligible"), width='stretch', hide_index=True)
+            st.caption("Click a patient to open their pre-visit brief.")
+            _linked("eligible")
         with t2:
             st.caption("These patients are not ineligible. A criterion could not be "
                        "evaluated because the data is missing. Missing is not a pass.")
-            st.dataframe(table("needs_review"), width='stretch', hide_index=True)
+            _linked("needs_review")
         with t3:
-            st.dataframe(table("excluded"), width='stretch', hide_index=True)
+            _linked("excluded")
 
         with st.expander("Agent trace — every tool call, in order"):
             for i, c in enumerate(trace, 1):
@@ -360,7 +426,7 @@ def _guideline_coverage() -> dict:
     return {g["id"]: check_guideline(g["id"]) for g in GUIDELINES}
 
 
-with tab_guides:
+if view == "Guidelines used":
     st.subheader("What guideline_concordance checks against")
     st.warning(f"**{DISCLAIMER}**")
     st.caption(
