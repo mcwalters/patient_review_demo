@@ -257,3 +257,30 @@ def test_shared_rules_appear_once_per_instruction():
     for text in (panel.INTEGRITY_INSTRUCTION, panel.GUIDELINE_INSTRUCTION,
                  panel.FOLLOWUP_INSTRUCTION, brief.BRIEF_INSTRUCTION):
         assert text.count(marker) == 1
+
+
+def test_findings_normalise_patient_names():
+    """'Taylor,Jonathan' split one patient into two in the stability eval."""
+    from prototype.panel import Findings
+    f = Findings()
+    f.record("x", headline="a", patients=["Taylor,Jonathan"], severity="low",
+             evidence="e", recommended_action="r")
+    assert f.all()[0]["patients"] == ["Taylor, Jonathan"]
+
+
+def test_findings_do_not_record_the_same_thing_twice():
+    """The floor seeds it, a specialist rediscovers it; one row, not two."""
+    from prototype.panel import Findings
+    f = Findings()
+    f.seed_floor()
+    before = len(f.all())
+    dup = f.record("guideline_concordance",
+                   headline="Beta-blocker in HFrEF guideline gap",
+                   patients=["Stein, Larry", "Zavala, Manuel", "Sandoval, John"],
+                   severity="high", evidence="e", recommended_action="r")
+    assert dup["recorded"] is False
+    assert len(f.all()) == before
+    new = f.record("followup", headline="Something else entirely",
+                   patients=["Rogers, Jessica"], severity="low",
+                   evidence="e", recommended_action="r")
+    assert new["recorded"] is True and len(f.all()) == before + 1

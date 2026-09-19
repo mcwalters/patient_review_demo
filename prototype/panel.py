@@ -138,7 +138,41 @@ class Findings:
             self.record("guaranteed", **f)
         return len(self.rows)
 
+    @staticmethod
+    def _norm_name(n: str) -> str:
+        """'Taylor,Jonathan' and 'Taylor, Jonathan' are one person.
+
+        A missing space after the comma split one patient into two in the
+        stability eval, which quietly inflates the distinct-patient count and
+        breaks any match on the name.
+        """
+        parts = [p.strip() for p in str(n).split(",")]
+        return ", ".join(p for p in parts if p)
+
+    @staticmethod
+    def _key(headline: str, patients: list[str]) -> tuple:
+        words = {w for w in "".join(
+            c if c.isalnum() or c.isspace() else " " for c in headline.lower()).split()
+            if len(w) > 3}
+        return frozenset(words), frozenset(patients)
+
     def record(self, agent: str, **kw) -> dict:
+        kw["patients"] = [self._norm_name(p) for p in (kw.get("patients") or [])]
+
+        # The floor seeds findings before the specialists run, and a specialist
+        # then rediscovers the same thing and reports it again -- every run in
+        # the post-floor eval carried duplicate headlines. Fold a repeat into
+        # the row that is already there rather than adding a second one; the
+        # guaranteed version wins, because it is the one that is computed.
+        key = self._key(kw.get("headline", ""), kw["patients"])
+        for row in self.rows:
+            if self._key(row.get("headline", ""), row.get("patients") or []) == key:
+                if agent != "guaranteed" and row["agent"] == "guaranteed":
+                    row.setdefault("also_found_by", []).append(agent)
+                return {"recorded": False, "merged_into": row["finding_id"],
+                        "note": "already present; not recorded twice",
+                        "total_findings": len(self.rows)}
+
         fid = f"F{len(self.rows) + 1:02d}"
         self.rows.append({"finding_id": fid, "agent": agent, **kw})
         return {"recorded": True, "finding_id": fid, "total_findings": len(self.rows)}
