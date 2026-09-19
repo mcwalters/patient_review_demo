@@ -187,8 +187,25 @@ Worth knowing before you build a demo on it:
   diagnosis. The generator assigned drugs from conditions, so **"on a drug with
   no indication" returns zero rows** — overtreatment and wrong-drug detection
   have no material here. Undertreatment does (24 of 28 diabetics are not on a
-  statin), as does within-class duplication (20 patient-class pairs, including
-  three patients on three SSRIs and one on three DOACs).
+  statin).
+- **No medication is ever recorded as stopped, so you cannot tell what a patient
+  is currently taking.** `START_DATE` is populated on all 522 orders, but
+  `END_DATE` and `DISCON_TIME` are **100% null** and `ORDER_STATUS_C_NAME` is
+  `Active` on every row. A switch and a combination are therefore
+  indistinguishable without reading the dates.
+
+  This matters because the naive read is alarming and wrong. Twenty patients
+  hold two or three agents of one class, which looks like dangerous duplicate
+  therapy — one patient on three DOACs, two on three SSRIs. But the start dates
+  within a duplicated class are **113 to 1376 days apart, mean 814 days**. The
+  three DOACs began in March 2023, July 2024 and December 2025. That is
+  sequential switching, which is ordinary care; it only reads as triple
+  anticoagulation because nothing was ever closed out.
+
+  The real defect is the missing discontinuation data, not the patients. Claims
+  of the form "this patient is on X" are unreliable here. Claims of the form
+  "this patient has never had X" survive, which is why the guideline gaps above
+  are still usable.
 - **Some prescribing rates are implausible.** PCSK9i appears in 16 of 100
   patients, half of them not on a statin; real-world use is 1–2% of a lipid
   population and near-always statin-refractory. Useful for making a mechanism
