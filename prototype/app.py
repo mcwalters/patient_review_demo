@@ -42,6 +42,24 @@ def link_citations(markdown: str, anchor: str = FINDINGS_ANCHOR) -> str:
     return re.sub(r"\[F\d+(?:\s*,\s*F\d+)*\]", repl, markdown)
 
 
+def link_patients(markdown: str, names: list[str]) -> str:
+    """Turn patient names in the prose into links to their brief.
+
+    One pass over an alternation of all the names, longest first, so a name is
+    never re-scanned inside a URL this function just inserted and a short name
+    cannot match inside a longer one.
+    """
+    if not names:
+        return markdown
+    # Idempotent: skip a name already used as link TEXT (preceded by "[") or
+    # already sitting inside a link URL (preceded by "="). Without the "=" case
+    # a second application nests the link inside its own href.
+    pattern = re.compile(
+        r"(?<![\[=])(" + "|".join(re.escape(n) for n in sorted(names, key=len, reverse=True))
+        + r")(?!\]\()")
+    return pattern.sub(lambda m: f"[{m.group(0)}](?patient={m.group(0)})", markdown)
+
+
 st.set_page_config(page_title="Eligibility Screening — Qualified Health",
                    page_icon=str(theme.ASSETS / "q-mark.png"), layout="wide")
 theme.apply()
@@ -143,7 +161,8 @@ if view == "Panel review":
                 col.metric(agent, c["calls"], f"{c['findings']} findings",
                            delta_color="off", help="tool calls made by this agent")
 
-        st.markdown(link_citations(report))
+        all_named = sorted({p for f in pfindings for p in (f.get("patients") or [])})
+        st.markdown(link_patients(link_citations(report), all_named))
 
         if pfindings:
             st.subheader("Findings the specialists recorded",
@@ -164,23 +183,6 @@ if view == "Panel review":
                 "action": f.get("recommended_action", ""),
             } for f in sorted(pfindings, key=lambda x: order.get(x.get("severity"), 3))]
             st.dataframe(pd.DataFrame(rows), width='stretch', hide_index=True, height=340)
-
-        # Patients named in these findings, each linking to their brief.
-        named = sorted({p for f in pfindings for p in (f.get("patients") or [])})
-        if named:
-            st.subheader("Patients named")
-            st.caption("Click a name to open their pre-visit brief.")
-            sev_rank = {"high": 0, "medium": 1, "low": 2}
-            tbl = pd.DataFrame([{
-                "patient": n,
-                "findings": sum(1 for f in pfindings if n in (f.get("patients") or [])),
-                "highest severity": min(
-                    (f.get("severity") for f in pfindings if n in (f.get("patients") or [])),
-                    key=lambda x: sev_rank.get(x, 3)),
-            } for n in named])
-            linked, cfg = patient_link_column(tbl)
-            st.dataframe(linked, column_config=cfg, width='stretch',
-                         hide_index=True, height=260)
 
         with st.expander("Delegation trace — which specialist did what, in order"):
             for i, t in enumerate(ptrace, 1):
