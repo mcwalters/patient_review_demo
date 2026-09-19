@@ -320,6 +320,20 @@ def patients_with_value(analyte: str, below: str, above: str) -> dict:
             "unit": r[2], "date": str(r[3])} for r in rows]}
 
 
+NO_STOP_DATES = """\
+ONE TRAP THAT CATCHES EVERY AGENT HERE. A patient holding two agents of the
+same class is NOT evidence of concurrent therapy in this extract. Nothing is
+ever recorded as stopped -- END_DATE and DISCON_TIME are entirely empty and all
+522 orders read Active -- so a switch and a combination look identical. Across
+the 20 duplicated patient-class pairs the start dates are 113 to 1376 days
+apart, mean 814. Rogers, Jessica's four statin orders span 2022 to 2026.
+
+Call medication_timeline before describing anything as duplicate, double or
+triple therapy, and report what the start dates show. If they are months or
+years apart, it is sequential switching -- say that instead. The reportable
+defect is the missing discontinuation data, not the patient.
+"""
+
 INTEGRITY_INSTRUCTION = """\
 You investigate whether this EHR extract can be trusted. You are not checking
 types or nulls -- other tooling does that. You are asking whether a clinician
@@ -330,13 +344,6 @@ it with a second and third call before concluding. A rate that looks wrong may
 be explained by the population; a contradiction may be one bad row or a
 systematic extraction fault, and those need different responses. Use
 patients_with_value and patient_snapshot to find out which.
-
-One trap specifically: a patient appearing on two agents of the same class is
-NOT evidence of concurrent therapy in this extract. Nothing here is ever marked
-stopped -- END_DATE and DISCON_TIME are entirely empty and every order says
-Active -- so a switch and a combination look identical unless you check the
-dates. Call medication_timeline before describing anything as duplicate or
-triple therapy, and report what the start dates actually show.
 
 Judge against real practice: is this prevalence plausible for a primary-care
 panel, is this prescribing rate plausible for an expensive specialist drug, are
@@ -357,6 +364,8 @@ number you recalled. For each finding give: what you observed, what you expected
 whether it is one record or systematic, and what it would break for a panel
 manager acting on this data. Say explicitly when a suspicion did NOT hold up.
 """
+
+INTEGRITY_INSTRUCTION += NO_STOP_DATES
 
 GUIDELINE_INSTRUCTION = """\
 You check whether this panel's care matches guideline recommendations.
@@ -388,6 +397,8 @@ that is not in the record.
 Rank what you found by how likely it is to matter, and keep it short.
 """
 
+GUIDELINE_INSTRUCTION += NO_STOP_DATES
+
 FOLLOWUP_INSTRUCTION = """\
 You find care that was started and never finished.
 
@@ -416,6 +427,8 @@ that is not in the record.
 Report the ones worth chasing, with the patient, the test, how long it has been
 open, and why it still matters. Be brief.
 """
+
+FOLLOWUP_INSTRUCTION += NO_STOP_DATES
 
 
 def _pending_orders() -> dict:
@@ -531,7 +544,7 @@ def build_supervisor(trace: list | None = None,
         instruction=FOLLOWUP_INSTRUCTION,
         before_tool_callback=_tracer(trace, "followup"),
         tools=[_recorder(findings, "followup"), _pending_orders, cohort_statistic,
-               find_patients, patient_snapshot])
+               find_patients, medication_timeline, patient_snapshot])
 
     return LlmAgent(
         name="panel_review", model=MODEL,
