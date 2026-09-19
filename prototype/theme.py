@@ -33,6 +33,24 @@ CSS = f"""
   html, body, [class*="st-"], button, input, textarea, select {{
       font-family: "Helvetica Neue", Arial, sans-serif;
   }}
+  /* Streamlit draws its icons with the Material Symbols ligature font, fetched
+     from a CDN. When that fetch fails -- offline, blocked, or slow conference
+     wifi -- the browser falls back to a text face and renders the ligature NAME
+     as literal text ("keyboard_arrow_right") on top of the label. Suppress the
+     glyph text and draw the chevron in CSS instead, so the UI does not depend
+     on a font download. */
+  [data-testid="stIconMaterial"] {{
+      font-size: 0 !important; line-height: 1; color: transparent;
+  }}
+  [data-testid="stIconMaterial"]::before {{
+      content: "\203A";                      /* single right-pointing chevron */
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 1.05rem; font-weight: 600; color: {SLATE};
+      display: inline-block; transition: transform .15s ease;
+  }}
+  details[open] [data-testid="stIconMaterial"]::before {{
+      transform: rotate(90deg);
+  }}
   .stApp {{ background: {PAGE}; }}
   .block-container {{ padding-top: 2.6rem; max-width: 1400px; }}
 
