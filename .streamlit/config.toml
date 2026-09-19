@@ -1,0 +1,19 @@
+# Theme lifted from the Qualified Health PPT template (ppt/theme/theme1.xml).
+#   accent1 #0A3D63  deep navy      accent4 #C1CFD8  light blue-grey
+#   accent2 #058BE8  bright blue    accent5 #635BFF  indigo
+#   accent3 #5E7484  slate          accent6 #ED8D02  orange
+#   dk2     #5C6C80  slate text     lt2     #F9FCFF  page background
+[theme]
+base = "light"
+primaryColor = "#0A3D63"
+backgroundColor = "#F9FCFF"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#0A3D63"
+linkColor = "#058BE8"
+borderColor = "#C1CFD8"
+font = "Helvetica Neue, Arial, sans-serif"
+headingFont = "Helvetica Neue, Arial, sans-serif"
+codeFont = "SF Mono, Menlo, monospace"
+
+[server]
+headless = true
