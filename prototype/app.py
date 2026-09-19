@@ -12,7 +12,6 @@ import asyncio
 import json
 import threading
 import time
-import re
 import sys
 from urllib.parse import quote
 from pathlib import Path
@@ -27,44 +26,9 @@ from prototype.guidelines import (                   # noqa: E402
 from prototype.brief import write_brief_async        # noqa: E402
 from prototype.panel import Findings, review_async   # noqa: E402
 from prototype.screener import screen_async          # noqa: E402
+from prototype.report_md import (                    # noqa: E402
+    FINDINGS_ANCHOR, fold_actions, link_citations, link_patients)
 from prototype.tools import ScreeningSession, connect  # noqa: E402
-
-FINDINGS_ANCHOR = "findings-the-specialists-recorded"
-
-
-def link_citations(markdown: str, anchor: str = FINDINGS_ANCHOR) -> str:
-    """Turn [F03] and [F03, F05] in the supervisor's prose into anchor links.
-
-    The brackets are kept inside the link text (escaped) so the citation still
-    reads as [F03] rather than losing its brackets to markdown link syntax.
-    """
-    def repl(match: re.Match) -> str:
-        ids = re.findall(r"F\d+", match.group(0))
-        return " ".join(f"[\\[{i}\\]](#{anchor})" for i in ids)
-
-    return re.sub(r"\[F\d+(?:\s*,\s*F\d+)*\]", repl, markdown)
-
-
-def link_patients(markdown: str, names: list[str]) -> str:
-    """Turn patient names in the prose into links to their brief.
-
-    One pass over an alternation of all the names, longest first, so a name is
-    never re-scanned inside a URL this function just inserted and a short name
-    cannot match inside a longer one.
-    """
-    if not names:
-        return markdown
-    # Idempotent: skip a name already used as link TEXT (preceded by "[") or
-    # already sitting inside a link URL (preceded by "="). Without the "=" case
-    # a second application nests the link inside its own href.
-    pattern = re.compile(
-        r"(?<![\[=])(" + "|".join(re.escape(n) for n in sorted(names, key=len, reverse=True))
-        + r")(?!\]\()")
-    # The URL must be percent-encoded. A patient name holds a comma and a space,
-    # and a markdown link whose target contains a raw space is not parsed as a
-    # link at all -- it renders as the literal "[Name](?patient=Name)".
-    return pattern.sub(
-        lambda m: f"[{m.group(0)}](?patient={quote(m.group(0))})", markdown)
 
 
 st.set_page_config(page_title="Panel Review — Qualified Health",
@@ -247,7 +211,7 @@ if view == "Panel review":
                            delta_color="off", help="tool calls made by this agent")
 
         all_named = sorted({p for f in pfindings for p in (f.get("patients") or [])})
-        st.markdown(link_patients(link_citations(report), all_named))
+        st.markdown(link_patients(link_citations(fold_actions(report)), all_named))
 
         if pfindings:
             st.subheader("Findings the specialists recorded",

@@ -284,3 +284,43 @@ def test_findings_do_not_record_the_same_thing_twice():
                    patients=["Rogers, Jessica"], severity="low",
                    evidence="e", recommended_action="r")
     assert new["recorded"] is True and len(f.all()) == before + 1
+
+
+def test_action_sub_bullets_fold_into_the_line_above():
+    """A nested "* **Action**:" bullet renders as its own indented paragraph.
+
+    Twelve patients meant twelve pairs of lines separated by a paragraph gap.
+    Folding makes the action a hard line break inside the patient's own item.
+    """
+    from prototype.report_md import fold_actions
+    out = fold_actions(
+        "1.  **Wilcox, Tommy** has a toxic digoxin level [F13].\n"
+        "\n"
+        "    *   **Action**: Investigate urgently.\n"
+        "2.  **Schwartz, Mary** is on an ACE inhibitor [F24].\n"
+        "    -   **Recommended Action:** Fulfill the open Potassium order.\n")
+    assert out == (
+        "1.  **Wilcox, Tommy** has a toxic digoxin level [F13].  \n"
+        "    **Do** Investigate urgently.\n"
+        "2.  **Schwartz, Mary** is on an ACE inhibitor [F24].  \n"
+        "    **Do** Fulfill the open Potassium order.\n")
+
+
+def test_folding_leaves_ordinary_bullets_alone():
+    """Only action sub-bullets fold. "What I left off" is a real list."""
+    from prototype.report_md import fold_actions
+    prose = "**What I Left Off**\n\n*   **Missing Statins [F08]:** many patients.\n"
+    assert fold_actions(prose) == prose
+    # An action bullet with nothing above it has nowhere to fold into.
+    assert fold_actions("    *   **Action**: orphan") == "    *   **Action**: orphan"
+
+
+def test_patient_names_survive_folding_as_links():
+    """The three passes compose: fold, then cite, then link."""
+    from prototype.report_md import fold_actions, link_citations, link_patients
+    out = link_patients(link_citations(fold_actions(
+        "1.  **Wilcox, Tommy** has a toxic digoxin level [F13].\n"
+        "    *   **Action**: Investigate urgently.\n")), ["Wilcox, Tommy"])
+    assert "[Wilcox, Tommy](?patient=Wilcox%2C%20Tommy)" in out
+    assert "**Do** Investigate urgently." in out
+    assert "(#findings-the-specialists-recorded)" in out
