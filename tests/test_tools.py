@@ -189,3 +189,36 @@ def test_vocabulary_rejects_codes_absent_from_the_dataset():
     bad = s.define_criterion("x", "diabetes", "include", "diagnosis",
                              ["E11.22", "Z99.9"], "", "", "", "")
     assert "error" in bad and set(bad["rejected"]) == {"E11.22", "Z99.9"}
+
+
+# ------------------------------------------------------------------- the floor
+def test_floor_is_deterministic():
+    """Identical on every call, or it is not a floor."""
+    import json
+    from prototype.floor import compute_floor
+    assert json.dumps(compute_floor(), sort_keys=True) == \
+           json.dumps(compute_floor(), sort_keys=True)
+
+
+def test_floor_contains_the_drug_monitoring_mismatches(db):
+    """Padilla's INR-on-a-DOAC surfaced in 1 of 5 runs before the floor existed."""
+    from prototype.floor import compute_floor
+    named = {p for f in compute_floor()
+             if f["category"] == "drug monitoring mismatch" for p in f["patients"]}
+    assert "Padilla, Elizabeth" in named
+
+
+def test_floor_crisis_matches_the_staging_tool():
+    from prototype.floor import compute_floor
+    from prototype.panel import blood_pressure_staging
+    floor_named = {p for f in compute_floor()
+                   if f["category"] == "hypertensive crisis" for p in f["patients"]}
+    assert floor_named == {r["patient"] for r in blood_pressure_staging()["crisis"]}
+
+
+def test_floor_is_seeded_before_any_agent_runs():
+    from prototype.panel import Findings, build_supervisor
+    f = Findings()
+    build_supervisor([], f)
+    rows = f.all()
+    assert rows and all(r["agent"] == "guaranteed" for r in rows)

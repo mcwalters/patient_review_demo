@@ -123,6 +123,20 @@ class Findings:
     def __init__(self) -> None:
         self.rows: list[dict] = []
 
+    def seed_floor(self) -> int:
+        """Inject the guaranteed findings before any agent runs.
+
+        These are computed, not discovered, so they are present on every run by
+        construction. The five-run eval measured the alternative: Padilla's
+        INR-on-a-DOAC surfaced in 1 run of 5 when a model had to choose to
+        mention it. It is identical data every time; the variance was entirely
+        in the choosing.
+        """
+        from .floor import compute_floor
+        for f in compute_floor():
+            self.record("guaranteed", **f)
+        return len(self.rows)
+
     def record(self, agent: str, **kw) -> dict:
         fid = f"F{len(self.rows) + 1:02d}"
         self.rows.append({"finding_id": fid, "agent": agent, **kw})
@@ -789,6 +803,8 @@ def build_supervisor(trace: list | None = None,
     trace = trace if trace is not None else []
     findings = findings if findings is not None else Findings()
     usage = usage if usage is not None else Usage()
+    if not findings.all():
+        findings.seed_floor()
 
     def get_agent_activity() -> dict:
         """Which specialists ran and how many tool calls each made.
@@ -930,6 +946,13 @@ stop. So:
   - Withhold the list ONLY if literally no signal survives, which is not the
     case here.
 State the data caveats clearly alongside the list, not instead of it.
+
+The store already contains findings marked `guaranteed` before you start. Those
+are computed deterministically, not discovered: drug-monitoring mismatches,
+hypertensive crises, orders stale past six months with a live indication,
+physiologically impossible values, and HFrEF therapy gaps. They are present on
+every run and they are not optional -- work them into your shortlist on merit
+alongside everything else, and do not re-derive or second-guess them.
 
 Each specialist records its findings in a shared store as it works. Its chat
 reply to you is only a status line -- do NOT build your list from it. After
