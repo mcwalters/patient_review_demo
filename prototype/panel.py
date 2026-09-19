@@ -34,6 +34,32 @@ from .tools import ScreeningSession, connect
 MODEL = "gemini-2.5-pro"
 
 
+class Findings:
+    """Structured findings shared by every agent in the run.
+
+    Findings do NOT travel between agents as prose. Two runs proved why: with
+    AgentTool summarising, 120 pending orders became "none found" and a list of
+    names became "the service did not provide the names"; with summarisation
+    off, the supervisor short-circuited and returned a specialist's report as
+    its own answer. Prose is lossy in both directions.
+
+    So each specialist writes structured rows here, and the supervisor reads
+    them back deterministically. Python carries the data; the model carries the
+    judgment about what it means.
+    """
+
+    def __init__(self) -> None:
+        self.rows: list[dict] = []
+
+    def record(self, agent: str, **kw) -> dict:
+        fid = f"F{len(self.rows) + 1:02d}"
+        self.rows.append({"finding_id": fid, "agent": agent, **kw})
+        return {"recorded": True, "finding_id": fid, "total_findings": len(self.rows)}
+
+    def all(self) -> list[dict]:
+        return list(self.rows)
+
+
 # ---------------------------------------------------------------- shared tools
 def patient_snapshot(pat_id: str) -> dict:
     """Everything on file for one patient: demographics, problems, meds, recent labs, vitals.
@@ -187,6 +213,15 @@ panel, is this prescribing rate plausible for an expensive specialist drug, are
 there combinations that should never co-occur, do demographics line up with
 coverage and visit type, are values physiologically possible.
 
+RECORD EVERY FINDING with record_finding as you go. Your chat reply is NOT read
+by the supervisor -- only recorded findings reach it. A finding you merely
+describe in prose is lost.
+
+ALWAYS NAME THE PATIENTS. A finding without names cannot be acted on, and the
+supervisor cannot recover names you leave out. Give the name exactly as recorded
+-- no titles, no honorifics, no Mr/Ms. Do not infer anything about a patient
+that is not in the record.
+
 Report only what you verified, with the numbers the tools returned -- never a
 number you recalled. For each finding give: what you observed, what you expected,
 whether it is one record or systematic, and what it would break for a panel
@@ -211,6 +246,15 @@ history, no contraindication list, no patient preference, and no note content
 beyond templated prose. So you can identify a gap worth a human looking at; you
 cannot conclude that care was wrong. Say so.
 
+RECORD EVERY FINDING with record_finding as you go. Your chat reply is NOT read
+by the supervisor -- only recorded findings reach it. A finding you merely
+describe in prose is lost.
+
+ALWAYS NAME THE PATIENTS. A finding without names cannot be acted on, and the
+supervisor cannot recover names you leave out. Give the name exactly as recorded
+-- no titles, no honorifics, no Mr/Ms. Do not infer anything about a patient
+that is not in the record.
+
 Rank what you found by how likely it is to matter, and keep it short.
 """
 
@@ -224,6 +268,20 @@ cohort_statistic and patient_snapshot to find them and judge which still matter.
 An unreturned test matters more when the patient has the condition it monitors,
 when it is old, and when nothing since supersedes it. It matters less when a
 later result for the same analyte exists. Check before concluding.
+
+There are around 120 of these. Do NOT inspect five and conclude that none
+matter -- say how many you checked and on what basis you chose them. Returning
+"none found" when the tool handed you 120 rows is a failure, not a clean bill
+of health.
+
+RECORD EVERY FINDING with record_finding as you go. Your chat reply is NOT read
+by the supervisor -- only recorded findings reach it. A finding you merely
+describe in prose is lost.
+
+ALWAYS NAME THE PATIENTS. A finding without names cannot be acted on, and the
+supervisor cannot recover names you leave out. Give the name exactly as recorded
+-- no titles, no honorifics, no Mr/Ms. Do not infer anything about a patient
+that is not in the record.
 
 Report the ones worth chasing, with the patient, the test, how long it has been
 open, and why it still matters. Be brief.
@@ -250,27 +308,95 @@ def _pending_orders() -> dict:
                         "ordered": str(r[3]), "months_open": r[4]} for r in rows]}
 
 
-def build_supervisor() -> LlmAgent:
+def _recorder(findings: "Findings", agent_name: str):
+    """Build a record_finding tool bound to one specialist."""
+    def record_finding(headline: str, patients: list[str], severity: str,
+                       evidence: str, recommended_action: str) -> dict:
+        """Record one finding. Everything you want the supervisor to see must go here.
+
+        Args:
+            headline: one line, e.g. "HFrEF without an SGLT2 inhibitor".
+            patients: names exactly as recorded, [] for a panel-level finding.
+            severity: "high", "medium" or "low".
+            evidence: the numbers the tools returned that support this.
+            recommended_action: what the panel manager should actually do.
+        Returns:
+            confirmation and the running total.
+        """
+        return findings.record(agent_name, headline=headline, patients=patients,
+                               severity=severity, evidence=evidence,
+                               recommended_action=recommended_action)
+    return record_finding
+
+
+def _tracer(trace: list, agent_name: str):
+    """AgentTool runs a specialist in a nested invocation, so its internal tool
+    calls do not reach the parent event stream. A before-tool callback on each
+    specialist records them, which is the part of the work worth showing."""
+    def cb(tool, args, tool_context, **kwargs):
+        trace.append({"agent": agent_name, "tool": getattr(tool, "name", str(tool)),
+                      "args": {k: v for k, v in (args or {}).items() if k != "request"}})
+        return None
+    return cb
+
+
+def build_supervisor(trace: list | None = None,
+                     findings: "Findings | None" = None) -> LlmAgent:
+    trace = trace if trace is not None else []
+    findings = findings if findings is not None else Findings()
+
+    def get_agent_activity() -> dict:
+        """Which specialists ran and how many tool calls each made.
+
+        Use this instead of guessing whether a specialist did any work. A
+        previous run claimed one agent had been "strangely silent" while using
+        three of its findings -- an invented explanation for a failure that had
+        not happened.
+
+        Returns:
+            per-agent tool-call counts and findings recorded.
+        """
+        calls: dict[str, int] = {}
+        for t in trace:
+            calls[t["agent"]] = calls.get(t["agent"], 0) + 1
+        recorded: dict[str, int] = {}
+        for f in findings.all():
+            recorded[f["agent"]] = recorded.get(f["agent"], 0) + 1
+        return {"agents": [{"agent": a, "tool_calls": n,
+                            "findings_recorded": recorded.get(a, 0)}
+                           for a, n in sorted(calls.items())]}
+
+    def get_all_findings() -> dict:
+        """Every finding the specialists recorded, in full. Call after consulting them.
+
+        Returns:
+            findings: list of {finding_id, agent, headline, patients, severity,
+                      evidence, recommended_action}.
+        """
+        return {"count": len(findings.all()), "findings": findings.all()}
     integrity = LlmAgent(
         name="data_integrity", model=MODEL,
         description="Investigates whether records in the extract can be trusted. "
                     "Ask it before acting on any patient list.",
         instruction=INTEGRITY_INSTRUCTION,
-        tools=[cohort_statistic, patients_with_value, patient_snapshot])
+        before_tool_callback=_tracer(trace, "data_integrity"),
+        tools=[_recorder(findings, "data_integrity"), cohort_statistic, patients_with_value, patient_snapshot])
 
     guideline = LlmAgent(
         name="guideline_concordance", model=MODEL,
         description="Finds patients missing therapy that guidelines recommend, and "
                     "judges whether each apparent gap is real.",
         instruction=GUIDELINE_INSTRUCTION,
-        tools=[list_guidelines, check_guideline, patient_snapshot])
+        before_tool_callback=_tracer(trace, "guideline_concordance"),
+        tools=[_recorder(findings, "guideline_concordance"), list_guidelines, check_guideline, patient_snapshot])
 
     followup = LlmAgent(
         name="followup", model=MODEL,
         description="Finds care started and never finished -- above all, lab orders "
                     "that never returned a result.",
         instruction=FOLLOWUP_INSTRUCTION,
-        tools=[_pending_orders, cohort_statistic, patient_snapshot])
+        before_tool_callback=_tracer(trace, "followup"),
+        tools=[_recorder(findings, "followup"), _pending_orders, cohort_statistic, patient_snapshot])
 
     return LlmAgent(
         name="panel_review", model=MODEL,
@@ -288,9 +414,38 @@ scripts your path.
   guideline_concordance   who is missing recommended therapy
   followup                what was started and never finished
 
-Consult data_integrity EARLY. A shortlist built on records that cannot be
-correct is worse than no shortlist, because it spends the scarce resource on
-noise. Let what it finds change how much weight you give the others.
+Consult data_integrity EARLY and let what it finds change how much weight you
+give each signal.
+
+BUT DEGRADE, DO NOT REFUSE. A panel manager who is told "this data is unsafe,
+come back later" has been given nothing, and their patients still need working
+this week. Bad data is the normal condition of clinical data, not a reason to
+stop. So:
+  - Down-weight the signals the data problems actually touch, and route around
+    them. Impossible sodium values make LAB-derived alerts unreliable; they say
+    nothing about whether a diabetic is on a statin, or whether an order placed
+    eleven months ago ever came back. Those remain actionable.
+  - Put a patient on the list anyway when the reason does not depend on a value
+    you cannot trust, and mark the ones where it does.
+  - Withhold the list ONLY if literally no signal survives, which is not the
+    case here.
+State the data caveats clearly alongside the list, not instead of it.
+
+Each specialist records its findings in a shared store as it works. Its chat
+reply to you is only a status line -- do NOT build your list from it. After
+consulting the specialists, call get_all_findings and build the shortlist from
+THAT. It carries the patient names, counts and evidence in full.
+
+CITE, DO NOT RESTATE. Every finding has a finding_id. Reference it as [F03]
+rather than re-describing it, and never write a count or a lab value from
+memory -- a previous run said "nineteen patients" where the store held
+thirteen. If you need a number, it is in the finding's evidence field; quote it
+exactly or leave it out.
+
+DO NOT SPECULATE ABOUT YOUR OWN PROCESS. If you are about to say a specialist
+found nothing, was silent, or was suppressed, call get_agent_activity first and
+report what it says. A previous run claimed an agent had been "strangely
+silent" while three of that agent's findings were on its own shortlist.
 
 You may also call patient_snapshot yourself to check a specific patient before
 putting them on the list.
@@ -300,14 +455,21 @@ name, the single reason they are on the list, and what the panel manager should
 actually do. Then state plainly what you deliberately left off and why, and what
 you could not determine from this data. A short, honest list beats a long one.
 """,
+        # Summarisation is left ON. With it off the supervisor short-circuited
+        # and returned a specialist's report verbatim as its own answer. The
+        # prose reply is now just a status line -- the substance travels in the
+        # Findings store, which get_all_findings reads back intact.
         tools=[AgentTool(agent=integrity), AgentTool(agent=guideline),
-               AgentTool(agent=followup), patient_snapshot])
+               AgentTool(agent=followup), get_all_findings, get_agent_activity,
+               patient_snapshot])
 
 
-async def review_async(goal: str, verbose: bool = True) -> tuple[str, list]:
-    runner = InMemoryRunner(agent=build_supervisor(), app_name="panel")
+async def review_async(goal: str, verbose: bool = True) -> tuple[str, list, list]:
+    trace: list = []
+    findings = Findings()
+    runner = InMemoryRunner(agent=build_supervisor(trace, findings), app_name="panel")
     s = await runner.session_service.create_session(app_name="panel", user_id="demo")
-    trace, final = [], ""
+    final = ""
     async for ev in runner.run_async(
         user_id="demo", session_id=s.id,
         new_message=types.Content(role="user", parts=[types.Part(text=goal)])
@@ -323,7 +485,7 @@ async def review_async(goal: str, verbose: bool = True) -> tuple[str, list]:
                         print(f"  [{call['agent']:<20}] -> {call['tool']}({str(a)[:60]})")
         if ev.is_final_response() and ev.content:
             final = "".join(p.text for p in ev.content.parts if getattr(p, "text", None))
-    return final, trace
+    return final, trace, findings.all()
 
 
 def review(goal: str = "Who on this panel needs attention this week?", verbose: bool = True):

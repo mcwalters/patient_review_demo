@@ -108,6 +108,20 @@ CSS = f"""
       background: #FFFFFF;
   }}
 
+  /* [F03] citations in the supervisor's report -- small, brand blue, and
+     visibly clickable, so a reader can jump to the evidence behind a claim. */
+  a[href="#findings-the-specialists-recorded"] {{
+      color: {BLUE}; text-decoration: none; font-weight: 600;
+      font-size: .86em; white-space: nowrap;
+      padding: .02em .18em; border-radius: 3px;
+      background: rgba(5, 139, 232, .08);
+  }}
+  a[href="#findings-the-specialists-recorded"]:hover {{
+      background: rgba(5, 139, 232, .18); text-decoration: none;
+  }}
+  /* the jumped-to heading shouldn't sit flush against the viewport top */
+  [id="findings-the-specialists-recorded"] {{ scroll-margin-top: 1.5rem; }}
+
   /* Footer, matching the content-slide furniture */
   .qh-footer {{
       display: flex; align-items: center; justify-content: space-between;

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -18,8 +19,25 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from prototype import preflight, theme               # noqa: E402
+from prototype.panel import review_async             # noqa: E402
 from prototype.screener import screen_async          # noqa: E402
 from prototype.tools import ScreeningSession         # noqa: E402
+
+FINDINGS_ANCHOR = "findings-the-specialists-recorded"
+
+
+def link_citations(markdown: str, anchor: str = FINDINGS_ANCHOR) -> str:
+    """Turn [F03] and [F03, F05] in the supervisor's prose into anchor links.
+
+    The brackets are kept inside the link text (escaped) so the citation still
+    reads as [F03] rather than losing its brackets to markdown link syntax.
+    """
+    def repl(match: re.Match) -> str:
+        ids = re.findall(r"F\d+", match.group(0))
+        return " ".join(f"[\\[{i}\\]](#{anchor})" for i in ids)
+
+    return re.sub(r"\[F\d+(?:\s*,\s*F\d+)*\]", repl, markdown)
+
 
 st.set_page_config(page_title="Eligibility Screening — Qualified Health",
                    page_icon=str(theme.ASSETS / "q-mark.png"), layout="wide")
@@ -43,8 +61,71 @@ theme.title("Eligibility screening", "from a free-text protocol",
             "100-patient synthetic EHR · the model grounds clinical concepts, "
             "deterministic code runs every query")
 
-tab_screen, tab_preflight, tab_data = st.tabs(
-    ["Screen a protocol", "Pre-flight data audit", "What the model may select"])
+tab_panel, tab_screen, tab_preflight, tab_data = st.tabs(
+    ["Panel review", "Screen a protocol", "Pre-flight data audit",
+     "What the model may select"])
+
+# ------------------------------------------------------------- panel review
+with tab_panel:
+    st.subheader("Who needs attention this week?")
+    st.caption("A supervisor agent decides which specialists to consult and in what "
+               "order — nothing scripts its path. It is told to check data integrity "
+               "early, and to degrade rather than refuse when records cannot be trusted.")
+    c1, c2, c3 = st.columns(3)
+    c1.markdown("**data_integrity**  \nwhich records can't be trusted")
+    c2.markdown("**guideline_concordance**  \nwho is missing recommended therapy")
+    c3.markdown("**followup**  \nwhat was started and never finished")
+
+    goal = st.text_input(
+        "Goal for the supervisor",
+        "Who on this panel needs my attention this week? I can review about a dozen.")
+    if st.button("Run panel review", type="primary", key="run_panel"):
+        with st.spinner("Supervisor consulting specialists… (3–5 min)"):
+            report, ptrace, pfindings = asyncio.run(review_async(goal, verbose=False))
+        st.session_state["panel"] = (report, ptrace, pfindings)
+
+    if "panel" in st.session_state:
+        report, ptrace, pfindings = st.session_state["panel"]
+
+        # Who actually did the work. Shown because a run once claimed a
+        # specialist had been "silent" while using three of its findings --
+        # the agent's self-report is not evidence, the trace is.
+        counts: dict[str, dict] = {}
+        for t in ptrace:
+            counts.setdefault(t["agent"], {"calls": 0, "findings": 0})["calls"] += 1
+        for f in pfindings:
+            counts.setdefault(f["agent"], {"calls": 0, "findings": 0})["findings"] += 1
+        if counts:
+            cols = st.columns(len(counts))
+            for col, (agent, c) in zip(cols, counts.items()):
+                col.metric(agent, c["calls"], f"{c['findings']} findings",
+                           delta_color="off", help="tool calls made by this agent")
+
+        st.markdown(link_citations(report))
+
+        if pfindings:
+            st.subheader("Findings the specialists recorded",
+                         anchor=FINDINGS_ANCHOR)
+            st.caption("The supervisor's report cites these by id. Rendered from the "
+                       "structured store, not from its prose — numbers in a narrative "
+                       "drift, and in one run they did.")
+            order = {"high": 0, "medium": 1, "low": 2}
+            rows = [{
+                "id": f.get("finding_id", ""),
+                "severity": f.get("severity", ""),
+                "agent": f.get("agent", ""),
+                "finding": f.get("headline", ""),
+                "patients": ", ".join(f.get("patients") or []) or "(panel-level)",
+                "evidence": f.get("evidence", ""),
+                "action": f.get("recommended_action", ""),
+            } for f in sorted(pfindings, key=lambda x: order.get(x.get("severity"), 3))]
+            st.dataframe(pd.DataFrame(rows), width='stretch', hide_index=True, height=340)
+
+        with st.expander("Delegation trace — which specialist did what, in order"):
+            for i, t in enumerate(ptrace, 1):
+                st.code(f"{i:>2}. [{t['agent']}] {t['tool']}"
+                        f"({json.dumps(t['args'])[:120]})", language=None)
+
 
 # ---------------------------------------------------------------- pre-flight
 with tab_preflight:
