@@ -535,10 +535,12 @@ An unreturned test matters more when the patient has the condition it monitors,
 when it is old, and when nothing since supersedes it. It matters less when a
 later result for the same analyte exists. Check before concluding.
 
-There are around 120 of these. Do NOT inspect five and conclude that none
-matter -- say how many you checked and on what basis you chose them. Returning
-"none found" when the tool handed you 120 rows is a failure, not a clean bill
-of health.
+_pending_orders returns ALL of them with the triage already computed: months
+open, whether a later result supersedes the order, and whether the patient still
+has the condition the test monitors. Work the whole actionable list -- it is not
+a sample and you must not treat it as one. Say how many you judged and how many
+you are reporting. Returning "none found" when the tool handed you a populated
+actionable list is a failure, not a clean bill of health.
 
 STATE EVERY FINDING IN YOUR REPLY. Your report is parsed into structured
 findings automatically, so anything you write down is captured -- but only what
@@ -556,11 +558,36 @@ open, and why it still matters. Be brief.
 FOLLOWUP_INSTRUCTION += NO_STOP_DATES
 
 
+# Which analytes monitor which conditions. Used to decide, deterministically,
+# whether an unreturned test still has a live indication.
+_ANALYTE_INDICATION = {
+    "HbA1c": "E11%", "Fasting Glucose": "E11%", "Urine Albumin/Creat Ratio": "E11%",
+    "LDL Cholesterol": "E78%", "HDL Cholesterol": "E78%", "Total Cholesterol": "E78%",
+    "Triglycerides": "E78%", "Lipid Panel — Total Chol": "E78%",
+    "TSH": "E0%", "Free T3": "E0%", "Free T4": "E0%",
+    "BNP": "I50%", "NT-proBNP": "I50%",
+    "INR / PT": "I48%", "aPTT": "I48%",
+    "Eosinophil Count": "J4%", "IgE Total": "J4%", "Peak Flow": "J4%", "SpO2": "J4%",
+}
+
+
 def _pending_orders() -> dict:
-    """Lab orders placed at a visit that never returned a result.
+    """EVERY unreturned lab order, triaged deterministically. Nothing is sampled.
+
+    Coverage used to depend on which patients the agent happened to look at: one
+    run made 21 tool calls and found Schwartz, Mary's eleven-month-old potassium
+    order, the next made 6 and did not. Sampling is not an acceptable basis for a
+    safety net, so all 120 are returned here with the facts already computed --
+    how long open, whether a later result supersedes it, and whether the patient
+    still carries the condition the test monitors.
+
+    Your job is to judge which of the ACTIONABLE ones matter and why. You do not
+    need to call patient_snapshot to establish the three facts below; they are
+    already here.
 
     Returns:
-        every unresulted order with patient, test and how long it has been open.
+        counts, then the orders in three buckets: actionable, superseded, and
+        no_live_indication.
     """
     con = connect()
     try:
@@ -569,11 +596,44 @@ def _pending_orders() -> dict:
                    date_diff('month', o.ORDER_DATE, DATE '2026-05-27') AS months_open
             FROM v_lab_order o JOIN patient p USING (PAT_ID)
             WHERE o.is_pending ORDER BY months_open DESC""").fetchall()
+
+        out = []
+        for name, pid, test, ordered, months in rows:
+            superseded = con.execute(
+                "SELECT count(*) FROM v_lab_result WHERE PAT_ID = ? "
+                "AND COMPONENT_NAME = ? AND RESULT_DATE > ?",
+                [pid, test, ordered]).fetchone()[0] > 0
+            pattern = _ANALYTE_INDICATION.get(test)
+            if pattern is None:
+                indication = None          # not a condition-specific monitor
+            else:
+                indication = con.execute(
+                    "SELECT count(*) FROM v_diagnosis WHERE PAT_ID = ? AND icd10 LIKE ?",
+                    [pid, pattern]).fetchone()[0] > 0
+            out.append({"patient": name, "pat_id": pid, "test": test,
+                        "ordered": str(ordered), "months_open": months,
+                        "superseded_by_later_result": superseded,
+                        "patient_has_the_condition_it_monitors": indication})
     finally:
         con.close()
-    return {"total": len(rows),
-            "orders": [{"patient": r[0], "pat_id": r[1], "test": r[2],
-                        "ordered": str(r[3]), "months_open": r[4]} for r in rows]}
+
+    actionable = [o for o in out if not o["superseded_by_later_result"]
+                  and o["patient_has_the_condition_it_monitors"] is not False]
+    superseded = [o for o in out if o["superseded_by_later_result"]]
+    no_ind = [o for o in out if not o["superseded_by_later_result"]
+              and o["patient_has_the_condition_it_monitors"] is False]
+    actionable.sort(key=lambda o: (-o["months_open"],
+                                   o["patient_has_the_condition_it_monitors"] is not True))
+    return {
+        "total": len(out),
+        "counts": {"actionable": len(actionable), "superseded": len(superseded),
+                   "no_live_indication": len(no_ind)},
+        "REVIEW_ALL_ACTIONABLE": "Every actionable order is listed. Work the list; "
+                                 "do not sample it, and say how many you judged.",
+        "actionable": actionable,
+        "superseded": superseded[:15],
+        "no_live_indication": no_ind[:15],
+    }
 
 
 async def _run_agent(agent: LlmAgent, prompt: str, app: str) -> str:
