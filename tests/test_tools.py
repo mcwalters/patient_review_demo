@@ -222,3 +222,38 @@ def test_floor_is_seeded_before_any_agent_runs():
     build_supervisor([], f)
     rows = f.all()
     assert rows and all(r["agent"] == "guaranteed" for r in rows)
+
+
+# ------------------------------------------------------------- shared rules
+def test_every_agent_carries_every_shared_rule():
+    """The rules drifted when they lived inline; this is what stops that.
+
+    They were copied by hand into each instruction, so SEVERITY_WORDS reached
+    two specialists of three and the pre-visit brief -- written last --
+    reintroduced an honorific bug already fixed in the panel agents.
+    """
+    from prototype import brief, panel
+    from prototype.rules import BP_SEVERITY, NAMING, NO_STOP_DATES, NUMBERS
+
+    instructions = {
+        "integrity": panel.INTEGRITY_INSTRUCTION,
+        "guideline": panel.GUIDELINE_INSTRUCTION,
+        "followup": panel.FOLLOWUP_INSTRUCTION,
+        "brief": brief.BRIEF_INSTRUCTION,
+    }
+    rules = {"naming": NAMING, "numbers": NUMBERS,
+             "no stop dates": NO_STOP_DATES, "bp severity": BP_SEVERITY}
+    missing = [f"{agent} is missing the {rule} rule"
+               for agent, text in instructions.items()
+               for rule, body in rules.items() if body.strip() not in text]
+    assert not missing, missing
+
+
+def test_shared_rules_appear_once_per_instruction():
+    """A rule pasted twice is a rule someone will edit in one place."""
+    from prototype import brief, panel
+    from prototype.rules import NAMING
+    marker = NAMING.strip().splitlines()[0]
+    for text in (panel.INTEGRITY_INSTRUCTION, panel.GUIDELINE_INSTRUCTION,
+                 panel.FOLLOWUP_INSTRUCTION, brief.BRIEF_INSTRUCTION):
+        assert text.count(marker) == 1

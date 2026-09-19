@@ -199,13 +199,11 @@ os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "us-west1")
 from google.adk.agents import LlmAgent  # noqa: E402
 
 from .panel import MODEL, _run_agent  # noqa: E402
+from .rules import SHARED  # noqa: E402
 
 BRIEF_INSTRUCTION = """\
 You write the briefing a panel manager reads in the thirty seconds before they
 phone a patient. Everything you need is in the pack you are given.
-
-WRITE NO NUMBER THAT IS NOT IN THE PACK. Not a count, not a lab value, not a
-duration. If it is not there, leave it out. Quote the pack's numbers exactly.
 
 Structure, in this order and no other:
 
@@ -236,14 +234,13 @@ Structure, in this order and no other:
    medication list shows what was started, never what was stopped, if the
    patient has any medications.
 
-Use the patient's name exactly as recorded and never add a title. No Mr, Ms,
-Mrs or Dr. The record has a sex field if that ever matters; inferring one from a
-first name is how a clinical tool misgenders somebody.
-
 Never recommend a drug, a dose or a titration. You raise topics for a clinician;
 you do not prescribe. Do not pad: a patient with little going on gets a short
 brief, and that is the correct output.
 """
+
+
+BRIEF_INSTRUCTION += SHARED
 
 
 def _agent() -> LlmAgent:
