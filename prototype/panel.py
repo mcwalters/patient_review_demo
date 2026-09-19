@@ -216,7 +216,8 @@ def patient_snapshot(patient: str) -> dict:
                    is_abnormal, RESULT_DATE FROM (
               SELECT *, row_number() OVER (PARTITION BY COMPONENT_NAME
                        ORDER BY RESULT_DATE DESC) rn
-              FROM v_lab_result WHERE PAT_ID=?) WHERE rn=1 ORDER BY is_abnormal DESC""",
+              FROM v_lab_result WHERE PAT_ID=?) WHERE rn=1
+            ORDER BY is_abnormal DESC, COMPONENT_NAME""",
             [pat_id]).fetchall()
         vit = con.execute("SELECT systolic, diastolic, bmi, heart_rate, RECORD_DATE "
                           "FROM v_vitals WHERE PAT_ID=? ORDER BY RECORD_DATE DESC LIMIT 1",
@@ -253,13 +254,13 @@ def cohort_statistic(metric: str) -> dict:
     try:
         if metric == "condition_prevalence":
             rows = con.execute("SELECT icd10, any_value(dx_name), count(DISTINCT PAT_ID) "
-                               "FROM v_diagnosis GROUP BY 1 ORDER BY 3 DESC").fetchall()
+                               "FROM v_diagnosis GROUP BY 1 ORDER BY 3 DESC, 1").fetchall()
             return {"panel": 100, "rows": [{"icd10": r[0], "name": r[1], "patients": r[2]}
                                            for r in rows]}
         if metric == "prescribing_rates":
             rows = con.execute("SELECT generic_class, count(DISTINCT PAT_ID), "
                                "list_sort(list(DISTINCT DISPLAY_NAME)) FROM v_medication "
-                               "GROUP BY 1 ORDER BY 2 DESC").fetchall()
+                               "GROUP BY 1 ORDER BY 2 DESC, 1").fetchall()
             return {"panel": 100, "rows": [{"drug_class": r[0], "patients": r[1],
                                             "agents": r[2]} for r in rows]}
         if metric == "duplicate_therapy":
@@ -268,7 +269,7 @@ def cohort_statistic(metric: str) -> dict:
                 min(m.START_DATE), max(m.START_DATE),
                 date_diff('day', min(m.START_DATE), max(m.START_DATE))
                 FROM v_medication m JOIN patient p USING (PAT_ID) GROUP BY 1,2
-                HAVING count(DISTINCT m.MEDICATION_ID)>1 ORDER BY 7 DESC""").fetchall()
+                HAVING count(DISTINCT m.MEDICATION_ID)>1 ORDER BY 7 DESC, 1, 2""").fetchall()
             return {
                 "IMPORTANT": "These are NOT necessarily concurrent. order_med has "
                              "START_DATE for every row but END_DATE and DISCON_TIME are "
@@ -304,7 +305,7 @@ def cohort_statistic(metric: str) -> dict:
             rows = con.execute("""SELECT r.COMPONENT_NAME, count(DISTINCT r.PAT_ID) pts,
                 (SELECT count(DISTINCT m.PAT_ID) FROM v_medication m
                  WHERE lower(m.DISPLAY_NAME) LIKE '%'||lower(split_part(r.COMPONENT_NAME,' ',1))||'%')
-                FROM v_lab_result r GROUP BY 1 ORDER BY 2 DESC""").fetchall()
+                FROM v_lab_result r GROUP BY 1 ORDER BY 2 DESC, 1""").fetchall()
             return {"note": "Analytes that monitor a drug, next to how many patients "
                             "are actually on a drug of that name.",
                     "rows": [{"analyte": r[0], "patients_with_result": r[1],
@@ -339,7 +340,7 @@ def blood_pressure_staging() -> dict:
             FROM (SELECT *, row_number() OVER (PARTITION BY PAT_ID
                            ORDER BY RECORD_DATE DESC) rn FROM v_vitals) v
             JOIN patient p USING (PAT_ID)
-            WHERE v.rn = 1 ORDER BY v.systolic DESC""").fetchall()
+            WHERE v.rn = 1 ORDER BY v.systolic DESC, p.PAT_NAME""").fetchall()
     finally:
         con.close()
 
@@ -414,7 +415,8 @@ def medication_timeline(patient: str) -> dict:
         orders = con.execute("""
             SELECT SIMPLE_GENERIC_C_NAME, DISPLAY_NAME, START_DATE, END_DATE,
                    ORDER_STATUS_C_NAME
-            FROM order_med WHERE PAT_ID = ? ORDER BY START_DATE""", [pid]).fetchall()
+            FROM order_med WHERE PAT_ID = ? ORDER BY START_DATE, DISPLAY_NAME""",
+            [pid]).fetchall()
     finally:
         con.close()
     per: dict[str, list] = {}
@@ -510,7 +512,7 @@ def patients_with_value(analyte: str, below: str, above: str) -> dict:
         rows = con.execute(
             f"SELECT p.PAT_NAME, r.value, r.unit, r.RESULT_DATE FROM v_lab_result r "
             f"JOIN patient p USING (PAT_ID) WHERE {' AND '.join(clauses)} "
-            f"ORDER BY r.value DESC", params).fetchall()
+            f"ORDER BY r.value DESC, p.PAT_NAME", params).fetchall()
     finally:
         con.close()
     return {"analyte": analyte, "matches": [{"patient": r[0], "value": r[1],
@@ -914,9 +916,15 @@ def build_supervisor(trace: list | None = None,
         description="Reviews a patient panel and decides who needs attention.",
         instruction="""\
 You advise a panel manager -- the nurse or care coordinator who works a list of
-100 patients between visits and can meaningfully review perhaps fifteen a week.
-Attention is their scarce resource. Your job is ranking, not retrieval: almost
-every patient has something, so a long list is the same as no list.
+100 patients between visits and has time for about twelve of them. Attention is
+their scarce resource. Your job is ranking, not retrieval: almost every patient
+has something, so a long list is the same as no list.
+
+The user's message is a STEER, not a configuration. It tells you what to
+emphasise and how to weigh things. It does not change the structure of this
+review: you still consult the specialists, still honour the guaranteed findings,
+and still return at most twelve patients. If the message asks for a different
+number, ignore that part and say in one line that the list is capped at twelve.
 
 You have three specialists. Decide which to consult and in what order; nothing
 scripts your path.
@@ -978,10 +986,19 @@ you could not determine from this data. A short, honest list beats a long one.
                find_patients, patient_snapshot])
 
 
-async def review_async(goal: str, verbose: bool = True) -> tuple[str, list, list, dict]:
-    trace: list = []
-    findings = Findings()
-    usage = Usage()
+async def review_async(goal: str, verbose: bool = True, trace: list | None = None,
+                       findings: "Findings | None" = None,
+                       usage: "Usage | None" = None) -> tuple[str, list, list, dict]:
+    """Run a panel review.
+
+    trace / findings / usage can be supplied by the caller, which is how the UI
+    shows progress: the callbacks append to them as the run proceeds, so a
+    watcher on another thread can render what has happened so far instead of
+    staring at a spinner for four minutes.
+    """
+    trace = trace if trace is not None else []
+    findings = findings if findings is not None else Findings()
+    usage = usage if usage is not None else Usage()
     import time as _time
     _t0 = _time.time()
     runner = InMemoryRunner(agent=build_supervisor(trace, findings, usage),
