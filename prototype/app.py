@@ -10,8 +10,11 @@ from __future__ import annotations
 
 import asyncio
 import json
+import threading
+import time
 import re
 import sys
+from urllib.parse import quote
 from pathlib import Path
 
 import pandas as pd
@@ -22,7 +25,7 @@ from prototype import preflight, theme               # noqa: E402
 from prototype.guidelines import (                   # noqa: E402
     DISCLAIMER, GUIDELINES, check_guideline)
 from prototype.brief import write_brief_async        # noqa: E402
-from prototype.panel import review_async             # noqa: E402
+from prototype.panel import Findings, review_async   # noqa: E402
 from prototype.screener import screen_async          # noqa: E402
 from prototype.tools import ScreeningSession, connect  # noqa: E402
 
@@ -57,7 +60,11 @@ def link_patients(markdown: str, names: list[str]) -> str:
     pattern = re.compile(
         r"(?<![\[=])(" + "|".join(re.escape(n) for n in sorted(names, key=len, reverse=True))
         + r")(?!\]\()")
-    return pattern.sub(lambda m: f"[{m.group(0)}](?patient={m.group(0)})", markdown)
+    # The URL must be percent-encoded. A patient name holds a comma and a space,
+    # and a markdown link whose target contains a raw space is not parsed as a
+    # link at all -- it renders as the literal "[Name](?patient=Name)".
+    return pattern.sub(
+        lambda m: f"[{m.group(0)}](?patient={quote(m.group(0))})", markdown)
 
 
 st.set_page_config(page_title="Panel Review — Qualified Health",
@@ -133,7 +140,7 @@ def patient_link_column(df, name_col: str = "patient"):
     patient rather than as a URL.
     """
     out = df.copy()
-    out[name_col] = out[name_col].map(lambda n: f"?patient={n}")
+    out[name_col] = out[name_col].map(lambda n: f"?patient={quote(n)}")
     return out, {name_col: st.column_config.LinkColumn(
         name_col, display_text=r"\?patient=(.*)",
         help="open this patient's pre-visit brief")}
@@ -150,13 +157,70 @@ if view == "Panel review":
     c3.markdown("**followup**  \nwhat was started and never finished")
 
     goal = st.text_input(
-        "Goal for the supervisor",
-        "Who on this panel needs my attention this week? I can review about a dozen.")
+        "What should the supervisor focus on?",
+        "Anything that needs attention this week.",
+        help="This steers what the supervisor emphasises and how it ranks. It "
+             "cannot change the structure of the review: the three specialists, "
+             "the data-integrity check, the guaranteed findings and the "
+             "twelve-patient cap are fixed.")
+    st.caption("A steer, not a configuration. The shortlist is capped at twelve "
+               "regardless of what you ask for — say so here and it will be "
+               "ignored.")
     if st.button("Run panel review", type="primary", key="run_panel"):
-        with st.spinner("Supervisor consulting specialists… (3–5 min)"):
-            report, ptrace, pfindings, pusage = asyncio.run(
-                review_async(goal, verbose=False))
-        st.session_state["panel"] = (report, ptrace, pfindings, pusage)
+        # The run takes minutes. The callbacks append to these as it goes, so
+        # the loop below can render what has actually happened rather than
+        # showing a spinner and hoping.
+        live_trace: list = []
+        live_findings = Findings()
+        box: dict = {}
+
+        def _work():
+            try:
+                box["result"] = asyncio.run(review_async(
+                    goal, verbose=False, trace=live_trace, findings=live_findings))
+            except Exception as exc:                       # surfaced below
+                box["error"] = f"{type(exc).__name__}: {exc}"
+
+        worker = threading.Thread(target=_work, daemon=True)
+        worker.start()
+
+        LABEL = {"data_integrity": "Checking which records can be trusted",
+                 "guideline_concordance": "Checking who is missing recommended therapy",
+                 "followup": "Checking what was started and never finished",
+                 "panel_review": "Supervisor deciding what to consult",
+                 "guaranteed": "Guaranteed findings"}
+        started = time.time()
+        with st.status("Starting the panel review…", expanded=True) as status:
+            log = st.empty()
+            while worker.is_alive():
+                seen = list(live_trace)
+                n_find = len(live_findings.all())
+                by_agent: dict[str, int] = {}
+                for t in seen:
+                    by_agent[t["agent"]] = by_agent.get(t["agent"], 0) + 1
+                current = seen[-1]["agent"] if seen else "panel_review"
+                status.update(label=f"{LABEL.get(current, current)} · "
+                                    f"{len(seen)} tool calls · {n_find} findings · "
+                                    f"{int(time.time() - started)}s")
+                lines = [f"**{LABEL.get(a, a)}** — {n} call(s)"
+                         for a, n in by_agent.items()]
+                if seen:
+                    recent = "  \n".join(
+                        f"`{t['agent']}` → {t['tool']}" for t in seen[-6:])
+                    lines.append("")
+                    lines.append(recent)
+                log.markdown("  \n".join(lines) or "Seeding the guaranteed findings…")
+                time.sleep(1.0)
+            worker.join()
+            if "error" in box:
+                status.update(label="The run failed", state="error")
+                st.error(box["error"])
+                st.stop()
+            status.update(label=f"Done — {len(live_trace)} tool calls, "
+                                f"{len(live_findings.all())} findings, "
+                                f"{int(time.time() - started)}s", state="complete",
+                          expanded=False)
+        st.session_state["panel"] = box["result"]
 
     if "panel" in st.session_state:
         report, ptrace, pfindings, pusage = st.session_state["panel"]
