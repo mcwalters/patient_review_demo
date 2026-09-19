@@ -300,7 +300,7 @@ if view == "Patient brief":
                     st.write(f"**{g['id']}** {g['title']}")
                     st.caption(g["source"])
                 if not pack["care_gaps"]:
-                    st.write("None against the eight-guideline pack.")
+                    st.write("None against the four-guideline pack.")
         # Reconciliation against the note now runs inside write_brief and appears
         # in the prose. A control behind a button is a control nobody presses.
         rec = pack.get("note_reconciliation") or {}
@@ -525,12 +525,17 @@ if view == "Guidelines used":
 
     st.divider()
     st.caption(
-        "**Why so few, and why these.** Eight recommendations covering the "
-        "conditions this panel actually has. A real deployment would carry a "
-        "maintained guideline library with versioning and an owner; the point here "
-        "is the mechanism, not the coverage. Note that G5 cannot be fully evaluated "
-        "— CHA₂DS₂-VASc needs prior stroke and vascular disease, and neither is in "
-        "this dataset."
+        "**Why so few, and why these.** Four recommendations, each chosen because "
+        "the population is small, the recommendation is unambiguous, and the "
+        "absence is worth a clinician's time. Four others were cut for failing "
+        "that test: anticoagulation in AF (CHA₂DS₂-VASc needs prior stroke and "
+        "vascular disease, neither of which is in this extract), metformin "
+        "first-line (21 gaps in a population of 28, with the contraindications "
+        "that would explain them unrecorded), statin in hyperlipidaemia (31 of 50 "
+        "— a population-health campaign, not a weekly worklist), and TSH "
+        "monitoring (real but minor). A real deployment carries a maintained "
+        "library with a version and an owner; the point here is the mechanism, "
+        "not the coverage."
     )
 
 theme.footer()
