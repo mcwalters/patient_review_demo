@@ -13,20 +13,24 @@ python -m venv .venv && ./.venv/bin/pip install -r requirements.txt
 ## Prototype
 
 [`prototype/`](prototype/README.md) holds a working GenAI prototype built on this
-data: **eligibility screening from a free-text protocol**. An ADK agent running
-Gemini 2.5 Pro on Vertex AI (application default credentials, no API key) reads
-criteria as written, grounds every clinical concept in the dataset's own
-vocabulary, and returns the cohort with per-patient evidence. A pre-flight
-plausibility linter audits the extract first.
+data: **a panel manager's worklist**. The user is the population-health nurse who
+works a list of 100 patients between visits and can meaningfully review about
+fifteen a week — so the product's job is ranking, not retrieval.
+
+A supervisor agent decides which of three specialists to consult and in what
+order: `data_integrity` (which records cannot be trusted), `guideline_concordance`
+(who is missing recommended therapy) and `followup` (what was started and never
+finished). Clicking any patient opens a pre-visit brief. Gemini 2.5 Pro on Vertex
+AI via application default credentials — no API key.
 
 ```bash
 streamlit run prototype/app.py
 ```
 
-The agent never writes SQL — it selects from a fixed vocabulary and deterministic
-code runs every query, so a hallucinated ICD-10 code cannot reach the database.
-See [`prototype/README.md`](prototype/README.md) for the architecture, the safety
-properties, and the two ways it has been observed to get concept expansion wrong.
+Two rules hold throughout: **no model writes SQL**, and **no model computes what
+code can compute**. Every bug in the build came from breaking the second one. See
+[`prototype/README.md`](prototype/README.md) for the architecture, the safety
+properties, and the failure modes with their fixes.
 
 Thirteen worked examples live in [`demo_queries.sql`](demo_queries.sql) — panel
 snapshot, chronic-condition registry, care gaps (uncontrolled hypertension,

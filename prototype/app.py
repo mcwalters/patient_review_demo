@@ -60,7 +60,7 @@ def link_patients(markdown: str, names: list[str]) -> str:
     return pattern.sub(lambda m: f"[{m.group(0)}](?patient={m.group(0)})", markdown)
 
 
-st.set_page_config(page_title="Eligibility Screening — Qualified Health",
+st.set_page_config(page_title="Panel Review — Qualified Health",
                    page_icon=str(theme.ASSETS / "q-mark.png"), layout="wide")
 theme.apply()
 
@@ -77,13 +77,20 @@ cholesterol is still above 100. Exclude anyone already on a PCSK9 inhibitor.""",
 Exclude heart failure and anyone already on a GLP-1 receptor agonist.""",
 }
 
-theme.title("Eligibility screening", "from a free-text protocol",
-            "Gemini 2.5 Pro on Vertex AI · application default credentials · "
-            "100-patient synthetic EHR · the model grounds clinical concepts, "
-            "deterministic code runs every query")
+theme.title("Panel review", "who needs attention this week",
+            "A supervisor agent and three specialists over a 100-patient synthetic "
+            "EHR · Gemini 2.5 Pro on Vertex AI, application default credentials · "
+            "no model writes SQL, and no model computes what code can compute")
 
-VIEWS = ["Panel review", "Patient brief", "Screen a protocol",
-         "Pre-flight data audit", "What the model may select", "Guidelines used"]
+VIEWS = ["Panel review", "Patient brief", "Pre-flight data audit",
+         "What the model may select", "Guidelines used"]
+
+# Protocol screening is not part of the product being presented -- the panel
+# manager's worklist is. The code stays and the view is still reachable at
+# ?view=Screen%20a%20protocol if someone asks to see it, but it is off the nav
+# so the demo has one story rather than two.
+HIDDEN_VIEWS = ["Screen a protocol"]
+ALL_VIEWS = VIEWS + HIDDEN_VIEWS
 
 # Navigation is session state rather than st.tabs, because a patient name has to
 # be able to send you to another view. st.tabs cannot be switched in code.
@@ -93,13 +100,19 @@ if _qp.get("patient"):
     st.session_state["brief_patient"] = _qp["patient"]
     st.session_state["view"] = "Patient brief"
     st.query_params.clear()
-elif _qp.get("view") in VIEWS:
+elif _qp.get("view") in ALL_VIEWS:
     st.session_state["view"] = _qp["view"]
     st.query_params.clear()
 
-view = st.segmented_control("Section", VIEWS, key="view", label_visibility="collapsed",
-                            default=st.session_state.get("view", VIEWS[0]))
-view = view or st.session_state.get("view") or VIEWS[0]
+_current = st.session_state.get("view", VIEWS[0])
+if _current in HIDDEN_VIEWS:                 # reached by URL, not on the nav
+    view = _current
+    st.caption(f"Viewing **{_current}** — not part of the presented product; "
+               f"[back to the panel review](?view=Panel%20review).")
+else:
+    view = st.segmented_control("Section", VIEWS, key="view",
+                                label_visibility="collapsed", default=_current) \
+           or _current or VIEWS[0]
 
 
 @st.cache_data(show_spinner=False)
