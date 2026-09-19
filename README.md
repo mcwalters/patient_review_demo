@@ -74,7 +74,14 @@ They describe different parts of the care journey and are **not** a parent/child
 | Window | encounter −3 to 0 days | encounter −727 to +345 days |
 | Answers | "what did we order at this visit, and what came back?" | "what is this patient's lab trend?" |
 | Result data | inline on the row | inline + reference ranges |
-| Pending | 120 of 588 unresulted | n/a |
+| Pending | 120 of 588 unresulted (74 actionable) | n/a |
+
+Of the 120 unresulted orders, **34 are superseded** — the patient has a later
+result for that analyte in `order_results`, so the order was effectively
+answered even though nothing was attached to it. A further 12 monitor a
+condition the patient does not carry. **74 are genuinely outstanding.** Quoting
+120 as the size of the follow-up problem overstates it by nearly a third;
+`prototype.panel._pending_orders()` does this triage deterministically.
 
 `ORDER_PROC_ID` values are disjoint between them (0 of 1,288 match), and where
 the same encounter+analyte appears in both, the values and dates disagree. So
