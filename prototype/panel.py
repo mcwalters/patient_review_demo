@@ -976,10 +976,14 @@ silent" while three of that agent's findings were on its own shortlist.
 You may also call patient_snapshot yourself to check a specific patient before
 putting them on the list.
 
-Finish with a ranked shortlist of no more than TWELVE patients. For each: the
-name, the single reason they are on the list, and what the panel manager should
-actually do. Then state plainly what you deliberately left off and why, and what
-you could not determine from this data. A short, honest list beats a long one.
+Finish with a ranked shortlist of no more than TWELVE patients. Write each one
+as a single numbered item, two lines, and no sub-bullets:
+
+1.  **Last, First** -- the one reason they are on the list, with its [F..] id.
+    **Do** the one thing the panel manager should do next.
+
+Then state plainly what you deliberately left off and why, and what you could
+not determine from this data. A short, honest list beats a long one.
 """,
         tools=[consult_data_integrity, consult_guideline_concordance,
                consult_followup, get_all_findings, get_agent_activity,

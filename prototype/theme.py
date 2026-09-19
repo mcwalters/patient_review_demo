@@ -108,6 +108,15 @@ CSS = f"""
       background: #FFFFFF;
   }}
 
+  /* Streamlit renders a markdown list with a paragraph inside every <li>, so a
+     twelve-patient shortlist arrives as twelve paragraphs with full paragraph
+     spacing between them. Tighten the item gap and let a folded "**Do**" line
+     sit directly under the patient it belongs to. */
+  [data-testid="stMarkdownContainer"] li {{ margin-bottom: .3rem; }}
+  [data-testid="stMarkdownContainer"] li > p {{ margin-bottom: .15rem; }}
+  [data-testid="stMarkdownContainer"] li ul, 
+  [data-testid="stMarkdownContainer"] li ol {{ margin-top: .15rem; }}
+
   /* [F03] citations in the supervisor's report -- small, brand blue, and
      visibly clickable, so a reader can jump to the evidence behind a claim. */
   a[href="#findings-the-specialists-recorded"] {{
