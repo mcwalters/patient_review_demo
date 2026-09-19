@@ -139,8 +139,8 @@ def main():
     con.execute(r"""
     CREATE VIEW v_note_extract AS
     WITH parsed AS (
-        SELECT NOTE_ID, PAT_ID, PAT_ENC_CSN_ID, AUTHOR_PROV_NAME, AUTHOR_SERVICE,
-               ENTRY_TIME, NOTE_TEXT,
+        SELECT NOTE_ID, PAT_ID, PAT_ENC_CSN_ID, AUTHOR_USER_ID, AUTHOR_PROV_NAME,
+               AUTHOR_SERVICE, ENTRY_TIME, NOTE_TEXT,
                trim(split_part(NOTE_TEXT, '.', 1))                   AS note_style,
                regexp_extract(NOTE_TEXT,
                    '(?:Active conditions:|Chronic conditions:|Problem list active:|Patient is managed for)\s*(.+?)\.\s+(?:Medications reconciled:|Medication list:|Medications:|Current drug regimen includes)',
@@ -156,8 +156,8 @@ def main():
                regexp_extract(NOTE_TEXT, 'Follow-up in ([0-9]+) months', 1) AS fu_raw
         FROM hno_info
     )
-    SELECT NOTE_ID, PAT_ID, PAT_ENC_CSN_ID, AUTHOR_PROV_NAME, AUTHOR_SERVICE, ENTRY_TIME,
-           note_style,
+    SELECT NOTE_ID, PAT_ID, PAT_ENC_CSN_ID, AUTHOR_USER_ID, AUTHOR_PROV_NAME, AUTHOR_SERVICE,
+           ENTRY_TIME, note_style,
            str_split(cond_raw, ' | ')                               AS conditions,
            str_split(meds_raw, ' | ')                               AS medications,
            try_cast(sys_raw AS INTEGER)                             AS systolic,
