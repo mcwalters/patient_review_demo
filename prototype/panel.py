@@ -32,6 +32,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 from .guidelines import check_guideline, list_guidelines
+from .rules import SHARED
 from .tools import AS_OF, ScreeningSession, connect
 
 MODEL = "gemini-2.5-pro"
@@ -482,31 +483,6 @@ def patients_with_value(analyte: str, below: str, above: str) -> dict:
             "unit": r[2], "date": str(r[3])} for r in rows]}
 
 
-SEVERITY_WORDS = """\
-DO NOT INVENT SEVERITY LABELS FOR BLOOD PRESSURE. Call blood_pressure_staging
-and use the stage it returns. An earlier run reported "unaddressed severe
-hypertension" for five patients, ranked them first through fifth, and only two
-met any severe threshold -- one was 111/104, which is not hypertension. Only 7
-of 153 readings in this panel reach hypertensive crisis.
-
-The same tool flags readings whose pulse pressure is impossible. Those are data
-defects and belong in a data-quality finding, not a blood-pressure one.
-"""
-
-NO_STOP_DATES = """\
-ONE TRAP THAT CATCHES EVERY AGENT HERE. A patient holding two agents of the
-same class is NOT evidence of concurrent therapy in this extract. Nothing is
-ever recorded as stopped -- END_DATE and DISCON_TIME are entirely empty and all
-522 orders read Active -- so a switch and a combination look identical. Across
-the 20 duplicated patient-class pairs the start dates are 113 to 1376 days
-apart, mean 814. Rogers, Jessica's four statin orders span 2022 to 2026.
-
-Call medication_timeline before describing anything as duplicate, double or
-triple therapy, and report what the start dates show. If they are months or
-years apart, it is sequential switching -- say that instead. The reportable
-defect is the missing discontinuation data, not the patient.
-"""
-
 INTEGRITY_INSTRUCTION = """\
 You investigate whether this EHR extract can be trusted. You are not checking
 types or nulls -- other tooling does that. You are asking whether a clinician
@@ -527,18 +503,13 @@ STATE EVERY FINDING IN YOUR REPLY. Your report is parsed into structured
 findings automatically, so anything you write down is captured -- but only what
 you write down. Do not leave a conclusion implicit.
 
-ALWAYS NAME THE PATIENTS. A finding without names cannot be acted on, and the
-supervisor cannot recover names you leave out. Give the name exactly as recorded
--- no titles, no honorifics, no Mr/Ms. Do not infer anything about a patient
-that is not in the record.
-
 Report only what you verified, with the numbers the tools returned -- never a
 number you recalled. For each finding give: what you observed, what you expected,
 whether it is one record or systematic, and what it would break for a panel
 manager acting on this data. Say explicitly when a suspicion did NOT hold up.
 """
 
-INTEGRITY_INSTRUCTION += NO_STOP_DATES + SEVERITY_WORDS
+INTEGRITY_INSTRUCTION += SHARED
 
 GUIDELINE_INSTRUCTION = """\
 You check whether this panel's care matches guideline recommendations.
@@ -562,15 +533,10 @@ STATE EVERY FINDING IN YOUR REPLY. Your report is parsed into structured
 findings automatically, so anything you write down is captured -- but only what
 you write down. Do not leave a conclusion implicit.
 
-ALWAYS NAME THE PATIENTS. A finding without names cannot be acted on, and the
-supervisor cannot recover names you leave out. Give the name exactly as recorded
--- no titles, no honorifics, no Mr/Ms. Do not infer anything about a patient
-that is not in the record.
-
 Rank what you found by how likely it is to matter, and keep it short.
 """
 
-GUIDELINE_INSTRUCTION += NO_STOP_DATES + SEVERITY_WORDS
+GUIDELINE_INSTRUCTION += SHARED
 
 FOLLOWUP_INSTRUCTION = """\
 You find care that was started and never finished.
@@ -609,16 +575,11 @@ STATE EVERY FINDING IN YOUR REPLY. Your report is parsed into structured
 findings automatically, so anything you write down is captured -- but only what
 you write down. Do not leave a conclusion implicit.
 
-ALWAYS NAME THE PATIENTS. A finding without names cannot be acted on, and the
-supervisor cannot recover names you leave out. Give the name exactly as recorded
--- no titles, no honorifics, no Mr/Ms. Do not infer anything about a patient
-that is not in the record.
-
 Report the ones worth chasing, with the patient, the test, how long it has been
 open, and why it still matters. Be brief.
 """
 
-FOLLOWUP_INSTRUCTION += NO_STOP_DATES
+FOLLOWUP_INSTRUCTION += SHARED
 
 
 # Which analytes monitor which DRUG. An INR monitors warfarin, not apixaban;
