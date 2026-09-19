@@ -62,6 +62,13 @@ dismissed hypothesis is a result.
 
 Do not merge two problems into one finding because they share a patient, and do
 not split one problem into several because it names several patients.
+
+DEDUPLICATE. A report often states the same problem twice -- once as a panel
+statistic and again with the patients named. That is ONE finding, not two. Emit
+a single row and keep the version carrying the patient names; fold any extra
+numbers into its evidence. Two findings are distinct only when they describe
+different problems, not when they describe one problem at different levels of
+detail.
 """
 
 
