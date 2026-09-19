@@ -144,6 +144,37 @@ Worth knowing before you build a demo on it:
   `patient.CUR_PCP_PROV_NAME` — so 292 rows carry a dirty string. **Join on
   `PROV_ID`, never on `PROV_NAME`**, and read credentials from `PROV_TYPE`
   rather than parsing the name.
+- **ICD-10 codes fragment across near-duplicates.** Grouping on the raw code
+  silently halves most cohorts. Roll up to condition families first.
+
+  | family | true patients | largest single code | undercount |
+  |---|---|---|---|
+  | Lipid disorder | 50 | `E78.00` (19) | −31 |
+  | Hypertension | 46 | `I11.9` (25) | −21 |
+  | Type 2 diabetes | 28 | `E11.51` (12) | −16 |
+  | GERD | 27 | `K21.9` (17) | −10 |
+  | Anxiety | 18 | `F41.9` (10) | −8 |
+  | Depression | 13 | `F32.9` (8) | −5 |
+  | Atrial fibrillation | 9 | `I48.19` (4) | −5 |
+
+- **Age and insurance are incoherent with the visit type.** Median age 43.5,
+  range 18–81, and only **19 of 100** patients are 65+ — yet all 153 encounters
+  are billed as Annual Wellness Visits, a Medicare benefit. `INSURANCE` is
+  unrelated to age: "medicare" covers 51 patients aged **18–75**. Do not build
+  anything that depends on age-based screening thresholds or Medicare
+  eligibility.
+- **Medications are 100% coherent with their indication.** Across nine classes
+  tested (statin→lipids, SSRI→depression/anxiety, DOAC→AFib, PPI→GERD,
+  SGLT2i→T2DM/HF, and others) every patient on the drug carries the matching
+  diagnosis. The generator assigned drugs from conditions, so **"on a drug with
+  no indication" returns zero rows** — overtreatment and wrong-drug detection
+  have no material here. Undertreatment does (24 of 28 diabetics are not on a
+  statin), as does within-class duplication (20 patient-class pairs, including
+  three patients on three SSRIs and one on three DOACs).
+- **Some prescribing rates are implausible.** PCSK9i appears in 16 of 100
+  patients, half of them not on a statin; real-world use is 1–2% of a lipid
+  population and near-always statin-refractory. Useful for making a mechanism
+  legible, not for citing as epidemiology.
 - **Note phrasing is template assignment, not clinical fact.** See below.
 
 ### Provider attribution is random
