@@ -22,6 +22,8 @@ from prototype import preflight, theme               # noqa: E402
 from prototype.guidelines import (                   # noqa: E402
     DISCLAIMER, GUIDELINES, check_guideline)
 from prototype.brief import write_brief_async        # noqa: E402
+from prototype.fixtures import PLANTED_CONFLICTS, planted_note  # noqa: E402
+from prototype.reconcile import reconcile_async      # noqa: E402
 from prototype.panel import review_async             # noqa: E402
 from prototype.screener import screen_async          # noqa: E402
 from prototype.tools import ScreeningSession, connect  # noqa: E402
@@ -296,6 +298,54 @@ if view == "Patient brief":
                     st.caption(g["source"])
                 if not pack["care_gaps"]:
                     st.write("None against the eight-guideline pack.")
+        # ---- reconcile the brief against what the clinician actually wrote ----
+        st.divider()
+        st.markdown("#### Checked against the clinician's note")
+        st.caption("The brief is assembled from structured tables; the note is what a "
+                   "human recorded at the visit. Where they disagree, the brief is the "
+                   "one that is wrong. This is a control, not a discovery step.")
+
+        rc1, rc2 = st.columns([1, 1])
+        run_real = rc1.button("Reconcile against the note", key=f"rec_{who}")
+        can_plant = who in PLANTED_CONFLICTS
+        run_plant = rc2.button("Demonstrate with a planted conflict",
+                               key=f"plant_{who}", disabled=not can_plant,
+                               help=None if can_plant else
+                               "No fixture written for this patient")
+
+        rec_cache = st.session_state.setdefault("reconciliations", {})
+        if run_real:
+            with st.spinner("Comparing the brief with the note…"):
+                rec_cache[(who, "real")] = asyncio.run(
+                    reconcile_async(pack, narrative))
+        if run_plant:
+            with st.spinner("Comparing the brief with a fabricated note…"):
+                rec_cache[(who, "planted")] = asyncio.run(
+                    reconcile_async(pack, narrative, planted_note(who)))
+
+        for kind in ("real", "planted"):
+            r = rec_cache.get((who, kind))
+            if not r:
+                continue
+            if kind == "planted":
+                st.warning(f"**Fabricated note — not data.** Planted: "
+                           f"{PLANTED_CONFLICTS[who][0]}")
+            if r.get("error"):
+                st.error(r["error"])
+            elif r["conflicts"]:
+                for c in r["conflicts"]:
+                    st.error(f"**{c['severity'].upper()} — {c['field']}**  \n"
+                             f"Brief says: {c['brief_says']}  \n"
+                             f"Note says: {c['note_says']}  \n"
+                             f"_{c['why_it_matters']}_")
+            else:
+                st.success(f"No conflicts across {r['note_count']} note(s). "
+                           f"Compared: {', '.join(r.get('checked', []))}.")
+                st.caption("Expected on this extract: the notes are generated from the "
+                           "same tables the brief is built from — 153/153 field "
+                           "agreement — so there is nothing to disagree about. Use the "
+                           "button on the right to see the control fire.")
+
         st.caption("Prompts a conversation; does not replace chart review. No drug "
                    "or dose is recommended anywhere in this brief.")
 
