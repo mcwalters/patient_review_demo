@@ -10,6 +10,24 @@ python -m venv .venv && ./.venv/bin/pip install -r requirements.txt
 
 `ehr.duckdb` is derived and gitignored — rebuild it any time from `data/`.
 
+## Prototype
+
+[`prototype/`](prototype/README.md) holds a working GenAI prototype built on this
+data: **eligibility screening from a free-text protocol**. An ADK agent running
+Gemini 2.5 Pro on Vertex AI (application default credentials, no API key) reads
+criteria as written, grounds every clinical concept in the dataset's own
+vocabulary, and returns the cohort with per-patient evidence. A pre-flight
+plausibility linter audits the extract first.
+
+```bash
+streamlit run prototype/app.py
+```
+
+The agent never writes SQL — it selects from a fixed vocabulary and deterministic
+code runs every query, so a hallucinated ICD-10 code cannot reach the database.
+See [`prototype/README.md`](prototype/README.md) for the architecture, the safety
+properties, and the two ways it has been observed to get concept expansion wrong.
+
 Thirteen worked examples live in [`demo_queries.sql`](demo_queries.sql) — panel
 snapshot, chronic-condition registry, care gaps (uncontrolled hypertension,
 heart failure missing guideline-directed therapy, AFib without anticoagulation),
