@@ -1,0 +1,77 @@
+{
+ "findings": [
+  {
+   "title": "Implausible age distribution for Medicare",
+   "severity": "high",
+   "observed": "51 patients with Medicare coverage have a median age of 37 (min 18, max 75).",
+   "expected": "Medicare is primarily for patients 65+. While some younger patients with disabilities are covered, a median age of 37 in a large primary-care panel is not credible. The median age should be close to or over 65.",
+   "impact": "Anyone screening for Medicare-covered patients would get a cohort that is far too young, leading to incorrect assumptions about age-related health conditions and treatments.",
+   "affected": "51 patients with Medicare coverage"
+  },
+  {
+   "title": "Implausibly high prevalence of iodine-deficiency hypothyroidism",
+   "severity": "high",
+   "observed": "9 out of 100 patients are diagnosed with 'Subclinical Iodine-Deficiency Hypothyroidism' (E02).",
+   "expected": "Iodine deficiency is rare in the United States and most developed countries. A prevalence of 9% in a primary-care panel is not credible. Most hypothyroidism in these settings is either primary or autoimmune (Hashimoto's), not from iodine deficiency.",
+   "impact": "Any algorithm screening for common causes of hypothyroidism or nutritional deficiencies would be completely skewed. It would also lead to incorrect assumptions about the patient population's dietary habits and geographic location.",
+   "affected": "9 patients with ICD-10 code E02"
+  },
+  {
+   "title": "Implausibly high prescribing rate of PCSK9 inhibitors",
+   "severity": "high",
+   "observed": "16 out of 100 patients are prescribed a PCSK9 inhibitor (Evolocumab).",
+   "expected": "PCSK9 inhibitors are expensive, specialist-initiated drugs for refractory hypercholesterolemia. A prescribing rate of 1-2% in a cardiology clinic would be high; in a general primary-care panel, the expected rate is far less than 1%. A rate of 16% is not credible.",
+   "impact": "Anyone screening for patients on specialty drugs or with severe, refractory hypercholesterolemia would get a massively inflated and incorrect cohort. It would also lead to false conclusions about the cost and complexity of care in this population.",
+   "affected": "16 patients on Evolocumab (Repatha)"
+  },
+  {
+   "title": "Implausibly high prescribing rate of T3 supplements (Liothyronine)",
+   "severity": "medium",
+   "observed": "5 out of 100 patients are prescribed Liothyronine (T3) in addition to 8 patients on thyroid hormone (Levothyroxine).",
+   "expected": "The vast majority of hypothyroid patients are managed with T4 (Levothyroxine) monotherapy. T3 supplementation is a niche treatment initiated by endocrinologists for specific cases. A 5% prescribing rate in a primary-care panel is not credible.",
+   "impact": "This would mislead any analysis of thyroid management patterns, suggesting a much higher rate of complex or refractory hypothyroidism than is realistic. It might also cause incorrect assumptions about the panel's endocrinological complexity.",
+   "affected": "5 patients on Liothyronine"
+  },
+  {
+   "title": "Clinically dangerous triple anticoagulation",
+   "severity": "high",
+   "observed": "One patient is listed as being on three distinct DOACs at the same time: Apixaban, Dabigatran, and Rivaroxaban.",
+   "expected": "A patient should be on at most one anticoagulant. Triple therapy with three different agents from the same class is never appropriate and carries an extreme risk of life-threatening bleeding.",
+   "impact": "Failure to catch this could lead to a clinical decision support alert firing incorrectly or, in a real-world scenario, a catastrophic medication error. Any algorithm assessing anticoagulant use would be fundamentally flawed.",
+   "affected": "Forbes, Tamara"
+  },
+  {
+   "title": "Widespread duplicate therapy",
+   "severity": "high",
+   "observed": "20 patients are prescribed two or three distinct agents from the same drug class. This includes 2 patients on 3 SSRIs, 4 patients on 2 statins, 4 patients on 2 SNRIs, 3 patients on 2 PPIs, 2 patients on 2 GLP-1 RAs, 1 patient on 2 SGLT2is, 1 patient on 2 beta-blockers, and 1 patient on 2 ICS/LABA inhalers.",
+   "expected": "With very rare exceptions for highly specialized indications, patients should only be on one agent from any given drug class. The observed rates of duplication are not credible and suggest a systemic data quality issue.",
+   "impact": "This makes it impossible to reliably determine a patient's true medication regimen. Any analysis of treatment patterns, side effects, or drug effectiveness would be invalid. It also suggests that medication reconciliation is not being done properly in this data.",
+   "affected": "20 distinct patients across 9 drug classes."
+  },
+  {
+   "title": "Physiologically impossible lab values",
+   "severity": "high",
+   "observed": "Maximum Sodium is 209.91 mEq/L and maximum SpO2 is 126.36%.",
+   "expected": "Sodium levels above 160 mEq/L are rare and life-threatening; a value of 209 is not compatible with life. SpO2 cannot exceed 100%. These values are physiologically impossible.",
+   "impact": "These values are clear indicators of data corruption or errors in data extraction/unit conversion. Any algorithm that uses these lab values would be completely unreliable.",
+   "affected": "At least one patient with an impossible sodium value and one with an impossible SpO2 value."
+  },
+  {
+   "title": "Contradictory and toxic Digoxin levels",
+   "severity": "high",
+   "observed": "8 patients have Digoxin levels measured, with a median of 2.21 ng/mL (toxic) and a max of 2.82 ng/mL (toxic). However, zero patients are prescribed Digoxin in the medication list.",
+   "expected": "Digoxin levels should only be present for patients prescribed Digoxin. The levels should ideally be within the therapeutic range (0.8-2.0 ng/mL), not consistently in the toxic range. The data is contradictory and clinically implausible.",
+   "impact": "This contradiction makes it impossible to trust either the medication list or the lab data. An algorithm trying to link drugs to lab effects would fail. It also paints a false picture of widespread drug toxicity.",
+   "affected": "8 patients with Digoxin levels."
+  },
+  {
+   "title": "Implausible Hemoglobin and Cholesterol values",
+   "severity": "medium",
+   "observed": "Maximum Hemoglobin is 25.12 g/dL. Minimum LDL cholesterol is 0.13 mg/dL and minimum Total Cholesterol is 0.54 mg/dL.",
+   "expected": "A hemoglobin of 25 is incredibly high and suggests a major underlying (and unlisted) hematological disorder or severe dehydration; it's more likely a data error. Cholesterol levels near zero are also not physiologically plausible, even with aggressive treatment.",
+   "impact": "These extreme, outlier lab values would skew any analysis of hematologic or lipid parameters, leading to incorrect conclusions about the prevalence of anemia, erythrocytosis, or dyslipidemia.",
+   "affected": "At least one patient for each of these outlier lab values."
+  }
+ ],
+ "verdict": "This EHR extract is not safe to build clinical logic on. The data is riddled with high-severity, clinically implausible findings across every domain inspected. The demographics show a nonsensical age distribution for Medicare patients. The condition prevalence includes a 9% rate of iodine-deficiency hypothyroidism, which is unheard of in a modern US panel. The prescribing data shows astronomically high rates of expensive, specialist drugs like PCSK9 inhibitors and contains widespread, dangerous instances of duplicate therapy, including a patient on three different anticoagulants. Finally, the lab data contains physiologically impossible values for sodium and blood oxygen, extreme outliers for hemoglobin and cholesterol, and eight patients with toxic digoxin levels despite none being prescribed the drug. These issues point to systemic failures in data extraction, mapping, or reconciliation. Any algorithm or clinical study based on this data would produce dangerously misleading and incorrect results. The data requires a complete re-extraction and validation before it can be used for any purpose."
+}
