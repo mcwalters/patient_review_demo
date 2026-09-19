@@ -43,7 +43,9 @@ CSS = f"""
       font-size: 0 !important; line-height: 1; color: transparent;
   }}
   [data-testid="stIconMaterial"]::before {{
-      content: "\203A";                      /* single right-pointing chevron */
+      content: "›";   /* literal U+203A, NOT a CSS \\203A escape: this block
+                              is a Python f-string, where \\2 is read as an octal
+                              escape and the chevron silently becomes "A" */
       font-family: "Helvetica Neue", Arial, sans-serif;
       font-size: 1.05rem; font-weight: 600; color: {SLATE};
       display: inline-block; transition: transform .15s ease;
