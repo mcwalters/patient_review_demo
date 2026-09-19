@@ -89,6 +89,28 @@ logo lifted from `ppt/media/`.
 needs one, so it is introduced only for high-severity findings and used nowhere
 else.
 
+## A correction worth reading
+
+An early finding of this prototype was "clinically dangerous triple
+anticoagulation — one patient on three DOACs at once." It was wrong, and it took
+a direct question to catch it: *is there timing information that would show
+these are sequential rather than concurrent?*
+
+There is. `START_DATE` is populated on all 522 orders. `END_DATE` and
+`DISCON_TIME` are entirely null and every order reads `Active`. Those three
+DOACs started in March 2023, July 2024 and December 2025 — nearly three years
+apart. It is a switch, recorded by a system that never closes anything out.
+
+The corrected finding is both more accurate and more damning: **this extract
+cannot tell you what any patient is currently taking.** `cohort_statistic(
+"duplicate_therapy")` now returns the start-date spread and a warning, there is
+a `medication_timeline` tool, and the data-integrity agent is told to check the
+dates before calling anything duplicate therapy.
+
+The lesson generalises past this dataset: an alarming finding that no one
+questions is the most dangerous output the system can produce, because its
+alarm is what stops people checking it.
+
 ## Safety properties
 
 **Hallucinated codes cannot reach SQL.** Registration rejects any value absent

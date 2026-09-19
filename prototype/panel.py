@@ -61,20 +61,31 @@ class Findings:
 
 
 # ---------------------------------------------------------------- shared tools
-def patient_snapshot(pat_id: str) -> dict:
+def patient_snapshot(patient: str) -> dict:
     """Everything on file for one patient: demographics, problems, meds, recent labs, vitals.
 
+    Accepts either a PAT_ID or the patient's name, because findings carry names.
+
     Args:
-        pat_id: the PAT_ID, e.g. "P200001".
+        patient: a PAT_ID like "P200001", or a name as recorded like "Stein, Larry".
     Returns:
-        demographics, diagnoses, medications, latest labs and vitals.
+        demographics, diagnoses, medications, latest labs, vitals, pending orders.
     """
     con = connect()
     try:
-        d = con.execute("SELECT PAT_NAME, PAT_AGE, SEX_NAME FROM patient WHERE PAT_ID=?",
-                        [pat_id]).fetchone()
-        if not d:
-            return {"error": f"no such patient {pat_id}"}
+        # Findings record names, not ids. Requiring an id here made an earlier
+        # run conclude the tool was broken, which it effectively was.
+        row = con.execute(
+            "SELECT PAT_ID, PAT_NAME, PAT_AGE, SEX_NAME FROM patient "
+            "WHERE PAT_ID = ? OR lower(PAT_NAME) = lower(?)", [patient, patient]).fetchone()
+        if not row:
+            near = [r[0] for r in con.execute(
+                "SELECT PAT_NAME FROM patient WHERE lower(PAT_NAME) LIKE lower(?) LIMIT 5",
+                [f"%{patient.split(',')[0]}%"]).fetchall()]
+            return {"error": f"no patient matches {patient!r}",
+                    "did_you_mean": near,
+                    "hint": "pass a PAT_ID like P200001 or a name exactly as recorded"}
+        pat_id, d = row[0], row[1:]
         dx = con.execute("SELECT DISTINCT icd10, dx_name FROM v_diagnosis WHERE PAT_ID=?",
                          [pat_id]).fetchall()
         rx = con.execute("SELECT DISTINCT DISPLAY_NAME, generic_class FROM v_medication "
@@ -132,11 +143,23 @@ def cohort_statistic(metric: str) -> dict:
                                             "agents": r[2]} for r in rows]}
         if metric == "duplicate_therapy":
             rows = con.execute("""SELECT p.PAT_NAME, m.generic_class,
-                count(DISTINCT m.MEDICATION_ID), string_agg(DISTINCT m.DISPLAY_NAME,' + ')
+                count(DISTINCT m.MEDICATION_ID), string_agg(DISTINCT m.DISPLAY_NAME,' + '),
+                min(m.START_DATE), max(m.START_DATE),
+                date_diff('day', min(m.START_DATE), max(m.START_DATE))
                 FROM v_medication m JOIN patient p USING (PAT_ID) GROUP BY 1,2
-                HAVING count(DISTINCT m.MEDICATION_ID)>1 ORDER BY 3 DESC""").fetchall()
-            return {"rows": [{"patient": r[0], "class": r[1], "n_agents": r[2],
-                              "agents": r[3]} for r in rows]}
+                HAVING count(DISTINCT m.MEDICATION_ID)>1 ORDER BY 7 DESC""").fetchall()
+            return {
+                "IMPORTANT": "These are NOT necessarily concurrent. order_med has "
+                             "START_DATE for every row but END_DATE and DISCON_TIME are "
+                             "100% NULL and ORDER_STATUS is 'Active' on all 522 rows -- "
+                             "nothing is ever recorded as stopped. Start dates within a "
+                             "duplicated class are 113 to 1376 days apart (mean 814). That "
+                             "pattern is sequential switching, not simultaneous therapy. "
+                             "Judge by first_started / last_started / days_apart below; do "
+                             "not call this triple therapy without evidence of overlap.",
+                "rows": [{"patient": r[0], "class": r[1], "n_agents": r[2],
+                          "agents": r[3], "first_started": str(r[4]),
+                          "last_started": str(r[5]), "days_apart": r[6]} for r in rows]}
         if metric == "lab_ranges":
             rows = con.execute("""SELECT COMPONENT_NAME, any_value(unit), count(*),
                 round(min(value),2), round(median(value),2), round(max(value),2),
@@ -168,6 +191,106 @@ def cohort_statistic(metric: str) -> dict:
         return {"error": f"unknown metric {metric!r}"}
     finally:
         con.close()
+
+
+def medication_timeline(patient: str) -> dict:
+    """Every medication order for one patient with its start date, in order.
+
+    Use this before calling a same-class repeat "duplicate therapy". This
+    extract records no stop date for anything, so two agents of one class may be
+    a switch rather than a combination -- the start dates are the only evidence
+    either way.
+
+    Args:
+        patient: a PAT_ID like "P200001", or a name as recorded.
+    Returns:
+        the orders in start-date order, and a per-class summary of the spread.
+    """
+    con = connect()
+    try:
+        row = con.execute("SELECT PAT_ID, PAT_NAME FROM patient "
+                          "WHERE PAT_ID = ? OR lower(PAT_NAME) = lower(?)",
+                          [patient, patient]).fetchone()
+        if not row:
+            return {"error": f"no patient matches {patient!r}"}
+        pid, name = row
+        orders = con.execute("""
+            SELECT SIMPLE_GENERIC_C_NAME, DISPLAY_NAME, START_DATE, END_DATE,
+                   ORDER_STATUS_C_NAME
+            FROM order_med WHERE PAT_ID = ? ORDER BY START_DATE""", [pid]).fetchall()
+    finally:
+        con.close()
+    per: dict[str, list] = {}
+    for cls, agent, start, *_ in orders:
+        per.setdefault(cls, []).append((str(start), agent))
+    return {
+        "patient": name, "pat_id": pid,
+        "note": "END_DATE and ORDER_STATUS are uninformative in this extract -- "
+                "every row is Active with no end date. Start dates are the only "
+                "timing signal.",
+        "orders": [{"class": o[0], "agent": o[1], "started": str(o[2]),
+                    "ended": o[3], "status": o[4]} for o in orders],
+        "same_class_repeats": [
+            {"class": cls, "n": len(v), "first": v[0][0], "last": v[-1][0],
+             "days_apart": (__import__("datetime").date.fromisoformat(v[-1][0])
+                            - __import__("datetime").date.fromisoformat(v[0][0])).days,
+             "sequence": [f"{d} {a}" for d, a in v]}
+            for cls, v in per.items() if len(v) > 1],
+    }
+
+
+def find_patients(condition: str, drug_class: str) -> dict:
+    """List patients carrying a diagnosis and/or on a medication class.
+
+    Free-text matched against the diagnosis names and drug classes actually in
+    the dataset. Pass "" for either to ignore it; pass both to get the
+    intersection.
+
+    Args:
+        condition: part of a diagnosis name, e.g. "heart failure" or "diabetes".
+        drug_class: part of a drug class or agent name, e.g. "statin", "DOAC".
+    Returns:
+        matched_diagnoses / matched_classes so you can see what the text hit,
+        and the patients.
+    """
+    con = connect()
+    try:
+        dx_names, cls_names = [], []
+        if condition.strip():
+            dx_names = [r[0] for r in con.execute(
+                "SELECT DISTINCT dx_name FROM v_diagnosis WHERE lower(dx_name) LIKE lower(?)",
+                [f"%{condition.strip()}%"]).fetchall()]
+        if drug_class.strip():
+            cls_names = [r[0] for r in con.execute(
+                "SELECT DISTINCT generic_class FROM v_medication "
+                "WHERE lower(generic_class) LIKE lower(?) OR lower(DISPLAY_NAME) LIKE lower(?)",
+                [f"%{drug_class.strip()}%", f"%{drug_class.strip()}%"]).fetchall()]
+        if condition.strip() and not dx_names:
+            return {"error": f"no diagnosis name contains {condition!r}",
+                    "hint": "call cohort_statistic('condition_prevalence') to see them all"}
+        if drug_class.strip() and not cls_names:
+            return {"error": f"no drug class or agent contains {drug_class!r}",
+                    "hint": "call cohort_statistic('prescribing_rates') to see them all"}
+
+        where, params = [], []
+        if dx_names:
+            where.append(f"p.PAT_ID IN (SELECT PAT_ID FROM v_diagnosis WHERE dx_name IN "
+                         f"({','.join('?' * len(dx_names))}))")
+            params += dx_names
+        if cls_names:
+            where.append(f"p.PAT_ID IN (SELECT PAT_ID FROM v_medication WHERE generic_class IN "
+                         f"({','.join('?' * len(cls_names))}))")
+            params += cls_names
+        if not where:
+            return {"error": "give a condition, a drug_class, or both"}
+        rows = con.execute(
+            f"SELECT p.PAT_ID, p.PAT_NAME, p.PAT_AGE FROM patient p "
+            f"WHERE {' AND '.join(where)} ORDER BY p.PAT_NAME", params).fetchall()
+    finally:
+        con.close()
+    return {"matched_diagnoses": dx_names, "matched_classes": cls_names,
+            "count": len(rows),
+            "patients": [{"pat_id": r[0], "name": r[1], "age": r[2]} for r in rows]}
 
 
 def patients_with_value(analyte: str, below: str, above: str) -> dict:
@@ -207,6 +330,13 @@ it with a second and third call before concluding. A rate that looks wrong may
 be explained by the population; a contradiction may be one bad row or a
 systematic extraction fault, and those need different responses. Use
 patients_with_value and patient_snapshot to find out which.
+
+One trap specifically: a patient appearing on two agents of the same class is
+NOT evidence of concurrent therapy in this extract. Nothing here is ever marked
+stopped -- END_DATE and DISCON_TIME are entirely empty and every order says
+Active -- so a switch and a combination look identical unless you check the
+dates. Call medication_timeline before describing anything as duplicate or
+triple therapy, and report what the start dates actually show.
 
 Judge against real practice: is this prevalence plausible for a primary-care
 panel, is this prescribing rate plausible for an expensive specialist drug, are
@@ -380,7 +510,9 @@ def build_supervisor(trace: list | None = None,
                     "Ask it before acting on any patient list.",
         instruction=INTEGRITY_INSTRUCTION,
         before_tool_callback=_tracer(trace, "data_integrity"),
-        tools=[_recorder(findings, "data_integrity"), cohort_statistic, patients_with_value, patient_snapshot])
+        tools=[_recorder(findings, "data_integrity"), cohort_statistic,
+               patients_with_value, find_patients, medication_timeline,
+               patient_snapshot])
 
     guideline = LlmAgent(
         name="guideline_concordance", model=MODEL,
@@ -388,7 +520,9 @@ def build_supervisor(trace: list | None = None,
                     "judges whether each apparent gap is real.",
         instruction=GUIDELINE_INSTRUCTION,
         before_tool_callback=_tracer(trace, "guideline_concordance"),
-        tools=[_recorder(findings, "guideline_concordance"), list_guidelines, check_guideline, patient_snapshot])
+        tools=[_recorder(findings, "guideline_concordance"), list_guidelines,
+               check_guideline, find_patients, medication_timeline,
+               patient_snapshot])
 
     followup = LlmAgent(
         name="followup", model=MODEL,
@@ -396,7 +530,8 @@ def build_supervisor(trace: list | None = None,
                     "that never returned a result.",
         instruction=FOLLOWUP_INSTRUCTION,
         before_tool_callback=_tracer(trace, "followup"),
-        tools=[_recorder(findings, "followup"), _pending_orders, cohort_statistic, patient_snapshot])
+        tools=[_recorder(findings, "followup"), _pending_orders, cohort_statistic,
+               find_patients, patient_snapshot])
 
     return LlmAgent(
         name="panel_review", model=MODEL,
@@ -461,7 +596,7 @@ you could not determine from this data. A short, honest list beats a long one.
         # Findings store, which get_all_findings reads back intact.
         tools=[AgentTool(agent=integrity), AgentTool(agent=guideline),
                AgentTool(agent=followup), get_all_findings, get_agent_activity,
-               patient_snapshot])
+               find_patients, patient_snapshot])
 
 
 async def review_async(goal: str, verbose: bool = True) -> tuple[str, list, list]:
