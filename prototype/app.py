@@ -117,9 +117,12 @@ def patient_link_column(df, name_col: str = "patient"):
 # ------------------------------------------------------------- panel review
 if view == "Panel review":
     st.subheader("Who needs attention this week?")
-    st.caption("A supervisor agent decides which specialists to consult and in what "
-               "order — nothing scripts its path. It is told to check data integrity "
-               "early, and to degrade rather than refuse when records cannot be trusted.")
+    st.caption("A supervisor agent briefs three specialists and consults them at "
+               "once — it writes what to ask each, which is the judgement; it does "
+               "not choose whether or in what order, because the answer was always "
+               "all three and they cannot read each other. It reads the data-quality "
+               "findings before it ranks, and degrades rather than refuses when "
+               "records cannot be trusted.")
     c1, c2, c3 = st.columns(3)
     c1.markdown("**data_integrity**  \nwhich records can't be trusted")
     c2.markdown("**guideline_concordance**  \nwho is missing recommended therapy")
