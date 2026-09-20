@@ -16,6 +16,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .tools import artifact_fingerprint
+
 CACHE = Path(__file__).parent / "panel_cache.json"
 BRIEFS = Path(__file__).parent / "brief_cache.json"
 
@@ -25,6 +27,7 @@ def save(goal: str, result: tuple, rejected: list[dict] | None = None) -> Path:
     report, trace, findings, usage = result
     CACHE.write_text(json.dumps({
         "saved_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "fingerprint": artifact_fingerprint(),
         "goal": goal,
         "report": report,
         "trace": trace,
@@ -55,6 +58,15 @@ def load() -> dict | None:
 def as_session_value(blob: dict) -> tuple:
     """Shape the saved run the way the UI unpacks a live one."""
     return blob["report"], blob["trace"], blob["findings"], blob["usage"]
+
+
+def is_stale(blob: dict) -> bool:
+    """Was this artifact built from a different database or different code?
+
+    An artifact with no fingerprint predates the check and is treated as stale,
+    because "we do not know" and "it is current" are not the same answer.
+    """
+    return blob.get("fingerprint") != artifact_fingerprint()
 
 
 def age_phrase(blob: dict) -> str:
@@ -90,8 +102,14 @@ def load_briefs() -> dict[str, tuple]:
         return {}
     if not isinstance(blob, dict):
         return {}
+    # Briefs built from other code are dropped rather than shown. Unlike the
+    # panel review there is no cost to regenerating one -- it is under a minute
+    # and only the patient being looked at -- so silently serving an old brief
+    # buys nothing and risks showing a stale clinical summary.
+    now = artifact_fingerprint()
     return {k: (v.get("narrative", ""), v.get("pack", {}))
-            for k, v in blob.items() if isinstance(v, dict)}
+            for k, v in blob.items()
+            if isinstance(v, dict) and v.get("fingerprint") == now}
 
 
 def save_brief(patient: str, narrative: str, pack: dict) -> None:
@@ -114,6 +132,7 @@ def save_brief(patient: str, narrative: str, pack: dict) -> None:
         if not isinstance(blob, dict):
             blob = {}
     blob[patient] = {"narrative": narrative, "pack": pack,
+                     "fingerprint": artifact_fingerprint(),
                      "saved_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     BRIEFS.write_text(json.dumps(blob, indent=1, default=str))
 

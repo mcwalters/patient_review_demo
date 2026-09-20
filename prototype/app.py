@@ -243,6 +243,13 @@ if view == "Panel review":
 
         if st.session_state.get("panel_is_saved_run"):
             meta = st.session_state.get("panel_saved_meta", {})
+            if panel_cache.is_stale(meta):
+                st.warning(
+                    "**This saved run was produced by different code or a "
+                    "different database.** It is shown rather than discarded so "
+                    "the demo opens on something, but treat it as a recording of "
+                    "an older build. Run it live, or regenerate with "
+                    "`python -m prototype.panel_cache`.")
             st.info(
                 f"**Showing a saved run from {panel_cache.age_phrase(meta)}** — "
                 f"real output from a real run, not a fixture: "
