@@ -895,6 +895,28 @@ def test_the_lab_tables_must_not_be_joined():
         con.close()
 
     assert shared == 0, "the two lab tables share order ids after all -- re-check the premise"
+
+    # These are Epic Clarity names, and in Clarity ORDER_RESULTS is a child of
+    # ORDER_PROC joined on ORDER_PROC_ID. The key is declared and populated
+    # here; it simply resolves to nothing. Rule out the innocent explanation --
+    # parent orders outside the extract -- before calling it broken.
+    con = connect()
+    try:
+        nulls = con.execute(
+            "SELECT count(*) FROM order_results WHERE ORDER_PROC_ID IS NULL").fetchone()[0]
+        enc_both = con.execute("""
+            SELECT count(*) FROM order_results r
+            WHERE NOT EXISTS (SELECT 1 FROM order_proc_awv p
+                              WHERE p.PAT_ENC_CSN_ID = r.PAT_ENC_CSN_ID)""").fetchone()[0]
+        resolves = con.execute("""
+            SELECT count(*) FROM order_results r
+            WHERE EXISTS (SELECT 1 FROM order_proc_awv p
+                          WHERE p.ORDER_PROC_ID = r.ORDER_PROC_ID)""").fetchone()[0]
+    finally:
+        con.close()
+    assert nulls == 0, "the FK is unpopulated, which would be a different finding"
+    assert enc_both == 0, "some results belong to encounters outside the order table"
+    assert resolves == 0, "the Clarity FK resolves after all -- the slide is wrong"
     assert pending == 120
     assert falsely_resolved == 85
     # The slide claims seven in ten. Keep the claim and the data in step.
