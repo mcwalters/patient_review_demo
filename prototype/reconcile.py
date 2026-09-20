@@ -6,15 +6,21 @@ acting on it is how a patient gets told something untrue about their own care.
 So this is a CONTROL, not a discovery feature: its job is to fail loudly, not
 to find new things.
 
-On this extract it finds nothing, and that is the correct result rather than a
+On the FACTS it finds nothing, and that is the correct result rather than a
 disappointing one -- the notes are generated from the same tables the brief is
 built from (153/153 field agreement, see the repo README), so there is nothing
 to disagree about. A control that reports no conflicts on data with no conflicts
 is working.
 
-Which is exactly why it ships with `fixtures.py`: a handful of deliberately
-altered notes, clearly labelled as fabricated, so the control can be shown
-firing. A safety check nobody has ever seen trigger is not a safety check.
+Care-delivery CLAIMS are a different matter, and they are why this check earns
+its place: three encounters have a note stating that labs were ordered to
+guideline intervals when not one of those orders ever resulted. The tables and
+the note agree on every value and still disagree about whether the care
+happened.
+
+It also ships with `fixtures.py`: a handful of deliberately altered notes,
+clearly labelled as fabricated, so a factual conflict can be shown firing too.
+A safety check nobody has ever seen trigger is not a safety check.
 """
 from __future__ import annotations
 
