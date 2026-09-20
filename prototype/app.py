@@ -20,7 +20,7 @@ import pandas as pd
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from prototype import panel_cache, preflight, theme  # noqa: E402
+from prototype import panel_cache, preflight, score, theme  # noqa: E402
 from prototype.guidelines import (                   # noqa: E402
     DISCLAIMER, GUIDELINES, check_guideline)
 from prototype.brief import write_brief_async        # noqa: E402
@@ -54,7 +54,8 @@ theme.title("Panel review", "who needs attention this week",
             "EHR · Gemini 2.5 Pro on Vertex AI, application default credentials · "
             "no model writes SQL, and no model computes what code can compute")
 
-VIEWS = ["Panel review", "Patient brief", "Pre-flight data audit",
+VIEWS = ["Panel review", "Patient brief", "Priority score",
+         "Pre-flight data audit",
          "What the model may select", "Guidelines used"]
 
 # Protocol screening is not part of the product being presented -- the panel
@@ -415,6 +416,56 @@ if view == "Patient brief":
         st.caption("Prompts a conversation; does not replace chart review. No drug "
                    "or dose is recommended anywhere in this brief.")
 
+
+# ------------------------------------------------------------ priority score
+if view == "Priority score":
+    st.subheader("A transparent score, so the ranking can be argued with")
+    st.caption("The panel review ranks patients and nothing checks that the order is "
+               "right. This does not make it correct — it makes it legible. A model "
+               "wrote the weights once, offline; code applies them, so the score is "
+               "identical every run and a weight change is a reviewable diff.")
+
+    w = score.load_weights()
+    st.info(f"**How it was weighted.** {w['rationale']}")
+
+    scores = score.score_panel(w)
+    rows = [{"patient": s_.patient, "score": s_.total,
+             **{k: s_.by_component().get(k, 0) for k in
+                ("burden", "instability", "neglect")}} for s_ in scores]
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Patients scored", len(scores))
+    c2.metric("Distinct scores", len({s_.total for s_ in scores}),
+              help="Burden alone would sort this panel into about four buckets")
+    c3.metric("Range", f"{scores[-1].total:g} – {scores[0].total:g}")
+
+    st.dataframe(pd.DataFrame(rows), width='stretch', hide_index=True, height=320)
+
+    st.markdown("#### Every score reads as its reasons")
+    st.caption("If a clinician cannot read down this list and disagree line by line, "
+               "the score is not doing its job.")
+    pick = st.selectbox("Patient", [s_.patient for s_ in scores], index=0,
+                        key="score_patient")
+    chosen = next(s_ for s_ in scores if s_.patient == pick)
+    st.code(chosen.explain(), language=None)
+
+    with st.expander("The weights themselves — the thing a clinician edits"):
+        st.caption("prototype/score_weights.json. Not a validated instrument: "
+                   "Charlson and Elixhauser are published and validated, and a real "
+                   "deployment should anchor the burden component on one of them.")
+        st.json(w)
+
+    st.divider()
+    st.markdown("**Does it agree with the agents?** — two independent mechanisms")
+    if "panel" in st.session_state:
+        report = st.session_state["panel"][0]
+        top = [s_.patient for s_ in scores[:12]]
+        agreed = [p for p in top if p in report]
+        st.metric("Scorer's top 12 also named by the panel review", f"{len(agreed)} of 12")
+        st.caption("Neither is ground truth, so this is convergent validity and "
+                   "nothing more. The disagreements are the interesting ones: "
+                   + ", ".join(p for p in top if p not in report))
+    else:
+        st.caption("Run or load a panel review to compare.")
 
 # ---------------------------------------------------------------- pre-flight
 if view == "Pre-flight data audit":
