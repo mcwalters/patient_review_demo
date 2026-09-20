@@ -921,3 +921,18 @@ def test_the_lab_tables_must_not_be_joined():
     assert falsely_resolved == 85
     # The slide claims seven in ten. Keep the claim and the data in step.
     assert 0.65 < falsely_resolved / pending < 0.75
+
+
+def test_an_empty_report_is_announced_not_swallowed():
+    """The supervisor returned a zero-character report once in six A/B runs.
+
+    Handed back silently it gives the UI a blank page under a "Done" banner,
+    with every finding in the table below and nothing saying the ranking is
+    missing -- which is the worst shape for this failure, because the screen
+    still looks like a successful run.
+    """
+    import inspect
+    from prototype import panel
+    src = inspect.getsource(panel.review_async)
+    assert "if not final.strip():" in src
+    assert "returned no report" in src

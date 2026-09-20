@@ -1246,6 +1246,20 @@ async def review_async(goal: str, verbose: bool = True, trace: list | None = Non
                       getattr(um, "candidates_token_count", 0) or 0, 0)
         if ev.is_final_response() and ev.content:
             final = "".join(p.text for p in ev.content.parts if getattr(p, "text", None))
+    # An A/B battery caught the supervisor returning a zero-character report
+    # once in six runs: 25 findings in the store, get_all_findings called, then
+    # 93 output tokens and no text. Silently handing that back gives the UI a
+    # blank page under a "Done" banner, with every finding sitting in the table
+    # below and nothing saying the narrative is missing. Fail loudly instead --
+    # the findings are intact and worth showing, so say what happened rather
+    # than pretending a run succeeded.
+    if not final.strip():
+        final = (
+            "**The supervisor returned no report.** Its findings are in the "
+            "store and rendered below, but the narrative and the ranking are "
+            "missing, so nothing here is prioritised. Re-run before acting on "
+            f"it. ({len(findings.all())} findings recorded, {len(trace)} tool "
+            "calls.)")
     return final, trace, findings.all(), usage.summary() | {
         "wall_clock_seconds": round(_time.time() - _t0, 1)}
 
