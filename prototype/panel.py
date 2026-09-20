@@ -1205,9 +1205,36 @@ def uncited_high_severity(report: str, findings: list[dict]) -> list[dict]:
     the store instead, and anything high that went unmentioned is rendered
     above the narrative rather than left for a reader to notice it missing.
     """
+    cited = [f for f in findings if f.get("finding_id", "\0") in report]
+
+    def covered(f: dict) -> bool:
+        """Is this finding's content already in the report under another id?
+
+        Checking for the id alone called ten findings unmentioned in a run that
+        had mentioned all ten. The floor files an HFrEF gap per drug and the
+        specialist files one aggregate row, so the supervisor cites the
+        aggregate and the three computed siblings look dropped; the same
+        happens when it cites a grouped "66 stale orders" instead of each one.
+        A grouped citation is a citation -- the nurse was told.
+        """
+        cat = f.get("category")
+        if not cat or cat == "other":
+            return False
+        mine = frozenset(f.get("patients") or [])
+        for c in cited:
+            if c.get("category") != cat:
+                continue
+            theirs = frozenset(c.get("patients") or [])
+            # A cited row naming nobody is the panel-level or grouped version
+            # of this category, and it speaks for the individuals inside it.
+            if not theirs or (mine & theirs):
+                return True
+        return False
+
     return [f for f in findings
             if f.get("severity") == "high"
-            and f.get("finding_id", "\0") not in report]
+            and f.get("finding_id", "\0") not in report
+            and not covered(f)]
 
 
 def review(goal: str = "Who on this panel needs attention this week?", verbose: bool = True):

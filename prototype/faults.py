@@ -59,13 +59,25 @@ def drop_high_finding(report: str, findings: list[dict]) -> tuple[str, str]:
     itself, so a high finding going unmentioned is an ordinary outcome rather
     than an exotic one. This makes it happen on demand.
 
-    Returns (report with the citation removed, the finding id removed).
+    Removing one citation is not enough to hide anything: the floor files an
+    HFrEF gap per drug, so striking F09 leaves F07 and F08 citing the same
+    category about the same people and the finding is still, correctly, not
+    missing. To make content actually vanish the fault has to remove every
+    citation that would cover it.
+
+    Returns (report with the citations removed, the finding id targeted).
     """
     highs = [f for f in findings if f.get("severity") == "high"]
     if not highs:
         return report, ""
-    victim = highs[-1]["finding_id"]
-    return report.replace(victim, "[redacted by prototype.faults]"), victim
+    victim = highs[-1]
+    cat = victim.get("category")
+    doomed = {victim["finding_id"]} | {
+        f["finding_id"] for f in findings
+        if cat and cat != "other" and f.get("category") == cat}
+    for fid in doomed:
+        report = report.replace(fid, "[redacted by prototype.faults]")
+    return report, victim["finding_id"]
 
 
 def starve_floor(monkeypatch_target, keep: int = 4) -> Callable:
