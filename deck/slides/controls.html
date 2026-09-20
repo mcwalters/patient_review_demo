@@ -9,42 +9,42 @@
     <tr>
       <th style="width:24%; text-align:left; font-size:21px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#8FC4EE; padding:0 16px 10px 16px">Failure mode</th>
       <th style="width:39%; text-align:left; font-size:21px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#8FC4EE; padding:0 16px 10px 16px">Control</th>
-      <th style="width:37%; text-align:left; font-size:21px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#8FC4EE; padding:0 16px 10px 16px">Evidence it fires</th>
+      <th style="width:37%; text-align:left; font-size:21px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#8FC4EE; padding:0 16px 10px 16px">Why it exists</th>
     </tr>
     <tr style="background:rgba(143,196,238,.07)">
       <td style="padding:13px 16px; line-height:1.3"><b>A finding names the wrong patient</b></td>
       <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">The store refuses any name not in the patient table and tells the agent which one it did not recognise. Panel&#8209;level findings still need no patient.</td>
-      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">Names become links that open that person&rsquo;s brief. Nothing upstream had ever checked one existed.</td>
+      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">A name is a link that opens that person&rsquo;s brief. 100 names are on the roster; a finding naming anyone else is refused, and the agent is told which one.</td>
     </tr>
     <tr>
       <td style="padding:13px 16px; line-height:1.3"><b>A real finding never reaches the nurse</b></td>
       <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">Nine findings are computed before the agents start, and the report is checked back against the store &mdash; anything high it failed to mention is raised <i>above</i> the narrative.</td>
-      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">A 22&#8209;month overdue INR surfaced in <b style="color:#FFFFFF">1 run in 5</b>. The shortlist caps at twelve of a hundred, and the supervisor chose the cut.</td>
+      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">The shortlist is twelve patients of a hundred, so something always comes off it. Agentic discovery is a capability, not a guarantee &mdash; the nine are guaranteed by construction.</td>
     </tr>
     <tr style="background:rgba(143,196,238,.07)">
       <td style="padding:13px 16px; line-height:1.3"><b>A stated number is wrong</b></td>
       <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">No model computes what code can compute. Order triage, ACC/AHA staging, start&#8209;date spread and drug&#8209;to&#8209;analyte lookup are tools; the model is handed the answer.</td>
-      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">&ldquo;120 orders never came back&rdquo; became <b style="color:#FFFFFF">74</b> once triage was computed &mdash; 34 superseded, 12 monitoring a condition the patient does not have.</td>
+      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">Of 120 open orders, <b style="color:#FFFFFF">74</b> are real once triage runs: 34 are superseded by a later result and 12 monitor a condition the patient does not have.</td>
     </tr>
     <tr>
       <td style="padding:13px 16px; line-height:1.3"><b>A finding is lost between agents</b></td>
       <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">Findings travel as typed rows in a shared store, never as prose. Every number a user sees is rendered from the row; the model cites <span style="color:#8FC4EE">[F..]</span> ids.</td>
-      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">120 rows once reached the supervisor as &ldquo;none found&rdquo;. Prose hand&#8209;offs lost data in both directions.</td>
+      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">Around 27 findings cross between agents each run. Prose loses them in both directions; rows do not.</td>
     </tr>
     <tr style="background:rgba(143,196,238,.07)">
       <td style="padding:13px 16px; line-height:1.3"><b>The data layer stops answering</b></td>
       <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">The floor&rsquo;s size is known in advance, so it doubles as a tripwire: nine findings or the run refuses to start.</td>
-      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">A query that silently returns nothing is indistinguishable from a panel with nothing wrong. The failure looks like a quiet week.</td>
+      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">A query that silently returns nothing is indistinguishable from a panel with nothing wrong. The failure would look like a quiet week.</td>
     </tr>
     <tr>
       <td style="padding:13px 16px; line-height:1.3"><b>The brief contradicts the chart</b></td>
       <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">Every pre&#8209;visit brief is reconciled against the clinician&rsquo;s own note before it renders &mdash; facts and care&#8209;delivery claims both.</td>
-      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">Three encounters where the note states labs were ordered to guideline intervals and <b style="color:#FFFFFF">not one came back</b>.</td>
+      <td style="padding:13px 16px; line-height:1.3; color:#C1CFD8">Three encounters carry a note stating labs were ordered to guideline intervals where <b style="color:#FFFFFF">not one came back</b>.</td>
     </tr>
   </table>
 
-  <p style="font-size:27px; line-height:1.4; color:#C1CFD8; width:1620px">Each control is enforced twice: <b style="color:#FFFFFF">36 tests</b> re&#8209;derive every tool&rsquo;s answer in independent SQL in two seconds with no model, and <b style="color:#FFFFFF">eight invariants</b> are checked across five live runs. Every error above was caught in development by the layer built to catch it &mdash; not by a reader of the output.</p>
+  <p style="font-size:27px; line-height:1.4; color:#C1CFD8; width:1620px">Each control is enforced twice: <b style="color:#FFFFFF">57 tests</b> re&#8209;derive every tool&rsquo;s answer in independent SQL in two seconds with no model, and <b style="color:#FFFFFF">eight invariants</b> hold across five live runs. A control nobody has watched fail is not a control, so each one ships with a fault that trips it on demand.</p>
 
-  <p style="position:absolute; left:128px; bottom:48px; font-size:23px; color:#8FC4EE">Each control is a commit with the failure that motivated it in the message &mdash; nothing here is retrofitted</p>
+  <p style="position:absolute; left:128px; bottom:48px; font-size:23px; color:#8FC4EE">Each control has a deliberate fault in <span style="color:#FFFFFF">prototype/faults.py</span> that makes it fire on demand</p>
   <aside>This is the slide that answers "how do you engineer with a component that is right most of the time". Lead on that sentence, because a component that fails loudly is the easy case and they will know it. Work down the table; do not read every cell. Row 1 is first because it is the only one where being wrong is a patient-safety event rather than a quality problem. Row 2 is the important one intellectually - the eval did not just score the system, it changed the architecture, because it proved "the agent usually finds it" is a capability claim and not a safety property. Row 3 is the one to dwell on if they engage: a round alarming number that was wrong by a third and would have gone on a slide unchallenged. If asked whether the controls predated the errors: honestly, no, not all of them - the hazard list grew as I learned which judgements were load-bearing, which is how hazard analysis actually works, and the answer is in the commit history rather than reconstructed here. What is NOT on this slide is on the next one, named rather than quietly absent.</aside>
 </section>
