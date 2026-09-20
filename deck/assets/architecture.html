@@ -40,6 +40,7 @@
   svg { width:100%; height:auto; display:block; }
   .box { fill:#E6F1FB; stroke:#85B7EB; }
   .code { fill:#EEF2F5; stroke:#B9C4CE; }
+  .auth { fill:#EEF2F5; stroke:#85B7EB; stroke-dasharray:5 3; }
   .lbl { font:500 14px Inter,Arial,sans-serif; fill:#0C447C; }
   .lblc { font:500 14px Inter,Arial,sans-serif; fill:#3B4A59; }
   .sm { font:12px Inter,Arial,sans-serif; fill:#185FA5; }
@@ -47,6 +48,7 @@
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .box { fill:#123554; stroke:#2F6D9E; }
     :root:not([data-theme="light"]) .code { fill:#1B2C38; stroke:#3A4C5C; }
+    :root:not([data-theme="light"]) .auth { fill:#1B2C38; stroke:#2F6D9E; }
     :root:not([data-theme="light"]) .lbl,
     :root:not([data-theme="light"]) .sm { fill:#9CC8EC; }
     :root:not([data-theme="light"]) .lblc,
@@ -62,6 +64,7 @@
   <div class="card">
     <div class="legend">
       <span class="key"><span class="sw" style="background:#E6F1FB; border-color:#85B7EB"></span> a model makes a judgement</span>
+      <span class="key"><span class="sw" style="background:#EEF2F5; border-color:#85B7EB; border-style:dashed"></span> model-authored once, applied by code</span>
       <span class="key"><span class="sw" style="background:#EEF2F5; border-color:#B9C4CE"></span> deterministic code</span>
     </div>
     <svg viewBox="0 0 680 548" role="img" xmlns="http://www.w3.org/2000/svg">
@@ -73,9 +76,9 @@
       <text class="lbl" x="56" y="45">Pre-flight data audit</text>
       <text class="sm" x="56" y="62">runs first, judges the extract</text>
 
-      <rect class="box" x="360" y="24" width="280" height="48" rx="4"/>
-      <text class="lbl" x="376" y="45">Score weights</text>
-      <text class="sm" x="376" y="62">written once, offline, reviewable</text>
+      <rect class="auth" x="360" y="24" width="280" height="48" rx="4"/>
+      <text class="lblc" x="376" y="45">Priority score</text>
+      <text class="smc" x="376" y="62">weights a model wrote once; code applies them</text>
 
       <rect class="box" x="240" y="106" width="200" height="48" rx="4"/>
       <text class="lbl" x="340" y="127" text-anchor="middle">Supervisor</text>
@@ -137,7 +140,7 @@
   </div>
 
   <p class="note"><b>The model decides</b> which specialists to consult and in what order, whether a gap is real given the whole regimen, whether an unreturned test still matters, whether a rate is clinically credible, and what to raise first in what words. <b>It never</b> touches the database, computes a number, or decides whether a finding is recorded.</p>
-  <p class="note"><b>Two things run outside the review.</b> The audit judges the extract before any patient logic executes. The score weights were written once, offline, into a JSON file a clinician edits — the model that wrote them is not in the loop at runtime.</p>
+  <p class="note"><b>Two things run outside the review.</b> The audit judges the extract before any patient logic executes — it is a real agent making real model calls. The priority score is not: a model wrote its weights once, offline, into a JSON file a clinician edits, and every run since is code reading a static file. That is why it is drawn dashed rather than blue. No model scores a patient, so the same panel produces the same numbers every time.</p>
   <p class="note"><b>The caveat to volunteer:</b> the three-specialist split is the part an A/B says is not currently paying for itself. A single agent holding the same tools matched it on quality at 2.6&times; the speed. The shape came from specific hand-off failures, not from a comparison.</p>
 </div>
 </body>
