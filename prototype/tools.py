@@ -35,6 +35,38 @@ def connect() -> duckdb.DuckDBPyConnection:
         return duckdb.connect(tmp, read_only=True)
 
 
+def artifact_fingerprint() -> str:
+    """Identifies the database and the code any cached artifact was built from.
+
+    Every cached artifact here -- the saved panel review, the pre-visit briefs,
+    the pre-flight audit -- is derived from ehr.duckdb plus the modules that
+    read it. Change either and the cache is quietly wrong: it will still load,
+    still render, and still look like a current result.
+
+    A cache that is merely stale is worse than one that is missing, because
+    nothing about it looks wrong. So artifacts record this and the UI says so
+    when it no longer matches. It deliberately does NOT discard the artifact --
+    a demo with a labelled old result beats a demo with a three-minute wait.
+    """
+    import hashlib
+    h = hashlib.sha256()
+    try:
+        st = os.stat(DB)
+        h.update(f"{st.st_size}:{int(st.st_mtime)}".encode())
+    except OSError:
+        h.update(b"no-db")
+    here = os.path.dirname(os.path.abspath(__file__))
+    # The modules whose behaviour a cached artifact actually depends on.
+    for name in ("panel.py", "floor.py", "tools.py", "brief.py",
+                 "reconcile.py", "guidelines.py", "vocab.py", "rules.py"):
+        try:
+            with open(os.path.join(here, name), "rb") as f:
+                h.update(f.read())
+        except OSError:
+            h.update(name.encode())
+    return h.hexdigest()[:16]
+
+
 # Hard physiologic limits. Deterministic backstop to the LLM plausibility
 # linter: a value outside these is not a rare finding, it is a bad record.
 # The linter (prototype/preflight.py) reasons about *rates* and *combinations*,

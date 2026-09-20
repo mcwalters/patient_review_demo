@@ -970,3 +970,41 @@ def test_a_corrupt_brief_cache_is_no_cache(tmp_path, monkeypatch):
     # And it still writes cleanly over the wreckage.
     panel_cache.save_brief("Stein, Larry", "n", {"ok": True})
     assert "Stein, Larry" in panel_cache.load_briefs()
+
+
+def test_a_cache_built_from_other_code_is_detected(tmp_path, monkeypatch):
+    """Corruption was the symptom; staleness is the hazard.
+
+    A stale artifact loads, renders, and looks like a current result. Nothing
+    about it is visibly wrong, which is exactly why it needs a check.
+    """
+    from prototype import panel_cache
+    monkeypatch.setattr(panel_cache, "CACHE", tmp_path / "panel_cache.json")
+    result = ("report", [], [], {"usd": 0.2})
+    panel_cache.save("goal", result)
+
+    fresh = panel_cache.load()
+    assert not panel_cache.is_stale(fresh)
+
+    fresh["fingerprint"] = "0000000000000000"
+    assert panel_cache.is_stale(fresh)
+    # An artifact from before the check existed is stale, not assumed current.
+    assert panel_cache.is_stale({"report": "x"})
+
+
+def test_briefs_from_other_code_are_dropped_not_shown(tmp_path, monkeypatch):
+    """A brief costs under a minute to rebuild, so there is nothing to gain by
+    serving an old one -- unlike the panel review, which is shown and labelled."""
+    import json
+    from prototype import panel_cache
+    f = tmp_path / "brief_cache.json"
+    monkeypatch.setattr(panel_cache, "BRIEFS", f)
+
+    panel_cache.save_brief("Stein, Larry", "current", {"ok": True})
+    assert "Stein, Larry" in panel_cache.load_briefs()
+
+    blob = json.loads(f.read_text())
+    blob["Stein, Larry"]["fingerprint"] = "0000000000000000"
+    blob["Older, Patient"] = {"narrative": "no fingerprint at all", "pack": {}}
+    f.write_text(json.dumps(blob))
+    assert panel_cache.load_briefs() == {}
