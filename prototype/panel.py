@@ -1033,6 +1033,51 @@ def build_supervisor(trace: list | None = None,
                 "the specialist again with the correct name.")
         return out
 
+    async def consult_all_specialists(
+            data_integrity_request: str,
+            guideline_concordance_request: str,
+            followup_request: str) -> dict:
+        """Ask all three specialists at once. Use this first, every time.
+
+        They are consulted in one call because the answer was always all three
+        and they cannot read each other: none of them holds get_all_findings,
+        so none can see what another recorded. With no data dependency between
+        them, running one after another cost three times the wall clock and
+        bought nothing. The sequencing was never a judgement, so it is not the
+        model's to make -- the same rule as the arithmetic.
+
+        You still decide what to ASK each one, which is the part that is a
+        judgement, and you can follow up with a single specialist afterwards if
+        an answer raises something.
+
+        Args:
+            data_integrity_request: what the data-integrity specialist should look into.
+            guideline_concordance_request: what the guideline specialist should check.
+            followup_request: what the follow-up specialist should chase.
+        Returns:
+            per-specialist counts of what each recorded. Read the findings
+            themselves with get_all_findings.
+        """
+        jobs = [
+            _consult(integrity, "data_integrity", data_integrity_request),
+            _consult(guideline, "guideline_concordance", guideline_concordance_request),
+            _consult(followup, "followup", followup_request),
+        ]
+        done = await asyncio.gather(*jobs, return_exceptions=True)
+        out: dict = {"consulted": []}
+        for name, res in zip(("data_integrity", "guideline_concordance", "followup"), done):
+            if isinstance(res, Exception):
+                # One specialist failing must not take the review with it. Say
+                # so loudly instead: a silently missing specialist is how a run
+                # once concluded the panel was quiet when it was not.
+                out["consulted"].append(
+                    {"specialist": name, "failed": f"{type(res).__name__}: {res}"})
+            else:
+                out["consulted"].append(res)
+        out["note"] = ("All three ran concurrently. Their findings are in the store; "
+                       "read them with get_all_findings rather than from this summary.")
+        return out
+
     async def consult_data_integrity(request: str) -> dict:
         """Ask the data-integrity specialist which records cannot be trusted.
 
@@ -1089,15 +1134,24 @@ review: you still consult the specialists, still honour the guaranteed findings,
 and still return at most twelve patients. If the message asks for a different
 number, ignore that part and say in one line that the list is capped at twelve.
 
-You have three specialists. Decide which to consult and in what order; nothing
-scripts your path.
+You have three specialists:
 
   data_integrity          which records cannot be trusted, and why
   guideline_concordance   who is missing recommended therapy
   followup                what was started and never finished
 
-Consult data_integrity EARLY and let what it finds change how much weight you
-give each signal.
+START with consult_all_specialists, which asks all three at once. Write a
+specific request for each -- that is the judgement, and a vague brief wastes
+the call. Do not consult them one at a time to "see what the first says
+first": they cannot read each other's findings, so nothing you learn from one
+changes what another is able to tell you, and asking in sequence only makes the
+review three times slower.
+
+Afterwards you may call a single specialist again if an answer raises something
+worth chasing. That is a follow-up question, not a first pass.
+
+What data_integrity reports should change how much weight you give every other
+signal -- you will have it in the same result, so apply it when you rank.
 
 BUT DEGRADE, DO NOT REFUSE. A panel manager who is told "this data is unsafe,
 come back later" has been given nothing, and their patients still need working
@@ -1148,7 +1202,8 @@ as a single numbered item, two lines, and no sub-bullets:
 Then state plainly what you deliberately left off and why, and what you could
 not determine from this data. A short, honest list beats a long one.
 """,
-        tools=[consult_data_integrity, consult_guideline_concordance,
+        tools=[consult_all_specialists,
+               consult_data_integrity, consult_guideline_concordance,
                consult_followup, get_all_findings, get_agent_activity,
                find_patients, patient_snapshot])
 
