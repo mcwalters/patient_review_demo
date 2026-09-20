@@ -936,3 +936,37 @@ def test_an_empty_report_is_announced_not_swallowed():
     src = inspect.getsource(panel.review_async)
     assert "if not final.strip():" in src
     assert "returned no report" in src
+
+
+def test_briefs_persist_across_sessions(tmp_path, monkeypatch):
+    """session_state is per browser tab, so a restart cost ninety seconds again."""
+    from prototype import panel_cache
+    monkeypatch.setattr(panel_cache, "BRIEFS", tmp_path / "brief_cache.json")
+
+    assert panel_cache.load_briefs() == {}
+    panel_cache.save_brief("Stein, Larry", "the narrative", {"patient": {"name": "Stein, Larry"}})
+    panel_cache.save_brief("Cain, Jacob", "another", {"patient": {"name": "Cain, Jacob"}})
+
+    got = panel_cache.load_briefs()
+    assert set(got) == {"Stein, Larry", "Cain, Jacob"}
+    assert got["Stein, Larry"] == ("the narrative", {"patient": {"name": "Stein, Larry"}})
+
+    # A failed brief must not be cached, or the failure replays for ever.
+    panel_cache.save_brief("Broken, One", "", {"error": "no such patient"})
+    panel_cache.save_brief("Broken, Two", "text", {"error": "boom"})
+    assert "Broken, One" not in panel_cache.load_briefs()
+    assert "Broken, Two" not in panel_cache.load_briefs()
+
+
+def test_a_corrupt_brief_cache_is_no_cache(tmp_path, monkeypatch):
+    """Same rule as the panel cache: a demo must not die on its own cache file."""
+    from prototype import panel_cache
+    f = tmp_path / "brief_cache.json"
+    monkeypatch.setattr(panel_cache, "BRIEFS", f)
+    f.write_text("{ not json")
+    assert panel_cache.load_briefs() == {}
+    f.write_text('["a list, not a dict"]')
+    assert panel_cache.load_briefs() == {}
+    # And it still writes cleanly over the wreckage.
+    panel_cache.save_brief("Stein, Larry", "n", {"ok": True})
+    assert "Stein, Larry" in panel_cache.load_briefs()

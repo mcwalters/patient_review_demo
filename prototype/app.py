@@ -366,10 +366,20 @@ if view == "Patient brief":
         st.session_state["brief_patient"] = who
 
     findings_ctx = st.session_state.get("panel", (None, None, [], {}))[2] or []
+    # Seeded from disk, so a brief written once is instant for every later
+    # session and survives a server restart. session_state on its own made the
+    # first click on each patient cost the model call again after every restart
+    # and in every new tab -- about forty seconds warm, longer on a cold
+    # server, and it is the first thing anyone clicks from the shortlist.
     cache = st.session_state.setdefault("briefs", {})
+    if not cache:
+        cache.update(panel_cache.load_briefs())
     if who not in cache:
-        with st.spinner(f"Assembling the brief for {who}…"):
-            cache[who] = asyncio.run(write_brief_async(who, findings_ctx))
+        with st.spinner(f"Assembling the brief for {who}… under a minute, "
+                        f"then it is saved and instant"):
+            narrative, pack = asyncio.run(write_brief_async(who, findings_ctx))
+        cache[who] = (narrative, pack)
+        panel_cache.save_brief(who, narrative, pack)
     narrative, pack = cache[who]
 
     if "error" in pack:
