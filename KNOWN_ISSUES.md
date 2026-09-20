@@ -93,6 +93,63 @@ always appear, and a repeated-run harness.
 
 ---
 
+## Nothing validates the ranking
+
+The largest uncovered hazard in the system, and the one with no control at all.
+
+The product is an ordering. A panel manager works down from the top and stops
+at about fifteen, so being on the list at position 3 and position 30 are
+different outcomes, and nothing here checks that the order is right. Every
+control in `prototype/` verifies that a *fact* is true. None verifies that a
+*priority* is.
+
+The floor's blanket grading, above, is what this gap looks like in practice: a
+whole category rated high, wrong, for weeks, noticed only because it collided
+with a different control.
+
+The temptation is to answer "a clinician-labelled gold set" and stop. That is
+expensive, slow, and lets the problem sit until someone else solves it. Most of
+this is reachable without a clinician.
+
+### Without a clinician
+
+**1. Derive severity instead of asserting it.** Severity is currently a
+hardcoded string per floor category. A rating nobody can trace to a rule cannot
+be audited, and cannot be argued with. Replace it with an explicit rubric --
+consequence class of the test, how far overdue, whether the condition is active
+-- so that a rating is reproducible and *contestable*. A clinician disagreeing
+with one rubric is a far better conversation than a clinician disagreeing with
+thirty individual ratings.
+
+**2. Dominance tests.** If patient A carries every finding patient B carries,
+plus one more of equal or greater severity, A must not rank below B. A real
+safety property, checkable with no ground truth, and the standard approach for
+systems where no gold answer exists. With the rubric from (1) it catches the
+floor bug directly.
+
+**3. Threshold sensitivity.** Move a systolic from 179 to 181 and the ranking
+must move in the expected direction. Confirms the order responds to clinical
+facts rather than to phrasing.
+
+**4. Rank stability.** DONE. `evals/stability.py` now reports pairwise Spearman
+correlation over the shortlist ordering alongside Jaccard. Jaccard only ever
+measured whether the same *people* came back; two runs can agree completely on
+the set and disagree on who to see first. Order stability is not order
+correctness, but it is a precondition for it.
+
+### The cheap clinician ask
+
+Not a gold set. **Pairwise preference**: show a clinician 25 pairs of patients
+and ask which needs attention first. Fifteen minutes yields a partial order to
+measure agreement against, and people are far more reliable comparing two
+things than ranking a hundred. Second option, also cheap: have them pick their
+own fifteen from the panel and compare the overlap with the system's twelve.
+
+Only after those is a labelled gold set worth the cost, and by then it would be
+measuring something the cheaper instruments had already pointed at.
+
+---
+
 ## Known-good behaviour that looks like a bug
 
 Recorded so nobody "fixes" it.

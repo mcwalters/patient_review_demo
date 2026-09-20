@@ -10,7 +10,8 @@ This runs the review N times and measures three things.
   coverage       for facts we independently know to be true, how many runs
                  surfaced them -- the closest thing to a recall measure that
                  is available without exhaustive clinical review
-  stability      how much the surfaced patient set moves between runs
+  stability      how much the surfaced patient set moves between runs,
+                 and separately how much the ORDER of it moves
 
     ./.venv/bin/python evals/stability.py 5
 """
@@ -98,6 +99,41 @@ INVARIANTS = {
 }
 
 
+def shortlist_order(report: str, patients: list[str]) -> list[str]:
+    """The patients of the shortlist, in the order the report raises them.
+
+    The shortlist is numbered 1..12 in priority order, so first appearance is
+    the rank. Prose, not structure, because the ranking only exists in prose --
+    which is itself worth knowing.
+    """
+    seen = [(report.find(p), p) for p in patients]
+    return [p for at, p in sorted(seen) if at >= 0]
+
+
+def spearman(a: list[str], b: list[str]) -> float | None:
+    """Rank correlation between two orderings, over the names common to both.
+
+    Jaccard says whether the same people come back. It says nothing about
+    whether they come back in the same order, and the product is an ordering:
+    the nurse works down from the top and stops. Two runs can agree perfectly
+    on the set and disagree on who to see first.
+
+    No scipy -- Pearson on the ranks, which is what Spearman is.
+    """
+    common = [p for p in a if p in b]
+    n = len(common)
+    if n < 3:
+        return None
+    ra = {p: i for i, p in enumerate(a)}
+    rb = {p: i for i, p in enumerate(b)}
+    xs = [ra[p] for p in common]
+    ys = [rb[p] for p in common]
+    mx, my = sum(xs) / n, sum(ys) / n
+    num = sum((x - mx) * (y - my) for x, y in zip(xs, ys))
+    den = (sum((x - mx) ** 2 for x in xs) * sum((y - my) ** 2 for y in ys)) ** 0.5
+    return round(num / den, 3) if den else None
+
+
 def main(n: int) -> None:
     runs = []
     for i in range(1, n + 1):
@@ -114,6 +150,7 @@ def main(n: int) -> None:
             "uncited_high": [f["finding_id"]
                              for f in uncited_high_severity(report, findings)],
             "canaries": {k: any(fn(f) for f in findings) for k, fn in CANARIES.items()},
+            "shortlist_order": shortlist_order(report, patients),
             "report": report,
         })
         print(f"   {len(findings)} findings, {len(patients)} patients, "
@@ -153,6 +190,13 @@ def main(n: int) -> None:
                for a, b in combinations(runs, 2)]
         print(f"  pairwise Jaccard similarity                : "
               f"{statistics.mean(jac):.2f} (min {min(jac):.2f}, max {max(jac):.2f})")
+        rho = [r for r in (spearman(a["shortlist_order"], b["shortlist_order"])
+                           for a, b in combinations(runs, 2)) if r is not None]
+        if rho:
+            print(f"  pairwise rank correlation (Spearman)       : "
+                  f"{statistics.mean(rho):.2f} (min {min(rho):.2f}, max {max(rho):.2f})")
+            print(f"    same people in a different order is still a different "
+                  f"worklist: the nurse works down from the top and stops.")
     print(f"\n  always surfaced: {', '.join(sorted(always)) or 'none'}")
     print(f"  one run only   : {', '.join(sorted(once)) or 'none'}")
 
