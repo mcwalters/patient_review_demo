@@ -481,3 +481,45 @@ def test_a_category_is_not_a_finding_about_everyone_in_it():
                         category="impossible values", severity="high",
                         evidence="e", recommended_action="r")["recorded"] is True
     assert len(h.all()) == 2
+
+
+def test_preflight_separates_defects_from_population_questions():
+    """A rate that is high for the general population is not a defect.
+
+    Nothing in the extract says it is a general primary-care panel, and a
+    specialty clinic or a deliberately enriched cohort would carry rates that
+    look absurd against national averages. Those findings have to be marked as
+    conditional and name the population that would make them ordinary, or the
+    audit is just telling a lipid clinic that its lipid clinic is implausible.
+    """
+    from prototype import preflight
+    findings, verdict = preflight.cached()
+    assert findings, "no cached audit to check"
+    assert all(f.get("kind") in preflight.KINDS for f in findings)
+
+    conditional = [f for f in findings if f["kind"] == "population-dependent"]
+    assert conditional, "an audit that finds nothing conditional has stopped distinguishing"
+    for f in conditional:
+        assert f.get("plausible_if", "").strip(), f"{f['title']} names no population"
+
+    # Prevalence and prescribing-rate objections must not be filed as defects.
+    defects = " ".join(f["title"].lower() for f in findings
+                       if f["kind"] != "population-dependent")
+    assert "pcsk9" not in defects
+
+
+def test_preflight_composes_the_shared_rules():
+    """It was the one agent that never did, and it showed.
+
+    Its cached findings led with "clinically dangerous triple anticoagulation"
+    -- the exact claim NO_STOP_DATES exists to prevent and that a panel-review
+    invariant tests against. The audit tab contradicted the review tab.
+    """
+    from prototype.preflight import INSTRUCTION
+    from prototype.rules import SHARED
+    assert SHARED in INSTRUCTION
+
+    from prototype import preflight
+    findings, _ = preflight.cached()
+    titles = " ".join(f["title"].lower() for f in findings)
+    assert "triple anticoagulation" not in titles

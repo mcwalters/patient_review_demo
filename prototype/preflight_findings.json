@@ -1,77 +1,95 @@
 {
  "findings": [
   {
-   "title": "Implausible age distribution for Medicare",
+   "title": "SpO2 above 100%",
    "severity": "high",
-   "observed": "51 patients with Medicare coverage have a median age of 37 (min 18, max 75).",
-   "expected": "Medicare is primarily for patients 65+. While some younger patients with disabilities are covered, a median age of 37 in a large primary-care panel is not credible. The median age should be close to or over 65.",
-   "impact": "Anyone screening for Medicare-covered patients would get a cohort that is far too young, leading to incorrect assumptions about age-related health conditions and treatments.",
-   "affected": "51 patients with Medicare coverage"
+   "kind": "impossible",
+   "observed": "One patient has a recorded SpO2 of 126.36%.",
+   "expected": "SpO2 cannot exceed 100%.",
+   "impact": "Any analysis of vitals will be affected. Automated alerting on hypoxia or hyperoxia will be unreliable.",
+   "affected": "One patient with SpO2 of 126.36%",
+   "plausible_if": ""
   },
   {
-   "title": "Implausibly high prevalence of iodine-deficiency hypothyroidism",
+   "title": "Impossible serum sodium",
    "severity": "high",
-   "observed": "9 out of 100 patients are diagnosed with 'Subclinical Iodine-Deficiency Hypothyroidism' (E02).",
-   "expected": "Iodine deficiency is rare in the United States and most developed countries. A prevalence of 9% in a primary-care panel is not credible. Most hypothyroidism in these settings is either primary or autoimmune (Hashimoto's), not from iodine deficiency.",
-   "impact": "Any algorithm screening for common causes of hypothyroidism or nutritional deficiencies would be completely skewed. It would also lead to incorrect assumptions about the patient population's dietary habits and geographic location.",
-   "affected": "9 patients with ICD-10 code E02"
+   "kind": "impossible",
+   "observed": "One patient has a recorded serum sodium of 209.91 mEq/L.",
+   "expected": "Values > 160 mEq/L are rare and dangerous; values > 180 are generally considered incompatible with life.",
+   "impact": "Any analysis of electrolytes will be affected. Risk stratification models will be skewed.",
+   "affected": "One patient with serum sodium of 209.91 mEq/L",
+   "plausible_if": ""
   },
   {
-   "title": "Implausibly high prescribing rate of PCSK9 inhibitors",
+   "title": "Impossible hemoglobin",
    "severity": "high",
-   "observed": "16 out of 100 patients are prescribed a PCSK9 inhibitor (Evolocumab).",
-   "expected": "PCSK9 inhibitors are expensive, specialist-initiated drugs for refractory hypercholesterolemia. A prescribing rate of 1-2% in a cardiology clinic would be high; in a general primary-care panel, the expected rate is far less than 1%. A rate of 16% is not credible.",
-   "impact": "Anyone screening for patients on specialty drugs or with severe, refractory hypercholesterolemia would get a massively inflated and incorrect cohort. It would also lead to false conclusions about the cost and complexity of care in this population.",
-   "affected": "16 patients on Evolocumab (Repatha)"
+   "kind": "impossible",
+   "observed": "One patient has a recorded hemoglobin of 25.12 g/dL.",
+   "expected": "Hemoglobin levels are typically between 12-17.5 g/dL. Values > 20 g/dL are rare and usually associated with bone marrow disorders or severe dehydration.",
+   "impact": "Anemia and erythrocytosis-related logic will be affected. Clinical decision support based on hemoglobin levels will be unreliable.",
+   "affected": "One patient with hemoglobin of 25.12 g/dL",
+   "plausible_if": ""
   },
   {
-   "title": "Implausibly high prescribing rate of T3 supplements (Liothyronine)",
+   "title": "Impossible cholesterol levels",
+   "severity": "low",
+   "kind": "impossible",
+   "observed": "Minimum LDL cholesterol of 0.13 mg/dL and minimum total cholesterol of 0.54 mg/dL were observed.",
+   "expected": "Even with aggressive lipid-lowering therapy, cholesterol levels this low are physiologically implausible and likely represent data entry or measurement error.",
+   "impact": "Lipid management algorithms and cardiovascular risk calculators will be affected. Patients might be flagged as having dangerously low cholesterol, which is incorrect.",
+   "affected": "Two patients with implausibly low cholesterol values.",
+   "plausible_if": ""
+  },
+  {
+   "title": "Medicare eligibility mismatch",
+   "severity": "high",
+   "kind": "internally inconsistent",
+   "observed": "51 patients are listed as having Medicare, but 32 of them are under the age of 65. The median age for Medicare patients in this cohort is 37.",
+   "expected": "Medicare is primarily for individuals aged 65 or older. While some younger people qualify due to disability, having 63% of a Medicare population be under 65 in a general panel is highly improbable.",
+   "impact": "This could affect any analysis based on insurance status, such as health economics research or population health management.",
+   "affected": "32 patients under 65 with Medicare coverage",
+   "plausible_if": ""
+  },
+  {
+   "title": "Digoxin levels measured without prescription",
    "severity": "medium",
-   "observed": "5 out of 100 patients are prescribed Liothyronine (T3) in addition to 8 patients on thyroid hormone (Levothyroxine).",
-   "expected": "The vast majority of hypothyroid patients are managed with T4 (Levothyroxine) monotherapy. T3 supplementation is a niche treatment initiated by endocrinologists for specific cases. A 5% prescribing rate in a primary-care panel is not credible.",
-   "impact": "This would mislead any analysis of thyroid management patterns, suggesting a much higher rate of complex or refractory hypothyroidism than is realistic. It might also cause incorrect assumptions about the panel's endocrinological complexity.",
-   "affected": "5 patients on Liothyronine"
+   "kind": "internally inconsistent",
+   "observed": "8 patients have results for digoxin levels, but no patients in the cohort are prescribed digoxin.",
+   "expected": "Drug levels should only be measured for patients who are prescribed that drug.",
+   "impact": "This suggests either an incomplete medication list or unnecessary lab testing. Cohort selection for drug-based studies would be flawed.",
+   "affected": "8 patients with digoxin levels measured.",
+   "plausible_if": ""
   },
   {
-   "title": "Clinically dangerous triple anticoagulation",
-   "severity": "high",
-   "observed": "One patient is listed as being on three distinct DOACs at the same time: Apixaban, Dabigatran, and Rivaroxaban.",
-   "expected": "A patient should be on at most one anticoagulant. Triple therapy with three different agents from the same class is never appropriate and carries an extreme risk of life-threatening bleeding.",
-   "impact": "Failure to catch this could lead to a clinical decision support alert firing incorrectly or, in a real-world scenario, a catastrophic medication error. Any algorithm assessing anticoagulant use would be fundamentally flawed.",
-   "affected": "Forbes, Tamara"
-  },
-  {
-   "title": "Widespread duplicate therapy",
-   "severity": "high",
-   "observed": "20 patients are prescribed two or three distinct agents from the same drug class. This includes 2 patients on 3 SSRIs, 4 patients on 2 statins, 4 patients on 2 SNRIs, 3 patients on 2 PPIs, 2 patients on 2 GLP-1 RAs, 1 patient on 2 SGLT2is, 1 patient on 2 beta-blockers, and 1 patient on 2 ICS/LABA inhalers.",
-   "expected": "With very rare exceptions for highly specialized indications, patients should only be on one agent from any given drug class. The observed rates of duplication are not credible and suggest a systemic data quality issue.",
-   "impact": "This makes it impossible to reliably determine a patient's true medication regimen. Any analysis of treatment patterns, side effects, or drug effectiveness would be invalid. It also suggests that medication reconciliation is not being done properly in this data.",
-   "affected": "20 distinct patients across 9 drug classes."
-  },
-  {
-   "title": "Physiologically impossible lab values",
-   "severity": "high",
-   "observed": "Maximum Sodium is 209.91 mEq/L and maximum SpO2 is 126.36%.",
-   "expected": "Sodium levels above 160 mEq/L are rare and life-threatening; a value of 209 is not compatible with life. SpO2 cannot exceed 100%. These values are physiologically impossible.",
-   "impact": "These values are clear indicators of data corruption or errors in data extraction/unit conversion. Any algorithm that uses these lab values would be completely unreliable.",
-   "affected": "At least one patient with an impossible sodium value and one with an impossible SpO2 value."
-  },
-  {
-   "title": "Contradictory and toxic Digoxin levels",
-   "severity": "high",
-   "observed": "8 patients have Digoxin levels measured, with a median of 2.21 ng/mL (toxic) and a max of 2.82 ng/mL (toxic). However, zero patients are prescribed Digoxin in the medication list.",
-   "expected": "Digoxin levels should only be present for patients prescribed Digoxin. The levels should ideally be within the therapeutic range (0.8-2.0 ng/mL), not consistently in the toxic range. The data is contradictory and clinically implausible.",
-   "impact": "This contradiction makes it impossible to trust either the medication list or the lab data. An algorithm trying to link drugs to lab effects would fail. It also paints a false picture of widespread drug toxicity.",
-   "affected": "8 patients with Digoxin levels."
-  },
-  {
-   "title": "Implausible Hemoglobin and Cholesterol values",
+   "title": "High rate of duplicate therapy records",
    "severity": "medium",
-   "observed": "Maximum Hemoglobin is 25.12 g/dL. Minimum LDL cholesterol is 0.13 mg/dL and minimum Total Cholesterol is 0.54 mg/dL.",
-   "expected": "A hemoglobin of 25 is incredibly high and suggests a major underlying (and unlisted) hematological disorder or severe dehydration; it's more likely a data error. Cholesterol levels near zero are also not physiologically plausible, even with aggressive treatment.",
-   "impact": "These extreme, outlier lab values would skew any analysis of hematologic or lipid parameters, leading to incorrect conclusions about the prevalence of anemia, erythrocytosis, or dyslipidemia.",
-   "affected": "At least one patient for each of these outlier lab values."
+   "kind": "internally inconsistent",
+   "observed": "20 patients are recorded as taking two or more medications from the same class, including three patients on three different SSRIs and one on three different DOACs.",
+   "expected": "Concurrent use of multiple drugs from the same class is generally avoided. While this may represent a series of prescription changes without discontinuation dates, the high number of instances is a significant data quality concern.",
+   "impact": "Any analysis of medication use will be affected. It is impossible to determine the actual medication regimen for these patients. This could lead to incorrect assumptions about treatment intensity.",
+   "affected": "20 patients, including \"Forbes, Tamara\", \"Hernandez, Jason\", and \"Wilson, Kelly\".",
+   "plausible_if": ""
+  },
+  {
+   "title": "Unusually high prescribing rate for PCSK9 inhibitors",
+   "severity": "low",
+   "kind": "population-dependent",
+   "observed": "16% of patients are prescribed a PCSK9 inhibitor.",
+   "expected": "In a general primary care population, the rate would be well under 1%.",
+   "impact": "Without knowing the population context, a user might incorrectly conclude that this data is not representative of any real-world population.",
+   "affected": "16 patients on evolocumab.",
+   "plausible_if": "This is a specialty lipid or cardiology clinic."
+  },
+  {
+   "title": "Unusually high prevalence of subclinical iodine-deficiency hypothyroidism",
+   "severity": "low",
+   "kind": "population-dependent",
+   "observed": "9% of patients are diagnosed with subclinical iodine-deficiency hypothyroidism (E02).",
+   "expected": "This is a rare diagnosis in the general population of developed countries.",
+   "impact": "Without context, this could be misinterpreted as a data quality issue or a systematic coding error.",
+   "affected": "9 patients with diagnosis code E02.",
+   "plausible_if": "The patient panel is from a region with endemic iodine deficiency or from a specialized endocrinology clinic."
   }
  ],
- "verdict": "This EHR extract is not safe to build clinical logic on. The data is riddled with high-severity, clinically implausible findings across every domain inspected. The demographics show a nonsensical age distribution for Medicare patients. The condition prevalence includes a 9% rate of iodine-deficiency hypothyroidism, which is unheard of in a modern US panel. The prescribing data shows astronomically high rates of expensive, specialist drugs like PCSK9 inhibitors and contains widespread, dangerous instances of duplicate therapy, including a patient on three different anticoagulants. Finally, the lab data contains physiologically impossible values for sodium and blood oxygen, extreme outliers for hemoglobin and cholesterol, and eight patients with toxic digoxin levels despite none being prescribed the drug. These issues point to systemic failures in data extraction, mapping, or reconciliation. Any algorithm or clinical study based on this data would produce dangerously misleading and incorrect results. The data requires a complete re-extraction and validation before it can be used for any purpose."
+ "verdict": "This extract has significant data quality issues that make it unsafe for building clinical logic without substantial cleanup. The dataset contains impossible clinical values, including an SpO2 over 100%, a sodium level incompatible with life, and non-physiologic cholesterol and hemoglobin levels. There are also critical internal inconsistencies: a large number of patients under 65 are listed with Medicare coverage, patients have lab results for a drug they are not prescribed, and an unusually high number of patients are recorded as taking multiple medications from the same class, suggesting missing discontinuation data. While the high prevalence of certain diagnoses and expensive medications like PCSK9 inhibitors might seem alarming, these are likely features of a specialized cohort (e.g., a cardiology or lipid clinic) and should be confirmed with the data owner rather than being treated as errors. However, the impossible values and internal contradictions must be resolved before this data can be reliably used for any clinical application."
 }

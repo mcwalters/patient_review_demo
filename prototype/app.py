@@ -392,14 +392,44 @@ if view == "Pre-flight data audit":
     if not findings:
         st.info("No cached audit. Run `python -m prototype.preflight` to generate one.")
     else:
+        # Separated because the two groups carry different authority. A value
+        # that cannot exist is a defect whatever this panel is. A rate that is
+        # high for the general population is only a defect if you assume this
+        # is the general population -- and nothing here says it is. An extract
+        # could be a specialty clinic or a deliberately enriched cohort, in
+        # which case the "objection" is that the sick panel is sick.
+        BLURB = {
+            "impossible": ("Defects — true whatever this panel is",
+                           "No patient could hold these values. Nothing about the "
+                           "population makes them credible."),
+            "internally inconsistent": ("Defects — the record contradicts itself",
+                                        "Two parts of the same record disagree. "
+                                        "Independent of what population this is."),
+            "population-dependent": ("Questions for whoever supplied the data",
+                                     "Surprising only against a general primary-care "
+                                     "panel. Each names the population that would make "
+                                     "it ordinary — these are questions, not errors."),
+        }
         order = {"high": 0, "medium": 1, "low": 2}
-        for f in sorted(findings, key=lambda x: order.get(x["severity"], 3)):
-            icon = {"high": "🔴", "medium": "🟠"}.get(f["severity"], "🟡")
-            with st.expander(f"{icon}  {f['title']}", expanded=f["severity"] == "high"):
-                st.markdown(f"**Observed** {f['observed']}")
-                st.markdown(f"**Expected in practice** {f['expected']}")
-                st.markdown(f"**Impact on screening** {f['impact']}")
-                st.caption(f"Affected: {f['affected']}")
+        for kind in preflight.KINDS:
+            group = [f for f in findings if f.get("kind", "population-dependent") == kind]
+            if not group:
+                continue
+            title, blurb = BLURB[kind]
+            st.markdown(f"#### {title}")
+            st.caption(blurb)
+            for f in sorted(group, key=lambda x: order.get(x["severity"], 3)):
+                icon = ("❓" if kind == "population-dependent"
+                        else {"high": "🔴", "medium": "🟠"}.get(f["severity"], "🟡"))
+                with st.expander(f"{icon}  {f['title']}",
+                                 expanded=kind != "population-dependent"
+                                 and f["severity"] == "high"):
+                    st.markdown(f"**Observed** {f['observed']}")
+                    st.markdown(f"**Expected** {f['expected']}")
+                    if f.get("plausible_if"):
+                        st.info(f"**Would be unremarkable in** {f['plausible_if']}")
+                    st.markdown(f"**Impact on screening** {f['impact']}")
+                    st.caption(f"Affected: {f['affected']}")
         if verdict:
             st.markdown("**Verdict**")
             st.write(verdict)
