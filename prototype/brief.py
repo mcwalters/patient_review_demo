@@ -81,8 +81,8 @@ def build_brief_pack(patient: str, findings: list[dict] | None = None) -> dict:
             [pid]).fetchone()
 
         labs = con.execute("""
-            SELECT COMPONENT_NAME, value, unit, REFERENCE_LOW, REFERENCE_HIGH,
-                   is_abnormal, RESULT_DATE
+            SELECT COMPONENT_NAME, round(value, 1) AS value, unit,
+                   REFERENCE_LOW, REFERENCE_HIGH, is_abnormal, RESULT_DATE
             FROM (SELECT *, row_number() OVER (PARTITION BY COMPONENT_NAME
                            ORDER BY RESULT_DATE DESC) rn
                   FROM v_lab_result WHERE PAT_ID = ?) WHERE rn = 1
@@ -212,10 +212,12 @@ Structure, in this order and no other:
    for the rest of the brief. If there are no flags, omit this section entirely
    rather than writing a reassuring sentence.
 
-2. **Last seen** -- one line: the date of their last visit, who saw them, and
-   that clinician's specialty, taken from visit.last_visit. Then whether their
-   next AWV is due; say "derived" if you give the date, because it is calculated
-   from the last visit rather than booked.
+2. **Last seen** -- one line. Do NOT begin it by repeating the heading: the
+   reader has just read the words "Last seen", so start with the date. Give the
+   date of their last visit, who saw them and that clinician's specialty from
+   visit.last_visit, then whether their next AWV is due, saying "derived" if you
+   give the date because it is calculated from the last visit rather than
+   booked.
 
 3. **Why this patient, now** -- two or three sentences. The single most
    important thing about them.

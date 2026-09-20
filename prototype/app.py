@@ -227,7 +227,7 @@ if view == "Panel review":
         panel_cache.save(goal, box["result"], live_findings.rejected)
 
     # Open on the last saved run rather than a blank screen. A review takes
-    # about five minutes, which is a seventh of the session spent watching a
+    # minutes, which is a slice of the session spent watching a
     # spinner, and it is the first thing anyone sees. The live button above
     # still runs it for real and overwrites this.
     if "panel" not in st.session_state:
@@ -249,7 +249,7 @@ if view == "Panel review":
                 f"{len(pfindings)} findings, {len(ptrace)} tool calls, "
                 f"{pusage.get('wall_clock_seconds', '?')}s, "
                 f"${pusage.get('usd', 0):.2f}. Press **Run panel review** to "
-                f"watch the agents do it live — it takes about five minutes and "
+                f"watch the agents do it live — about two and a half minutes, and "
                 f"the result will differ, which is the point of the eval.")
 
         # Who actually did the work. Shown because a run once claimed a

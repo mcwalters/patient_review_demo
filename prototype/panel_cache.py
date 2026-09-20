@@ -1,8 +1,8 @@
 """The last panel review, saved so the demo does not open on a spinner.
 
-A run measures 311s average over the five-run eval. In a 45-minute session that
-is a seventh of the time watching nothing, and it is the first thing anyone
-sees. `preflight.py` already solved this for the audit; this is the same move
+A run measures about 160s with the specialists consulted concurrently. That is
+still minutes of a 45-minute session spent watching nothing, and it is the
+first thing anyone sees. `preflight.py` already solved this for the audit; this is the same move
 for the review.
 
 The saved run is real output from a real run, not a fixture -- regenerate it
@@ -78,7 +78,7 @@ def main() -> None:
 
     goal = "Anything that needs attention this week."
     findings = Findings()
-    print(f"running a panel review to cache … (expect ~5 minutes)")
+    print("running a panel review to cache … (two to three minutes)")
     result = asyncio.run(review_async(goal, verbose=True, findings=findings))
     path = save(goal, result, findings.rejected)
     report, trace, rows, usage = result
