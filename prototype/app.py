@@ -248,11 +248,18 @@ if view == "Panel review":
         missed = uncited_high_severity(report, pfindings)
         if missed:
             st.warning(
-                f"**{len(missed)} high-severity finding"
-                f"{'s' if len(missed) > 1 else ''} the report does not cite "
-                f"individually.** The store rates these high and the supervisor "
-                f"either left them out or folded them into a group it called "
-                f"lower priority. That disagreement is for you to settle, not it.")
+                f"**{len(missed)} finding"
+                f"{'s' if len(missed) > 1 else ''} rated high by the store, not "
+                f"cited individually in the report.** The shortlist is twelve "
+                f"patients out of a hundred, so something has to come off it. "
+                f"This is where the ranking was disagreed with — not a claim that "
+                f"either side is wrong.")
+            st.caption(
+                "Known limitation: the floor rates a whole category high without "
+                "grading inside it, so a six-month-overdue triglycerides arrives "
+                "at the same severity as an eleven-month-overdue kidney screen in "
+                "diabetes. Expect stale orders here; the supervisor is usually "
+                "right to rank them below a hypertensive crisis. See KNOWN_ISSUES.md.")
             for f in missed:
                 who = "; ".join(f.get("patients") or []) or "panel-level"
                 st.markdown(f"- **{f['finding_id']}** · {f.get('headline','')} — {who}")
