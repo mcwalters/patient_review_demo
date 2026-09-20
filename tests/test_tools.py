@@ -812,3 +812,57 @@ def test_every_score_explains_itself():
         assert s.patient in text and f"{s.total:g}" in text
         for c in s.contributions:
             assert c.label in text and c.because in text
+
+
+def test_the_notes_hold_no_clinical_fact_the_tables_do_not():
+    """The load-bearing claim behind not extracting from the notes.
+
+    "153 of 153 fields agree" only says the overlap does not contradict. The
+    stronger claim, and the one the design rests on, is that nothing in the
+    prose is absent from the tables -- and that what remains once the
+    structured values are removed is fixed boilerplate, not clinical content.
+    """
+    import re
+    from prototype.tools import connect
+    con = connect()
+    try:
+        rows = con.execute("""
+            SELECT h.NOTE_TEXT, e.PAT_ID
+            FROM hno_info h JOIN v_encounter e USING (PAT_ENC_CSN_ID)
+            WHERE h.NOTE_TEXT IS NOT NULL
+        """).fetchall()
+        sep = (r"(?:Active conditions|Chronic conditions|Problem list active|"
+               r"Patient is managed for)\s*:?\s*(.*?)\.\s*"
+               r"(?:Medications reconciled|Medication list|Medications|"
+               r"Current drug regimen includes)\s*:?\s*(.*?)\.\s*"
+               r"(?:Vitals|Today's vitals|BP)")
+        parsed, unknown_dx, unknown_med, tails = 0, [], [], set()
+        for note, pid in rows:
+            m = re.search(sep, note, re.S)
+            assert m, f"note for {pid} does not match any known template"
+            parsed += 1
+            tail = re.search(r"BMI[:\s]*[\d.]+\s*(.*)$", note)
+            tails.add(tail.group(1).strip())
+            dx = {r[0] for r in con.execute(
+                "SELECT dx_name FROM v_diagnosis WHERE PAT_ID=?", [pid]).fetchall()}
+            med = {r[0] for r in con.execute(
+                "SELECT DISPLAY_NAME FROM v_medication WHERE PAT_ID=?", [pid]).fetchall()}
+            unknown_dx += [d.strip() for d in m.group(1).split("|")
+                           if d.strip() and d.strip() not in dx]
+            unknown_med += [
+                d.strip() for d in m.group(2).split("|") if d.strip()
+                and not any(d.strip().startswith(t.split()[0])
+                            or t.startswith(d.strip().split()[0]) for t in med)]
+    finally:
+        con.close()
+
+    assert parsed == 153
+    assert unknown_dx == [], f"notes name diagnoses absent from the tables: {unknown_dx[:3]}"
+    assert unknown_med == [], f"notes name drugs absent from the tables: {unknown_med[:3]}"
+
+    # Four templates, four fixed closing sentences, no patient-specific prose.
+    assert len(tails) == 4, f"expected 4 fixed tails, found {len(tails)}"
+    # Every one of them asserts care was delivered -- the thing no column holds,
+    # and the reason the notes are worth checking even though nothing is worth
+    # extracting from them.
+    assert all(re.search(r"lab|monitor|screen|counsel|adherence", t, re.I) for t in tails)
