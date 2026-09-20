@@ -20,7 +20,7 @@ import pandas as pd
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from prototype import preflight, theme               # noqa: E402
+from prototype import panel_cache, preflight, theme  # noqa: E402
 from prototype.guidelines import (                   # noqa: E402
     DISCLAIMER, GUIDELINES, check_guideline)
 from prototype.brief import write_brief_async        # noqa: E402
@@ -196,9 +196,34 @@ if view == "Panel review":
         # Refused rows never reach the findings list, so they would otherwise
         # vanish silently -- which is the wrong outcome for a rejected name.
         st.session_state["panel_rejected"] = list(live_findings.rejected)
+        st.session_state["panel_is_saved_run"] = False
+        panel_cache.save(goal, box["result"], live_findings.rejected)
+
+    # Open on the last saved run rather than a blank screen. A review takes
+    # about five minutes, which is a seventh of the session spent watching a
+    # spinner, and it is the first thing anyone sees. The live button above
+    # still runs it for real and overwrites this.
+    if "panel" not in st.session_state:
+        saved = panel_cache.load()
+        if saved:
+            st.session_state["panel"] = panel_cache.as_session_value(saved)
+            st.session_state["panel_rejected"] = saved.get("rejected", [])
+            st.session_state["panel_is_saved_run"] = True
+            st.session_state["panel_saved_meta"] = saved
 
     if "panel" in st.session_state:
         report, ptrace, pfindings, pusage = st.session_state["panel"]
+
+        if st.session_state.get("panel_is_saved_run"):
+            meta = st.session_state.get("panel_saved_meta", {})
+            st.info(
+                f"**Showing a saved run from {panel_cache.age_phrase(meta)}** — "
+                f"real output from a real run, not a fixture: "
+                f"{len(pfindings)} findings, {len(ptrace)} tool calls, "
+                f"{pusage.get('wall_clock_seconds', '?')}s, "
+                f"${pusage.get('usd', 0):.2f}. Press **Run panel review** to "
+                f"watch the agents do it live — it takes about five minutes and "
+                f"the result will differ, which is the point of the eval.")
 
         # Who actually did the work. Shown because a run once claimed a
         # specialist had been "silent" while using three of its findings --
@@ -222,11 +247,12 @@ if view == "Panel review":
         # distinguished "deliberately deprioritised" from "silently dropped".
         missed = uncited_high_severity(report, pfindings)
         if missed:
-            st.error(
+            st.warning(
                 f"**{len(missed)} high-severity finding"
-                f"{'s' if len(missed) > 1 else ''} not mentioned in the report "
-                f"below.** Recorded, but neither shortlisted nor explained away — "
-                f"read these before the narrative.")
+                f"{'s' if len(missed) > 1 else ''} the report does not cite "
+                f"individually.** The store rates these high and the supervisor "
+                f"either left them out or folded them into a group it called "
+                f"lower priority. That disagreement is for you to settle, not it.")
             for f in missed:
                 who = "; ".join(f.get("patients") or []) or "panel-level"
                 st.markdown(f"- **{f['finding_id']}** · {f.get('headline','')} — {who}")

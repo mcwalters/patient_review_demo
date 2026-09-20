@@ -384,8 +384,18 @@ def test_high_severity_findings_left_out_of_the_report_are_reported():
     assert len(highs) > 1
 
     assert uncited_high_severity(" ".join(highs), rows) == []
-    missed = uncited_high_severity(" ".join(highs[:-1]), rows)
-    assert [m["finding_id"] for m in missed] == [highs[-1]]
+
+    # Dropping one id is not enough when the floor files siblings in the same
+    # category: the content is still cited, so the finding is not missing.
+    last = [r for r in rows if r["finding_id"] == highs[-1]][0]
+    siblings = [r["finding_id"] for r in rows
+                if r.get("category") == last.get("category")]
+    partial = uncited_high_severity(" ".join(highs[:-1]), rows)
+    if len(siblings) > 1:
+        assert partial == []
+    remaining = [h for h in highs if h not in siblings]
+    assert {m["finding_id"] for m in uncited_high_severity(" ".join(remaining), rows)} \
+        == set(siblings)
 
 
 def test_a_refused_finding_is_not_counted_as_recorded():
@@ -588,7 +598,12 @@ def test_each_fault_trips_the_control_it_targets():
     full = " ".join(r["finding_id"] for r in rows)
     assert uncited_high_severity(full, rows) == []
     holed, victim = faults.drop_high_finding(full, rows)
-    assert [m["finding_id"] for m in uncited_high_severity(holed, rows)] == [victim]
+    missing = [m["finding_id"] for m in uncited_high_severity(holed, rows)]
+    assert victim in missing
+    # Everything it hid shares the victim's category -- nothing else moved.
+    cat = next(r["category"] for r in rows if r["finding_id"] == victim)
+    assert {next(r["category"] for r in rows if r["finding_id"] == m)
+            for m in missing} == {cat}
 
     # 3. a data layer that half-answers: the run refuses to start.
     real = floor_mod.compute_floor
@@ -638,3 +653,75 @@ def test_the_audit_is_told_which_tool_carries_the_dates():
     assert dup["orders_with_a_discontinuation_time"] == 0
     assert dup["concurrent_same_day"] == 0
     assert dup["days_apart_min"] == 113 and dup["days_apart_max"] == 1376
+
+
+def test_a_saved_run_unpacks_exactly_like_a_live_one(tmp_path, monkeypatch):
+    """The UI unpacks one 4-tuple; a saved run has to be indistinguishable."""
+    from prototype import panel_cache
+    monkeypatch.setattr(panel_cache, "CACHE", tmp_path / "panel_cache.json")
+
+    result = ("the report [F01]", [{"agent": "followup", "tool": "x", "args": {}}],
+              [{"finding_id": "F01", "agent": "guaranteed", "severity": "high",
+                "headline": "h", "evidence": "e", "patients": ["Stein, Larry"]}],
+              {"usd": 0.28, "wall_clock_seconds": 311.0, "model_calls": 34})
+    panel_cache.save("Anything that needs attention this week.", result,
+                     [{"agent": "followup", "headline": "h", "unknown": ["Nobody, X"]}])
+
+    blob = panel_cache.load()
+    report, trace, findings, usage = panel_cache.as_session_value(blob)
+    assert (report, trace, findings, usage) == result
+    assert blob["rejected"][0]["unknown"] == ["Nobody, X"]
+    assert panel_cache.age_phrase(blob) == "1 minute ago"
+
+
+def test_a_broken_cache_is_no_cache_rather_than_a_crash(tmp_path, monkeypatch):
+    """A demo that dies on its own cache file is worse than one that waits."""
+    from prototype import panel_cache
+    cache = tmp_path / "panel_cache.json"
+    monkeypatch.setattr(panel_cache, "CACHE", cache)
+
+    assert panel_cache.load() is None          # absent
+    cache.write_text("{ this is not json")
+    assert panel_cache.load() is None          # unparseable
+    cache.write_text('{"report": "x"}')
+    assert panel_cache.load() is None          # parseable but incomplete
+    assert panel_cache.age_phrase({}) == "at an unknown time"
+
+
+def test_a_finding_cited_under_another_id_is_not_missing():
+    """Checking for the id alone called ten findings unmentioned in a run that
+    had mentioned all ten.
+
+    The floor files an HFrEF gap per drug; the specialist files one aggregate
+    row. The supervisor cites the aggregate, and the three computed siblings
+    look dropped. A demo opening on "10 high-severity findings not mentioned"
+    when the nurse was told about all of them is the cries-wolf failure in a
+    different module.
+    """
+    from prototype.panel import uncited_high_severity
+    rows = [
+        {"finding_id": "F07", "severity": "high", "category": "HFrEF therapy gap",
+         "patients": ["Stein, Larry", "Zavala, Manuel"], "headline": "beta-blocker gap"},
+        {"finding_id": "F21", "severity": "high", "category": "HFrEF therapy gap",
+         "patients": ["Stein, Larry"], "headline": "HFrEF missing GDMT"},
+        {"finding_id": "F30", "severity": "high", "category": "hypertensive crisis",
+         "patients": ["Cain, Jacob"], "headline": "BP crisis"},
+    ]
+    # F21 cited: F07 is the same category about an overlapping patient.
+    assert [f["finding_id"] for f in uncited_high_severity("see F21", rows)] == ["F30"]
+    # Nothing cited: everything is missing, including the aggregate.
+    assert len(uncited_high_severity("no ids here", rows)) == 3
+    # A different category does not cover it.
+    assert [f["finding_id"] for f in uncited_high_severity("see F30", rows)] == ["F07", "F21"]
+
+
+def test_coverage_needs_a_real_category():
+    """"other" is the escape hatch and must never make something look covered."""
+    from prototype.panel import uncited_high_severity
+    rows = [
+        {"finding_id": "F01", "severity": "high", "category": "other",
+         "patients": ["Stein, Larry"], "headline": "one thing"},
+        {"finding_id": "F02", "severity": "high", "category": "other",
+         "patients": ["Stein, Larry"], "headline": "a different thing"},
+    ]
+    assert [f["finding_id"] for f in uncited_high_severity("see F02", rows)] == ["F01"]

@@ -1,0 +1,572 @@
+{
+ "saved_at": "2026-09-20T18:57:32+00:00",
+ "goal": "Anything that needs attention this week.",
+ "report": "This week\u2019s review is marked by significant data quality problems. I have degraded or set aside findings that depend on suspect data, but the remaining signals are clear and urgent. Do not act on any lab- or vital-sign-based alert without first confirming the value [F06, F12].\n\nHere is your short list for the week:\n\n1.  **Flores, Sydney** -- Blood pressure in the hypertensive crisis range [F04].\n    **Do** confirm the reading and review antihypertensive therapy.\n\n2.  **Cain, Jacob** -- Blood pressure in the hypertensive crisis range [F04].\n    **Do** confirm the reading and review antihypertensive therapy.\n\n3.  **Smith, Jessica** -- Blood pressure in the hypertensive crisis range [F04].\n    **Do** confirm the reading and review antihypertensive therapy.\n\n4.  **Bonilla, Andrew** -- Blood pressure in the hypertensive crisis range [F04].\n    **Do** confirm the reading and review antihypertensive therapy.\n\n5.  **Dickerson, April** -- Blood pressure in the hypertensive crisis range [F04].\n    **Do** confirm the reading and review antihypertensive therapy.\n\n6.  **Stein, Larry** -- Missing all three recommended medication classes for HFrEF [F21].\n    **Do** review for contraindications to beta-blockers, ACE inhibitors/ARBs/ARNis, and SGLT2 inhibitors.\n\n7.  **Mcdaniel, Dana** -- Two incorrect monitoring labs are on order, one for a drug class she is not on and another for a drug she is not on [F01, F02].\n    **Do** confirm what the patient is actually taking and cancel or replace the orders with the right tests.\n\n8.  **Zavala, Manuel** -- Missing two of three recommended medication classes for HFrEF [F21].\n    **Do** review for contraindications to beta-blockers and ACE inhibitors/ARBs/ARNis.\n\n9.  **Sandoval, John** -- Missing two of three recommended medication classes for HFrEF [F21].\n    **Do** review for contraindications to beta-blockers and SGLT2 inhibitors.\n\n10. **Padilla, Elizabeth** -- An incorrect monitoring lab is on order for a drug class she is not on [F03].\n    **Do** confirm what the patient is actually taking and cancel or replace the order with the right test.\n\n11. **Bender, Jessica** -- Prescribed a PCSK9 inhibitor at a young age without a justifying diagnosis [F11].\n    **Do** review the prescription for clinical appropriateness or identify and correct the data extraction error.\n\n12. **Vargas, Kimberly** -- Prescribed a PCSK9 inhibitor at a young age without a justifying diagnosis [F11].\n    **Do** review the prescription for clinical appropriateness or identify and correct the data extraction error.\n\n**Deliberately Omitted**\n\n*   I have omitted most of the 66 non-urgent stale orders [F20] in favor of more acute issues.\n*   The list of patients with statin therapy gaps [F22] has been omitted, as this is a chronic issue and less urgent than the others on this list.\n*   The remaining patients with inappropriate PCSK9 inhibitor prescriptions [F11] have been left off in favor of higher-priority findings, but the systemic issue needs review.\n\n**Could Not Determine**\n\n*   The true medication regimen for several patients is unclear due to the way the system records medication changes [F24].\n*   The validity of any lab-based or vital-sign-based alert cannot be trusted without manual confirmation due to physiologically impossible values in the dataset [F06, F12].\n*   The reason for the implausible Medicare demographics and \"Annual Wellness Visit\" coding is undetermined [F10].",
+ "trace": [
+  {
+   "agent": "panel_review",
+   "tool": "consult_data_integrity",
+   "args": {
+    "request": "Review the panel for any data quality issues that might affect clinical review."
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "cohort_statistic",
+   "args": {
+    "metric": "demographics"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "cohort_statistic",
+   "args": {
+    "metric": "condition_prevalence"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "cohort_statistic",
+   "args": {
+    "metric": "prescribing_rates"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "find_patients",
+   "args": {
+    "drug_class": "PCSK9i",
+    "condition": ""
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "patient_snapshot",
+   "args": {
+    "patient": "Vargas, Kimberly"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "patient_snapshot",
+   "args": {
+    "patient": "Bender, Jessica"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "blood_pressure_staging",
+   "args": {}
+  },
+  {
+   "agent": "panel_review",
+   "tool": "consult_guideline_concordance",
+   "args": {
+    "request": "Check for any gaps in guideline-recommended therapy."
+   }
+  },
+  {
+   "agent": "panel_review",
+   "tool": "consult_followup",
+   "args": {
+    "request": "Identify any open loops or orders that need follow-up."
+   }
+  },
+  {
+   "agent": "guideline_concordance",
+   "tool": "list_guidelines",
+   "args": {}
+  },
+  {
+   "agent": "guideline_concordance",
+   "tool": "check_guideline",
+   "args": {
+    "guideline_id": "G1"
+   }
+  },
+  {
+   "agent": "followup",
+   "tool": "_pending_orders",
+   "args": {}
+  },
+  {
+   "agent": "guideline_concordance",
+   "tool": "check_guideline",
+   "args": {
+    "guideline_id": "G2"
+   }
+  },
+  {
+   "agent": "guideline_concordance",
+   "tool": "medication_timeline",
+   "args": {
+    "patient": "Ramirez, William"
+   }
+  },
+  {
+   "agent": "guideline_concordance",
+   "tool": "check_guideline",
+   "args": {
+    "guideline_id": "G3"
+   }
+  },
+  {
+   "agent": "guideline_concordance",
+   "tool": "check_guideline",
+   "args": {
+    "guideline_id": "G4"
+   }
+  },
+  {
+   "agent": "panel_review",
+   "tool": "get_all_findings",
+   "args": {}
+  }
+ ],
+ "findings": [
+  {
+   "finding_id": "F01",
+   "agent": "guaranteed",
+   "headline": "INR / PT ordered for a patient not on the drug it monitors",
+   "patients": [
+    "Mcdaniel, Dana"
+   ],
+   "severity": "high",
+   "evidence": "INR / PT ordered 2025-09-14 (8 months open). It monitors VKA; this patient is on nothing of that kind. INR monitors warfarin. It is NOT the monitoring test for a DOAC -- ordering it for a DOAC patient is an error, and ordering it for a patient on no anticoagulant needs a reason.",
+   "recommended_action": "Confirm what the patient is actually taking and cancel or replace the order with the right test.",
+   "category": "drug monitoring mismatch",
+   "also_found_by": [
+    "followup"
+   ]
+  },
+  {
+   "finding_id": "F02",
+   "agent": "guaranteed",
+   "headline": "Digoxin Level ordered for a patient not on the drug it monitors",
+   "patients": [
+    "Mcdaniel, Dana"
+   ],
+   "severity": "high",
+   "evidence": "Digoxin Level ordered 2026-04-24 (1 months open). It monitors digoxin; this patient is on nothing of that kind. A digoxin level is only meaningful in a patient taking digoxin.",
+   "recommended_action": "Confirm what the patient is actually taking and cancel or replace the order with the right test.",
+   "category": "drug monitoring mismatch",
+   "also_found_by": [
+    "followup"
+   ]
+  },
+  {
+   "finding_id": "F03",
+   "agent": "guaranteed",
+   "headline": "INR / PT ordered for a patient not on the drug it monitors",
+   "patients": [
+    "Padilla, Elizabeth"
+   ],
+   "severity": "high",
+   "evidence": "INR / PT ordered 2025-06-17 (11 months open). It monitors VKA; this patient is on DOAC. INR monitors warfarin. It is NOT the monitoring test for a DOAC -- ordering it for a DOAC patient is an error, and ordering it for a patient on no anticoagulant needs a reason.",
+   "recommended_action": "Confirm what the patient is actually taking and cancel or replace the order with the right test.",
+   "category": "drug monitoring mismatch"
+  },
+  {
+   "finding_id": "F04",
+   "agent": "guaranteed",
+   "headline": "Blood pressure in the hypertensive crisis range",
+   "patients": [
+    "Flores, Sydney",
+    "Cain, Jacob",
+    "Smith, Jessica",
+    "Bonilla, Andrew",
+    "Dickerson, April"
+   ],
+   "severity": "high",
+   "evidence": "ACC/AHA crisis threshold (>180 or >120) with a plausible pulse pressure: Flores, Sydney 185/85; Cain, Jacob 184/95; Smith, Jessica 182/83; Bonilla, Andrew 181/96; Dickerson, April 181/87. Of these, not on any antihypertensive: Bonilla, Andrew, Dickerson, April, Flores, Sydney, Smith, Jessica",
+   "recommended_action": "Confirm the reading and review antihypertensive therapy.",
+   "category": "hypertensive crisis",
+   "also_found_by": [
+    "data_integrity"
+   ]
+  },
+  {
+   "finding_id": "F05",
+   "agent": "guaranteed",
+   "headline": "Orders open 6+ months for a condition the patient has",
+   "patients": [
+    "Black, Tyler",
+    "Juarez, Rebecca",
+    "Mcdaniel, Dana",
+    "Mckinney, Scott",
+    "Rogers, Jessica",
+    "Taylor, Jonathan",
+    "Vargas, Kimberly",
+    "Williams, Heather"
+   ],
+   "severity": "high",
+   "evidence": "Rogers, Jessica: LDL Cholesterol, 11mo; Black, Tyler: Urine Albumin/Creat Ratio, 11mo; Taylor, Jonathan: Fasting Glucose, 11mo; Williams, Heather: Triglycerides, 9mo; Mcdaniel, Dana: INR / PT, 8mo; Vargas, Kimberly: Total Cholesterol, 6mo; Mckinney, Scott: Triglycerides, 6mo; Juarez, Rebecca: Triglycerides, 6mo",
+   "recommended_action": "Re-order or close out. The original question is unanswered.",
+   "category": "stale order with live indication"
+  },
+  {
+   "finding_id": "F06",
+   "agent": "guaranteed",
+   "headline": "Physiologically impossible laboratory values",
+   "patients": [
+    "Bond, Katelyn",
+    "Bonilla, Andrew",
+    "Boone, Terri",
+    "Brown, Todd",
+    "Bryan, Steve",
+    "Cain, Jacob",
+    "Cervantes, Stephen",
+    "Chandler, Cassandra",
+    "Dickerson, April",
+    "Duncan, Stephen",
+    "Fowler, Jessica",
+    "Gibson, Christopher",
+    "Hill, Dustin",
+    "Jackson, Shawn",
+    "Lang, Amy",
+    "Lee, Cindy",
+    "Lee, Lisa",
+    "Lowe, Tyler",
+    "Mckinney, Noah",
+    "Mckinney, Scott",
+    "Moore, Ryan",
+    "Murphy, Matthew",
+    "Pope, Erin",
+    "Powell, Shelly",
+    "Ramirez, William",
+    "Ramsey, Latoya",
+    "Reynolds, Lisa",
+    "Rodriguez, Sarah",
+    "Rogers, Jessica",
+    "Sandoval, John",
+    "Schwartz, Mary",
+    "Smith, Antonio",
+    "Smith, Jessica",
+    "Taylor, Jonathan",
+    "Tran, Bradley",
+    "Vasquez, Brian",
+    "Williams, Heather",
+    "Young, Cynthia",
+    "Zavala, Manuel"
+   ],
+   "severity": "high",
+   "evidence": "39 patients hold at least one value outside physiologic limits. Examples: Dickerson, April SpO2=126.364 (limit 50-100); Brown, Todd Sodium=208.212 (limit 110-160); Smith, Antonio Sodium=162.925 (limit 110-160); Gibson, Christopher Sodium=178.593 (limit 110-160); Rodriguez, Sarah Sodium=190.065 (limit 110-160)",
+   "recommended_action": "Do not act on these values. Investigate the extraction before any lab-derived alert is trusted.",
+   "category": "impossible values"
+  },
+  {
+   "finding_id": "F07",
+   "agent": "guaranteed",
+   "headline": "Beta-blocker in HFrEF \u2014 guideline gap",
+   "patients": [
+    "Stein, Larry",
+    "Zavala, Manuel",
+    "Sandoval, John"
+   ],
+   "severity": "high",
+   "evidence": "G2: An evidence-based beta-blocker is recommended in HFrEF to reduce mortality and hospitalisation. 3 of 4 in population lack it. Source: ACC/AHA/HFSA heart failure guideline.",
+   "recommended_action": "Review for a contraindication, or document why the therapy is absent.",
+   "category": "HFrEF therapy gap"
+  },
+  {
+   "finding_id": "F08",
+   "agent": "guaranteed",
+   "headline": "Renin-angiotensin inhibition in HFrEF \u2014 guideline gap",
+   "patients": [
+    "Stein, Larry",
+    "Zavala, Manuel"
+   ],
+   "severity": "high",
+   "evidence": "G3: ARNi, ACE inhibitor or ARB is recommended in HFrEF, with ARNi preferred where tolerated. 2 of 4 in population lack it. Source: ACC/AHA/HFSA heart failure guideline.",
+   "recommended_action": "Review for a contraindication, or document why the therapy is absent.",
+   "category": "HFrEF therapy gap"
+  },
+  {
+   "finding_id": "F09",
+   "agent": "guaranteed",
+   "headline": "SGLT2 inhibition in HFrEF \u2014 guideline gap",
+   "patients": [
+    "Stein, Larry",
+    "Sandoval, John",
+    "Ramirez, William"
+   ],
+   "severity": "high",
+   "evidence": "G4: An SGLT2 inhibitor is recommended in HFrEF regardless of diabetes status. 3 of 4 in population lack it. Source: ACC/AHA/HFSA heart failure guideline.",
+   "recommended_action": "Review for a contraindication, or document why the therapy is absent.",
+   "category": "HFrEF therapy gap"
+  },
+  {
+   "finding_id": "F10",
+   "agent": "data_integrity",
+   "headline": "Implausible Medicare demographics and universal 'Annual Wellness Visit' coding",
+   "patients": [],
+   "severity": "medium",
+   "category": "other",
+   "evidence": "51 patients are listed as having Medicare, but their median age is 37 (min 18, max 75). All 153 encounters in the extract are coded as 'Annual Wellness Visits'.",
+   "recommended_action": "Investigate and correct the systematic error in the recording of insurance or encounter data."
+  },
+  {
+   "finding_id": "F11",
+   "agent": "data_integrity",
+   "headline": "Inappropriate prescription of PCSK9 inhibitors to young patients without justifying diagnoses",
+   "patients": [
+    "Bender, Jessica",
+    "Bonilla, Andrew",
+    "Boone, Terri",
+    "Bryan, Steve",
+    "Cunningham, David",
+    "Davis, Shelly",
+    "Flores, Sydney",
+    "Harrison, Joseph",
+    "Jackson, Shawn",
+    "Mckinney, Scott",
+    "Ramsey, Latoya",
+    "Rogers, Larry",
+    "Smith, Jessica",
+    "Vargas, Kimberly",
+    "Williams, Heather",
+    "Wright, Jordan"
+   ],
+   "severity": "high",
+   "category": "other",
+   "evidence": "16 patients are prescribed PCSK9 inhibitors, an unusually high rate. Investigation of two patients, Vargas, Kimberly (age 18) and Bender, Jessica (age 27), showed they had no diagnosis of atherosclerotic cardiovascular disease to justify the medication.",
+   "recommended_action": "Review all prescriptions for PCSK9 inhibitors to ensure clinical appropriateness or identify and correct the data extraction error."
+  },
+  {
+   "finding_id": "F12",
+   "agent": "data_integrity",
+   "headline": "Physiologically impossible blood pressure readings recorded for multiple patients",
+   "patients": [
+    "Mckinney, Scott",
+    "Moore, Ryan",
+    "Ware, Cassandra",
+    "Lang, Amy",
+    "Williams, Heather",
+    "Gomez, Christopher",
+    "Padilla, Elizabeth",
+    "Smith, Antonio",
+    "Young, Cynthia",
+    "Schwartz, Mary",
+    "Richardson, Sherry",
+    "Li, Christine",
+    "Lee, Lisa",
+    "Ferguson, Pamela",
+    "Russell, James",
+    "Mullins, Lauren",
+    "Murphy, Matthew",
+    "Le, Joshua",
+    "Morgan, Kenneth",
+    "Wade, Kathy",
+    "Bender, Jessica",
+    "Fowler, Jessica",
+    "Cervantes, Stephen",
+    "Duncan, Stephen",
+    "Davis, Carol",
+    "Forbes, Tamara",
+    "Bell, Christine"
+   ],
+   "severity": "high",
+   "category": "impossible values",
+   "evidence": "27 patients have blood pressure readings with physiologically impossible pulse pressures. Examples include Bender, Jessica (111/104), Le, Joshua (115/111), and Cervantes, Stephen (108/111), where diastolic pressure is greater than systolic.",
+   "recommended_action": "Do not trust blood pressure readings from this data source. Investigate the source of the systematic data quality issue."
+  },
+  {
+   "finding_id": "F13",
+   "agent": "data_integrity",
+   "headline": "Multiple instances of lab orders without corresponding results",
+   "patients": [
+    "Vargas, Kimberly",
+    "Bender, Jessica"
+   ],
+   "severity": "medium",
+   "category": "stale order with live indication",
+   "evidence": "Review of individual patient records, including Vargas, Kimberly and Bender, Jessica, revealed multiple instances of lab orders that were never resulted.",
+   "recommended_action": "Investigate the data extraction or reporting process for laboratory results to ensure all orders have corresponding results."
+  },
+  {
+   "finding_id": "F14",
+   "agent": "followup",
+   "headline": "Stale LDL cholesterol order open for 11 months",
+   "patients": [
+    "Rogers, Jessica"
+   ],
+   "severity": "high",
+   "category": "stale order with live indication",
+   "evidence": "An LDL cholesterol order has been open for 11 months, for a patient with a condition it monitors.",
+   "recommended_action": "Review and either fulfill or cancel the open order."
+  },
+  {
+   "finding_id": "F15",
+   "agent": "followup",
+   "headline": "Stale urine albumin/creatinine ratio order open for 11 months",
+   "patients": [
+    "Black, Tyler"
+   ],
+   "severity": "high",
+   "category": "stale order with live indication",
+   "evidence": "A urine albumin/creatinine ratio order has been open for 11 months, for a patient with a condition it monitors.",
+   "recommended_action": "Review and either fulfill or cancel the open order."
+  },
+  {
+   "finding_id": "F16",
+   "agent": "followup",
+   "headline": "Stale fasting glucose order open for 11 months",
+   "patients": [
+    "Taylor, Jonathan"
+   ],
+   "severity": "high",
+   "category": "stale order with live indication",
+   "evidence": "A fasting glucose order has been open for 11 months, for a patient with a condition it monitors.",
+   "recommended_action": "Review and either fulfill or cancel the open order."
+  },
+  {
+   "finding_id": "F17",
+   "agent": "followup",
+   "headline": "Stale potassium order open for 11 months",
+   "patients": [
+    "Schwartz, Mary"
+   ],
+   "severity": "high",
+   "category": "stale order with live indication",
+   "evidence": "A potassium order has been open for 11 months.",
+   "recommended_action": "Review and either fulfill or cancel the open order."
+  },
+  {
+   "finding_id": "F18",
+   "agent": "followup",
+   "headline": "Stale potassium and eGFR orders open for 10 months",
+   "patients": [
+    "Vargas, Kimberly"
+   ],
+   "severity": "high",
+   "category": "stale order with live indication",
+   "evidence": "A potassium order and an eGFR order have been open for 10 months.",
+   "recommended_action": "Review and either fulfill or cancel the open orders."
+  },
+  {
+   "finding_id": "F19",
+   "agent": "followup",
+   "headline": "Stale triglycerides order open for 9 months",
+   "patients": [
+    "Williams, Heather"
+   ],
+   "severity": "high",
+   "category": "stale order with live indication",
+   "evidence": "A triglycerides order has been open for 9 months, for a patient with a condition it monitors.",
+   "recommended_action": "Review and either fulfill or cancel the open order."
+  },
+  {
+   "finding_id": "F20",
+   "agent": "followup",
+   "headline": "66 non-urgent stale orders with live indications",
+   "patients": [
+    "Schmidt, Raven",
+    "Lee, Cindy"
+   ],
+   "severity": "low",
+   "category": "stale order with live indication",
+   "evidence": "There are 66 other open orders that are not superseded by a later result and are for conditions the patient still has. None are individually urgent, and most are for routine monitoring. For example, a Vitamin B12 order for Schmidt, Raven has been open for 12 months, and a Triglycerides order for Lee, Cindy has been open for 4 months.",
+   "recommended_action": "Systematically review and process the backlog of 66 non-urgent open orders."
+  },
+  {
+   "finding_id": "F21",
+   "agent": "guideline_concordance",
+   "headline": "Patients with HFrEF missing guideline-directed medical therapy",
+   "patients": [
+    "Stein, Larry",
+    "Zavala, Manuel",
+    "Sandoval, John",
+    "Ramirez, William"
+   ],
+   "severity": "high",
+   "category": "HFrEF therapy gap",
+   "evidence": "Three patients with heart failure with reduced ejection fraction (HFrEF) are missing multiple recommended medications. The record does not state a reason. Stein, Larry is not on a beta-blocker, an ACE inhibitor/ARB/ARNi, or an SGLT2 inhibitor, all of which are recommended in HFrEF. Zavala, Manuel is on an SGLT2 inhibitor but not a beta-blocker or an ACE inhibitor/ARB/ARNi. Sandoval, John is on an ACE inhibitor but not a beta-blocker or an SGLT2 inhibitor. Ramirez, William is on a beta-blocker and an ARNi but not an SGLT2 inhibitor.",
+   "recommended_action": "The findings should be reviewed by a qualified healthcare professional with access to the complete medical record."
+  },
+  {
+   "finding_id": "F22",
+   "agent": "guideline_concordance",
+   "headline": "Statin therapy gaps in patients aged 40-75 with type 2 diabetes",
+   "patients": [
+    "Black, Tyler",
+    "Shah, Mark",
+    "Bryan, Amanda",
+    "Douglas, Ryan",
+    "Cuevas, Meredith",
+    "Sandoval, John",
+    "Ferguson, Pamela",
+    "Thomas, James",
+    "Taylor, Jonathan",
+    "Fowler, Jessica",
+    "Romero, Erik",
+    "Anderson, Ann",
+    "Davis, Carol",
+    "Tran, Bradley",
+    "Zavala, Manuel"
+   ],
+   "severity": "medium",
+   "category": "other",
+   "evidence": "15 patients aged 40-75 with type 2 diabetes are not on a statin, which is recommended for this population. The following 13 patients are on no lipid-lowering therapy at all: Black, Tyler; Shah, Mark; Bryan, Amanda; Douglas, Ryan; Cuevas, Meredith; Sandoval, John; Ferguson, Pamela; Thomas, James; Taylor, Jonathan; Fowler, Jessica; Romero, Erik; Anderson, Ann; Davis, Carol. Tran, Bradley is on a fenofibrate and omega-3 fatty acids, but not a statin. Zavala, Manuel is on omega-3 fatty acids, but not a statin.",
+   "recommended_action": "The findings should be reviewed by a qualified healthcare professional with access to the complete medical record."
+  },
+  {
+   "finding_id": "F23",
+   "agent": "guideline_concordance",
+   "headline": "Patient with type 2 diabetes on appropriate statin alternative",
+   "patients": [
+    "Bryan, Steve"
+   ],
+   "severity": "low",
+   "category": "other",
+   "evidence": "One patient, Bryan, Steve, is on a PCSK9 inhibitor (Evolocumab), which is a reasonable alternative to a statin.",
+   "recommended_action": "The findings should be reviewed by a qualified healthcare professional with access to the complete medical record."
+  },
+  {
+   "finding_id": "F24",
+   "agent": "guideline_concordance",
+   "headline": "Apparent medication duplication may represent historical medication switches",
+   "patients": [
+    "Ramirez, William"
+   ],
+   "severity": "medium",
+   "category": "other",
+   "evidence": "The data extract does not record when a medication is stopped. As a result, a patient who has switched from one medication to another appears to be on both at the same time. For example, Ramirez, William has four orders for beta-blockers (Metoprolol Succinate and Carvedilol) with start dates from March 2023 to January 2026. This is likely to represent a sequence of medication changes rather than concurrent therapy.",
+   "recommended_action": "The findings should be reviewed by a qualified healthcare professional with access to the complete medical record."
+  }
+ ],
+ "usage": {
+  "model_calls": 23,
+  "input_tokens": 88674,
+  "output_tokens": 6170,
+  "usd": 0.1725,
+  "per_agent": {
+   "panel_review": {
+    "calls": 4,
+    "in": 10768,
+    "out": 909
+   },
+   "data_integrity": {
+    "calls": 8,
+    "in": 43618,
+    "out": 1334
+   },
+   "finding_extractor": {
+    "calls": 3,
+    "in": 3771,
+    "out": 2978
+   },
+   "guideline_concordance": {
+    "calls": 6,
+    "in": 21118,
+    "out": 610
+   },
+   "followup": {
+    "calls": 2,
+    "in": 9399,
+    "out": 339
+   }
+  },
+  "wall_clock_seconds": 216.0
+ },
+ "rejected": []
+}
