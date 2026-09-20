@@ -29,6 +29,9 @@ from prototype.panel import (                         # noqa: E402
 from prototype.screener import screen_async          # noqa: E402
 from prototype.report_md import (                    # noqa: E402
     FINDINGS_ANCHOR, fold_actions, link_citations, link_patients)
+
+# Shared across every Streamlit session in this process -- see the guard below.
+_IN_FLIGHT: dict[str, "threading.Thread | None"] = {"worker": None}
 from prototype.tools import ScreeningSession, connect  # noqa: E402
 
 
@@ -132,7 +135,25 @@ if view == "Panel review":
     st.caption("A steer, not a configuration. The shortlist is capped at twelve "
                "regardless of what you ask for — say so here and it will be "
                "ignored.")
-    if st.button("Run panel review", type="primary", key="run_panel"):
+    # A review takes minutes, so it is entirely possible to start a second one
+    # on top of the first -- a stray click, or a second browser tab left open.
+    # Observed exactly that: two reviews ran concurrently, the completion line
+    # read "31 findings" from one thread's store while the cache saved 21 from
+    # the other's, and the run cost twice what it should have.
+    #
+    # The guard is module-level and not in session_state, because session_state
+    # is per browser tab: a second tab is a different session and would not see
+    # a flag stored there. Streamlit runs every session in one process, so a
+    # module global is shared across all of them, which is what this needs.
+    _prior = _IN_FLIGHT.get("worker")
+    _running = _prior is not None and _prior.is_alive()
+    if _running:
+        st.info("A panel review is already running — started here or in another "
+                "tab. Wait for it to finish rather than starting a second one; "
+                "two concurrent runs cost twice as much and race to save.")
+
+    if st.button("Run panel review", type="primary", key="run_panel",
+                 disabled=_running) and not _running:
         # The run takes minutes. The callbacks append to these as it goes, so
         # the loop below can render what has actually happened rather than
         # showing a spinner and hoping.
@@ -149,6 +170,7 @@ if view == "Panel review":
 
         worker = threading.Thread(target=_work, daemon=True)
         worker.start()
+        _IN_FLIGHT["worker"] = worker
 
         LABEL = {"data_integrity": "which records can be trusted",
                  "guideline_concordance": "who is missing recommended therapy",
@@ -198,6 +220,7 @@ if view == "Panel review":
         # vanish silently -- which is the wrong outcome for a rejected name.
         st.session_state["panel_rejected"] = list(live_findings.rejected)
         st.session_state["panel_is_saved_run"] = False
+        _IN_FLIGHT["worker"] = None
         panel_cache.save(goal, box["result"], live_findings.rejected)
 
     # Open on the last saved run rather than a blank screen. A review takes
