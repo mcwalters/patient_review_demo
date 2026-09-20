@@ -1,0 +1,4079 @@
+{
+ "Mcdaniel, Dana": {
+  "narrative": "**Last seen**\n2026-04-24, by Barbara Newman (Family Medicine). Their next AWV is not due until 2027-04-24 (derived).\n\n**Why this patient, now**\nMcdaniel, Dana has outstanding orders for INR/PT and Digoxin level monitoring, but no prescription for warfarin or digoxin is on file. Given their history of atrial fibrillation, this suggests a critical gap in the medication record that needs urgent reconciliation.\n\n**What to raise**\n1.  Reconcile medications for atrial fibrillation. The patient has outstanding orders for INR/PT and Digoxin level monitoring but no record of being prescribed warfarin or digoxin.\n2.  Address stage 2 hypertension. Their last blood pressure was 156/79 on 2026-04-24 and no antihypertensive is listed on their medication profile.\n3.  Follow up on the ALT order open for 8 months. Their last ALT result from 2026-01-13 was elevated at 59.0 U/L.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200012",
+    "name": "Mcdaniel, Dana",
+    "age": 46,
+    "sex": "Female",
+    "birth_date": "1980-04-20"
+   },
+   "visit": {
+    "last_awv": "2026-04-24",
+    "next_awv_due_derived": "2027-04-24",
+    "status": "not yet due",
+    "detail": "due in 11 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2026-04-24",
+     "department": "Endocrinology",
+     "provider": "Barbara Newman",
+     "provider_specialty": "Family Medicine",
+     "provider_type": "PA",
+     "insurance": "medicaid"
+    },
+    "history": [
+     {
+      "date": "2026-04-24",
+      "department": "Endocrinology",
+      "provider": "Barbara Newman",
+      "specialty": "Family Medicine",
+      "insurance": "medicaid"
+     },
+     {
+      "date": "2025-09-15",
+      "department": "GI / Gastroenterology",
+      "provider": "Daniel Mills",
+      "specialty": "Cardiology",
+      "insurance": "medicaid"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "SSRI",
+      "n": 4,
+      "agents": [
+       {
+        "agent": "Fluoxetine 20 mg",
+        "started": "2025-09-19"
+       },
+       {
+        "agent": "Fluoxetine 20 mg",
+        "started": "2025-07-17"
+       },
+       {
+        "agent": "Escitalopram 10 mg",
+        "started": "2024-04-16"
+       },
+       {
+        "agent": "Escitalopram 10 mg",
+        "started": "2024-01-11"
+       }
+      ],
+      "days_apart": 617
+     },
+     {
+      "class": "H2 Blocker",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Famotidine 20 mg",
+        "started": "2025-07-17"
+       },
+       {
+        "agent": "Famotidine 20 mg",
+        "started": "2023-01-16"
+       }
+      ],
+      "days_apart": 913
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "F41.1",
+     "name": "Generalized Anxiety Disorder"
+    },
+    {
+     "icd10": "I48.19",
+     "name": "Other Persistent Atrial Fibrillation"
+    },
+    {
+     "icd10": "J44.1",
+     "name": "COPD with Acute Exacerbation"
+    },
+    {
+     "icd10": "K21.9",
+     "name": "GERD without Oesophagitis"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "SSRI": [
+      {
+       "agent": "Fluoxetine 20 mg",
+       "started": "2025-09-19"
+      },
+      {
+       "agent": "Fluoxetine 20 mg",
+       "started": "2025-07-17"
+      },
+      {
+       "agent": "Escitalopram 10 mg",
+       "started": "2024-04-16"
+      },
+      {
+       "agent": "Escitalopram 10 mg",
+       "started": "2024-01-11"
+      }
+     ],
+     "H2 Blocker": [
+      {
+       "agent": "Famotidine 20 mg",
+       "started": "2025-07-17"
+      },
+      {
+       "agent": "Famotidine 20 mg",
+       "started": "2023-01-16"
+      }
+     ]
+    },
+    "distinct_agents": 3
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "156/79",
+     "stage": "stage 2",
+     "pulse_pressure": 77,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 93.0,
+    "temperature": 98.4,
+    "resp_rate": 20.0,
+    "weight_lb": 291.5,
+    "bmi": 51.6,
+    "recorded": "2026-04-24"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "ALT",
+      "value": 59.0,
+      "unit": "U/L",
+      "reference": "7.0-56.0",
+      "date": "2026-01-13"
+     },
+     {
+      "analyte": "Eosinophil Count",
+      "value": 0.7,
+      "unit": "K/uL",
+      "reference": "0.05-0.5",
+      "date": "2025-03-22"
+     },
+     {
+      "analyte": "IgE Total",
+      "value": 144.3,
+      "unit": "IU/mL",
+      "reference": "0.0-100.0",
+      "date": "2025-08-14"
+     },
+     {
+      "analyte": "Vitamin B12",
+      "value": 903.6,
+      "unit": "pg/mL",
+      "reference": "200.0-900.0",
+      "date": "2026-01-15"
+     },
+     {
+      "analyte": "eGFR",
+      "value": 124.4,
+      "unit": "mL/min/1.73m2",
+      "reference": "60.0-120.0",
+      "date": "2026-03-22"
+     }
+    ],
+    "normal_count": 6
+   },
+   "outstanding_orders": [
+    {
+     "test": "ALT",
+     "ordered": "2025-09-13",
+     "months_open": 8
+    },
+    {
+     "test": "INR / PT",
+     "ordered": "2025-09-14",
+     "months_open": 8
+    },
+    {
+     "test": "Digoxin Level",
+     "ordered": "2026-04-24",
+     "months_open": 1
+    },
+    {
+     "test": "SpO2",
+     "ordered": "2026-04-24",
+     "months_open": 1
+    }
+   ],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F01",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "INR / PT ordered for a patient not on the drug it monitors"
+    },
+    {
+     "finding_id": "F02",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Digoxin Level ordered for a patient not on the drug it monitors"
+    },
+    {
+     "finding_id": "F05",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Orders open 6+ months for a condition the patient has"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "conditions",
+     "medications",
+     "vitals",
+     "care claimed vs delivered in note from 2026-04-24",
+     "care claimed vs delivered in note from 2025-09-15"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:12:07+00:00"
+ },
+ "Padilla, Elizabeth": {
+  "narrative": "**Before you read on**\nThis patient's blood pressure reading of 177/71 cannot be correct as the pulse pressure of 106 is not physiologically possible. Any assessment of her blood pressure is therefore based on invalid data.\n\n**Last seen**\n2026-05-04 with Tina Wells, Internal Medicine. Her next AWV is due 2027-05-04 (derived).\n\n**Why this patient, now**\nPadilla, Elizabeth has multiple data integrity issues that obscure the management of her persistent atrial fibrillation and hypothyroidism. The record shows lab monitoring for drugs she is not listed as taking and contains a physiologically impossible blood pressure reading. Clarifying her medications and clinical status is the primary task.\n\n**What to raise**\n1.  **Atrial Fibrillation medication reconciliation:** The record is contradictory for the management of her persistent atrial fibrillation. There is a Digoxin level of 2.4 ng/mL from 2025-07-06 but no Digoxin on the medication list, and monitoring for INR (result 1.5) when the record shows she is on Apixaban. Clarifying her current medication regimen is essential for safety.\n2.  **Thyroid management:** For her hypothyroidism, recent labs are conflicting. Her TSH from 2026-02-13 is high at 4.7 mIU/L, but a Free T4 from 2024-11-17 was also high at 2.5 ng/dL. Her current Levothyroxine therapy needs review.\n3.  **Invalid blood pressure reading:** The most recent blood pressure of 177/71 is physiologically impossible. An accurate reading is needed to assess her cardiovascular risk.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200032",
+    "name": "Padilla, Elizabeth",
+    "age": 54,
+    "sex": "Female",
+    "birth_date": "1971-10-27"
+   },
+   "visit": {
+    "last_awv": "2026-05-04",
+    "next_awv_due_derived": "2027-05-04",
+    "status": "not yet due",
+    "detail": "due in 11 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2026-05-04",
+     "department": "OB/GYN Clinic",
+     "provider": "Tina Wells",
+     "provider_specialty": "Internal Medicine",
+     "provider_type": "PA",
+     "insurance": "commercial"
+    },
+    "history": [
+     {
+      "date": "2026-05-04",
+      "department": "OB/GYN Clinic",
+      "provider": "Tina Wells",
+      "specialty": "Internal Medicine",
+      "insurance": "commercial"
+     },
+     {
+      "date": "2025-06-18",
+      "department": "Endocrinology",
+      "provider": "Jordan Contreras",
+      "specialty": "Cardiology",
+      "insurance": "commercial"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "blood pressure 177/71 has a pulse pressure of 106, which is not physiologically possible"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "Beta-blocker",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Metoprolol Succinate 50 mg",
+        "started": "2025-08-13"
+       },
+       {
+        "agent": "Metoprolol Succinate 50 mg",
+        "started": "2025-02-17"
+       }
+      ],
+      "days_apart": 177
+     },
+     {
+      "class": "Class III AAD",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Amiodarone 200 mg",
+        "started": "2024-08-08"
+       },
+       {
+        "agent": "Amiodarone 200 mg",
+        "started": "2022-09-08"
+       }
+      ],
+      "days_apart": 700
+     },
+     {
+      "class": "Thyroid Hormone",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Levothyroxine 50 mcg",
+        "started": "2024-07-29"
+       },
+       {
+        "agent": "Levothyroxine 50 mcg",
+        "started": "2024-04-03"
+       }
+      ],
+      "days_apart": 117
+     },
+     {
+      "class": "DOAC",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Apixaban 5 mg (Eliquis)",
+        "started": "2024-05-11"
+       },
+       {
+        "agent": "Apixaban 5 mg (Eliquis)",
+        "started": "2023-07-24"
+       }
+      ],
+      "days_apart": 292
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "E02",
+     "name": "Subclinical Iodine-Deficiency Hypothyroidism"
+    },
+    {
+     "icd10": "I48.19",
+     "name": "Other Persistent Atrial Fibrillation"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "Beta-blocker": [
+      {
+       "agent": "Metoprolol Succinate 50 mg",
+       "started": "2025-08-13"
+      },
+      {
+       "agent": "Metoprolol Succinate 50 mg",
+       "started": "2025-02-17"
+      }
+     ],
+     "Class III AAD": [
+      {
+       "agent": "Amiodarone 200 mg",
+       "started": "2024-08-08"
+      },
+      {
+       "agent": "Amiodarone 200 mg",
+       "started": "2022-09-08"
+      }
+     ],
+     "Thyroid Hormone": [
+      {
+       "agent": "Levothyroxine 50 mcg",
+       "started": "2024-07-29"
+      },
+      {
+       "agent": "Levothyroxine 50 mcg",
+       "started": "2024-04-03"
+      }
+     ],
+     "DOAC": [
+      {
+       "agent": "Apixaban 5 mg (Eliquis)",
+       "started": "2024-05-11"
+      },
+      {
+       "agent": "Apixaban 5 mg (Eliquis)",
+       "started": "2023-07-24"
+      }
+     ]
+    },
+    "distinct_agents": 4
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "177/71",
+     "stage": "stage 2",
+     "pulse_pressure": 106,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": true
+    },
+    "heart_rate": 57.0,
+    "temperature": 98.4,
+    "resp_rate": 22.0,
+    "weight_lb": 251.4,
+    "bmi": 34.4,
+    "recorded": "2026-05-04"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "Digoxin Level",
+      "value": 2.4,
+      "unit": "ng/mL",
+      "reference": "0.8-2.0",
+      "date": "2025-07-06"
+     },
+     {
+      "analyte": "Free T4",
+      "value": 2.5,
+      "unit": "ng/dL",
+      "reference": "0.8-1.8",
+      "date": "2024-11-17"
+     },
+     {
+      "analyte": "INR / PT",
+      "value": 1.5,
+      "unit": "ratio",
+      "reference": "0.9-1.1",
+      "date": "2026-04-08"
+     },
+     {
+      "analyte": "TSH",
+      "value": 4.7,
+      "unit": "mIU/L",
+      "reference": "0.4-4.0",
+      "date": "2026-02-13"
+     },
+     {
+      "analyte": "Vitamin D 25-OH",
+      "value": 65.4,
+      "unit": "ng/mL",
+      "reference": "20.0-50.0",
+      "date": "2026-01-06"
+     }
+    ],
+    "normal_count": 7
+   },
+   "outstanding_orders": [
+    {
+     "test": "INR / PT",
+     "ordered": "2025-06-17",
+     "months_open": 11
+    },
+    {
+     "test": "CBC \u2014 Hemoglobin",
+     "ordered": "2026-05-04",
+     "months_open": 0
+    }
+   ],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F03",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "INR / PT ordered for a patient not on the drug it monitors"
+    },
+    {
+     "finding_id": "F16",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Digoxin levels ordered for patients not on Digoxin"
+    },
+    {
+     "finding_id": "F17",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Implausible blood pressure readings recorded"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "brief vs. note from 2026-05-04"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:13:02+00:00"
+ },
+ "Flores, Sydney": {
+  "narrative": "**Last seen**\n2026-03-29 with Tina Wells (Internal Medicine). Next AWV is due derived 2027-03-29.\n\n**Why this patient, now**\nFlores, Sydney's blood pressure at their last visit on 2026-03-29 was 185/85, which is in the hypertensive crisis range. This appears to have been unaddressed in the record.\n\n**What to raise**\n*   The blood pressure reading of 185/85 from 2026-03-29, staged as hypertensive crisis, requires urgent follow-up.\n*   For their Pure Hypertriglyceridaemia, despite being on Evolocumab, Ezetimibe, and Omega-3 Fatty Acids, their LDL cholesterol was 108.0 mg/dL on 2025-10-30. A Total Cholesterol ordered on 2026-03-26 remains outstanding.\n*   Their ALT was elevated at 64.3 U/L on 2025-12-01, and an AST ordered at the last visit is also outstanding. Separately, their fasting glucose was high at 112.4 mg/dL on 2024-08-02.\n*   The patient is underweight, with a BMI of 17.7 recorded on 2026-03-29.\n\n**Against the clinician's note**\nThe note for the 2026-03-29 visit says \"Preventive labs ordered per condition-specific guidelines.\" The brief above may be wrong on that point, as record review finds that orders for AST and Total Cholesterol from that visit were never resulted.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not necessarily what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200079",
+    "name": "Flores, Sydney",
+    "age": 44,
+    "sex": "Female",
+    "birth_date": "1982-05-28"
+   },
+   "visit": {
+    "last_awv": "2026-03-29",
+    "next_awv_due_derived": "2027-03-29",
+    "status": "not yet due",
+    "detail": "due in 10 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 1,
+    "last_visit": {
+     "date": "2026-03-29",
+     "department": "Psychiatry Clinic",
+     "provider": "Tina Wells",
+     "provider_specialty": "Internal Medicine",
+     "provider_type": "PA",
+     "insurance": "commercial"
+    },
+    "history": [
+     {
+      "date": "2026-03-29",
+      "department": "Psychiatry Clinic",
+      "provider": "Tina Wells",
+      "specialty": "Internal Medicine",
+      "insurance": "commercial"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": []
+   },
+   "conditions": [
+    {
+     "icd10": "E78.1",
+     "name": "Pure Hypertriglyceridaemia"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "PCSK9i": [
+      {
+       "agent": "Evolocumab 140 mg (Repatha)",
+       "started": "2025-01-10"
+      }
+     ],
+     "Cholesterol Absorp. Inhib.": [
+      {
+       "agent": "Ezetimibe 10 mg",
+       "started": "2023-09-29"
+      }
+     ],
+     "Omega-3": [
+      {
+       "agent": "Omega-3 Fatty Acids 4 g",
+       "started": "2022-10-17"
+      }
+     ]
+    },
+    "distinct_agents": 3
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "185/85",
+     "stage": "hypertensive crisis",
+     "pulse_pressure": 100,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 59.0,
+    "temperature": 98.4,
+    "resp_rate": 20.0,
+    "weight_lb": 128.1,
+    "bmi": 17.7,
+    "recorded": "2026-03-29"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "ALT",
+      "value": 64.3,
+      "unit": "U/L",
+      "reference": "7.0-56.0",
+      "date": "2025-12-01"
+     },
+     {
+      "analyte": "Fasting Glucose",
+      "value": 112.4,
+      "unit": "mg/dL",
+      "reference": "70.0-100.0",
+      "date": "2024-08-02"
+     },
+     {
+      "analyte": "LDL Cholesterol",
+      "value": 108.0,
+      "unit": "mg/dL",
+      "reference": "0.0-100.0",
+      "date": "2025-10-30"
+     }
+    ],
+    "normal_count": 5
+   },
+   "outstanding_orders": [
+    {
+     "test": "Total Cholesterol",
+     "ordered": "2026-03-26",
+     "months_open": 2
+    },
+    {
+     "test": "AST",
+     "ordered": "2026-03-29",
+     "months_open": 2
+    }
+   ],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F04",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Blood pressure in the hypertensive crisis range"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [
+     {
+      "field": "care claimed vs delivered",
+      "brief_says": "The encounter on 2026-03-29 has 2 lab orders (AST, Total Cholesterol) that were never resulted.",
+      "note_says": "Preventive labs ordered per condition-specific guidelines.",
+      "severity": "medium",
+      "why_it_matters": "The note's claim that labs were ordered is technically true but practically misleading. Because no results were ever returned for any of the orders placed at that visit, a clinician might mistakenly believe that monitoring was completed when it was not."
+     }
+    ],
+    "checked": [
+     "medications",
+     "conditions",
+     "vitals",
+     "care claimed vs delivered"
+    ],
+    "note_count": 1
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:13:45+00:00"
+ },
+ "Cain, Jacob": {
+  "narrative": "**Before you read on**\nThe patient's eGFR of 169.695 cannot be correct. This suggests other lab-based data may also be unreliable.\n\n**Last seen**\n2026-05-22 by Dean Washington Jr. (Pulmonology). Their next AWV is due (derived) 2027-05-22.\n\n**Why this patient, now**\nThis patient's last recorded blood pressure was 184/95, which is in the hypertensive crisis range. They have an existing diagnosis of Hypertensive Heart Disease.\n\n**What to raise**\n1.  The blood pressure of 184/95 recorded on 2026-05-22. For a patient with Hypertensive Heart Disease, this reading is a hypertensive crisis and requires attention.\n2.  Management of their Pure Hypercholesterolaemia. No statin is recorded on their medication list, and their last triglycerides were elevated at 173.3 mg/dL.\n3.  The Vitamin B12 test ordered on 2025-09-22 has been outstanding for 8 months.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200091",
+    "name": "Cain, Jacob",
+    "age": 46,
+    "sex": "Male",
+    "birth_date": "1980-03-20"
+   },
+   "visit": {
+    "last_awv": "2026-05-22",
+    "next_awv_due_derived": "2027-05-22",
+    "status": "not yet due",
+    "detail": "due in 12 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2026-05-22",
+     "department": "GI / Gastroenterology",
+     "provider": "Dean Washington Jr.",
+     "provider_specialty": "Pulmonology",
+     "provider_type": "NP",
+     "insurance": "medicare"
+    },
+    "history": [
+     {
+      "date": "2026-05-22",
+      "department": "GI / Gastroenterology",
+      "provider": "Dean Washington Jr.",
+      "specialty": "Pulmonology",
+      "insurance": "medicare"
+     },
+     {
+      "date": "2025-09-22",
+      "department": "Endocrinology",
+      "provider": "Wendy Cortez",
+      "specialty": "Cardiology",
+      "insurance": "medicare"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "eGFR=169.695 (limit 3-150)"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "NdRI",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Bupropion XL 150 mg",
+        "started": "2025-11-23"
+       },
+       {
+        "agent": "Bupropion XL 150 mg",
+        "started": "2022-11-24"
+       }
+      ],
+      "days_apart": 1095
+     },
+     {
+      "class": "Thiazide",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Hydrochlorothiazide 25 mg",
+        "started": "2024-09-12"
+       },
+       {
+        "agent": "Hydrochlorothiazide 25 mg",
+        "started": "2024-08-18"
+       }
+      ],
+      "days_apart": 25
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "E78.00",
+     "name": "Pure Hypercholesterolaemia"
+    },
+    {
+     "icd10": "F33.0",
+     "name": "Major Depressive Disorder, Recurrent"
+    },
+    {
+     "icd10": "I11.9",
+     "name": "Hypertensive Heart Disease, Unspecified"
+    },
+    {
+     "icd10": "J44.0",
+     "name": "COPD with Acute Lower Respiratory Infection"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "NdRI": [
+      {
+       "agent": "Bupropion XL 150 mg",
+       "started": "2025-11-23"
+      },
+      {
+       "agent": "Bupropion XL 150 mg",
+       "started": "2022-11-24"
+      }
+     ],
+     "Thiazide": [
+      {
+       "agent": "Hydrochlorothiazide 25 mg",
+       "started": "2024-09-12"
+      },
+      {
+       "agent": "Hydrochlorothiazide 25 mg",
+       "started": "2024-08-18"
+      }
+     ]
+    },
+    "distinct_agents": 2
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "184/95",
+     "stage": "hypertensive crisis",
+     "pulse_pressure": 89,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 78.0,
+    "temperature": 98.4,
+    "resp_rate": 20.0,
+    "weight_lb": 258.2,
+    "bmi": 44.6,
+    "recorded": "2026-05-22"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "AST",
+      "value": 57.7,
+      "unit": "U/L",
+      "reference": "10.0-40.0",
+      "date": "2025-03-07"
+     },
+     {
+      "analyte": "Peak Flow",
+      "value": 794.0,
+      "unit": "L/min",
+      "reference": "400.0-650.0",
+      "date": "2025-05-07"
+     },
+     {
+      "analyte": "Triglycerides",
+      "value": 173.3,
+      "unit": "mg/dL",
+      "reference": "0.0-150.0",
+      "date": "2026-04-23"
+     },
+     {
+      "analyte": "eGFR",
+      "value": 169.7,
+      "unit": "mL/min/1.73m2",
+      "reference": "60.0-120.0",
+      "date": "2025-11-23"
+     }
+    ],
+    "normal_count": 2
+   },
+   "outstanding_orders": [
+    {
+     "test": "Vitamin B12",
+     "ordered": "2025-09-22",
+     "months_open": 8
+    }
+   ],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F04",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Blood pressure in the hypertensive crisis range"
+    },
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "conditions",
+     "medications",
+     "vitals",
+     "care claimed vs delivered"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:14:30+00:00"
+ },
+ "Smith, Jessica": {
+  "narrative": "**Before you read on**\nThis patient's record contains physiologically impossible lipid values: Total Cholesterol=41.815 (limit 50-500), Triglycerides=13.873 (limit 20-1500), and Triglycerides=7.256 (limit 20-1500). Any assessment of this patient's lipid status or response to treatment is invalid.\n\n**Last seen**\n2025-08-03 with Tyler Hill (Psychiatry). Her next AWV is not yet due (derived 2026-08-03).\n\n**Why this patient, now**\nSmith, Jessica has a blood pressure of 182/83 recorded on 2025-08-03, which is in the hypertensive crisis range. This is the most urgent finding in a record that also contains impossible lab values, making it difficult to assess her diagnosed Pure Hypertriglyceridaemia.\n\n**What to raise**\n*   Raise the blood pressure reading of 182/83 from her last visit, which is staged as a hypertensive crisis.\n*   Raise her diagnosis of Pure Hypertriglyceridaemia. While her record shows a history of multiple lipid-lowering agents, her current lipid status cannot be determined because the available lab results are physiologically impossible.\n*   Raise the abnormal Fasting Glucose (130.1 mg/dL) and elevated ALT (60.3 U/L) from 2025-04-10. Lab orders to follow up on these findings have been outstanding for 10 months.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped. This patient has multiple orders for agents in the same class (Statin, PCSK9i, Omega-3) with start dates spanning years; these likely represent sequential therapy, but there is no record of discontinuation.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200081",
+    "name": "Smith, Jessica",
+    "age": 77,
+    "sex": "Female",
+    "birth_date": "1949-01-16"
+   },
+   "visit": {
+    "last_awv": "2025-08-03",
+    "next_awv_due_derived": "2026-08-03",
+    "status": "not yet due",
+    "detail": "due in 2 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2025-08-03",
+     "department": "Endocrinology",
+     "provider": "Tyler Hill",
+     "provider_specialty": "Psychiatry",
+     "provider_type": "NP",
+     "insurance": "medicaid"
+    },
+    "history": [
+     {
+      "date": "2025-08-03",
+      "department": "Endocrinology",
+      "provider": "Tyler Hill",
+      "specialty": "Psychiatry",
+      "insurance": "medicaid"
+     },
+     {
+      "date": "2025-07-28",
+      "department": "Internal Medicine Clinic",
+      "provider": "Peter Thomas DVM",
+      "specialty": "Internal Medicine",
+      "insurance": "medicaid"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "Total Cholesterol=41.815 (limit 50-500)",
+     "Triglycerides=13.873 (limit 20-1500)",
+     "Triglycerides=7.256 (limit 20-1500)"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "PCSK9i",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Evolocumab 140 mg (Repatha)",
+        "started": "2025-04-17"
+       },
+       {
+        "agent": "Evolocumab 140 mg (Repatha)",
+        "started": "2022-11-02"
+       }
+      ],
+      "days_apart": 897
+     },
+     {
+      "class": "Omega-3",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Omega-3 Fatty Acids 4 g",
+        "started": "2024-10-15"
+       },
+       {
+        "agent": "Omega-3 Fatty Acids 4 g",
+        "started": "2024-06-09"
+       }
+      ],
+      "days_apart": 128
+     },
+     {
+      "class": "Statin",
+      "n": 4,
+      "agents": [
+       {
+        "agent": "Rosuvastatin 20 mg",
+        "started": "2024-05-14"
+       },
+       {
+        "agent": "Atorvastatin 40 mg",
+        "started": "2023-10-10"
+       },
+       {
+        "agent": "Rosuvastatin 20 mg",
+        "started": "2022-07-29"
+       },
+       {
+        "agent": "Atorvastatin 40 mg",
+        "started": "2022-07-27"
+       }
+      ],
+      "days_apart": 657
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "E78.1",
+     "name": "Pure Hypertriglyceridaemia"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "PCSK9i": [
+      {
+       "agent": "Evolocumab 140 mg (Repatha)",
+       "started": "2025-04-17"
+      },
+      {
+       "agent": "Evolocumab 140 mg (Repatha)",
+       "started": "2022-11-02"
+      }
+     ],
+     "Omega-3": [
+      {
+       "agent": "Omega-3 Fatty Acids 4 g",
+       "started": "2024-10-15"
+      },
+      {
+       "agent": "Omega-3 Fatty Acids 4 g",
+       "started": "2024-06-09"
+      }
+     ],
+     "Statin": [
+      {
+       "agent": "Rosuvastatin 20 mg",
+       "started": "2024-05-14"
+      },
+      {
+       "agent": "Atorvastatin 40 mg",
+       "started": "2023-10-10"
+      },
+      {
+       "agent": "Rosuvastatin 20 mg",
+       "started": "2022-07-29"
+      },
+      {
+       "agent": "Atorvastatin 40 mg",
+       "started": "2022-07-27"
+      }
+     ]
+    },
+    "distinct_agents": 4
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "182/83",
+     "stage": "hypertensive crisis",
+     "pulse_pressure": 99,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 67.0,
+    "temperature": 98.4,
+    "resp_rate": 20.0,
+    "weight_lb": 157.7,
+    "bmi": 31.8,
+    "recorded": "2025-08-03"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "ALT",
+      "value": 60.3,
+      "unit": "U/L",
+      "reference": "7.0-56.0",
+      "date": "2025-04-10"
+     },
+     {
+      "analyte": "Fasting Glucose",
+      "value": 130.1,
+      "unit": "mg/dL",
+      "reference": "70.0-100.0",
+      "date": "2025-04-10"
+     }
+    ],
+    "normal_count": 6
+   },
+   "outstanding_orders": [
+    {
+     "test": "AST",
+     "ordered": "2025-07-31",
+     "months_open": 10
+    },
+    {
+     "test": "Fasting Glucose",
+     "ordered": "2025-07-31",
+     "months_open": 10
+    }
+   ],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F04",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Blood pressure in the hypertensive crisis range"
+    },
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "note from 2025-08-03"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:15:07+00:00"
+ },
+ "Bonilla, Andrew": {
+  "narrative": "**Before you read on**\nThe patient's Total Cholesterol is recorded as 29.198, which is physiologically impossible (limit 50-500). Any assessment of lipid status is based on at least one incorrect value.\n\n**Last seen**\n2025-10-22 with Breanna Schmitt (Pulmonology). Their next AWV is due 2026-10-22 (derived).\n\n**Why this patient, now**\nTheir last blood pressure was 181/96, recorded on 2025-10-22, a reading in the hypertensive crisis range. This patient has a diagnosis of Hypertensive Heart Disease, Unspecified.\n\n**What to raise**\n1.  The blood pressure reading of 181/96 from 2025-10-22. This is a hypertensive crisis in a patient with established hypertensive heart disease.\n2.  Lipid management. Despite records showing they started Atorvastatin, Evolocumab and Ezetimibe, their most recent LDL Cholesterol was 129.3 mg/dL (2025-07-21). Their recorded Total Cholesterol is impossible, which may complicate assessment.\n3.  The potassium of 5.2 mEq/L from 2025-12-21, which may be relevant to blood pressure management.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200080",
+    "name": "Bonilla, Andrew",
+    "age": 72,
+    "sex": "Male",
+    "birth_date": "1953-08-21"
+   },
+   "visit": {
+    "last_awv": "2025-10-22",
+    "next_awv_due_derived": "2026-10-22",
+    "status": "not yet due",
+    "detail": "due in 4 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 1,
+    "last_visit": {
+     "date": "2025-10-22",
+     "department": "Primary Care \u2014 Main",
+     "provider": "Breanna Schmitt",
+     "provider_specialty": "Pulmonology",
+     "provider_type": "NP",
+     "insurance": "medicaid"
+    },
+    "history": [
+     {
+      "date": "2025-10-22",
+      "department": "Primary Care \u2014 Main",
+      "provider": "Breanna Schmitt",
+      "specialty": "Pulmonology",
+      "insurance": "medicaid"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "Total Cholesterol=29.198 (limit 50-500)"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": []
+   },
+   "conditions": [
+    {
+     "icd10": "E78.1",
+     "name": "Pure Hypertriglyceridaemia"
+    },
+    {
+     "icd10": "I11.9",
+     "name": "Hypertensive Heart Disease, Unspecified"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "Cholesterol Absorp. Inhib.": [
+      {
+       "agent": "Ezetimibe 10 mg",
+       "started": "2025-12-31"
+      }
+     ],
+     "Statin": [
+      {
+       "agent": "Atorvastatin 40 mg",
+       "started": "2023-09-18"
+      }
+     ],
+     "PCSK9i": [
+      {
+       "agent": "Evolocumab 140 mg (Repatha)",
+       "started": "2023-02-27"
+      }
+     ]
+    },
+    "distinct_agents": 3
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "181/96",
+     "stage": "hypertensive crisis",
+     "pulse_pressure": 85,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 93.0,
+    "temperature": 98.4,
+    "resp_rate": 14.0,
+    "weight_lb": 151.0,
+    "bmi": 18.4,
+    "recorded": "2025-10-22"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "HDL Cholesterol",
+      "value": 60.7,
+      "unit": "mg/dL",
+      "reference": "40.0-60.0",
+      "date": "2024-11-22"
+     },
+     {
+      "analyte": "LDL Cholesterol",
+      "value": 129.3,
+      "unit": "mg/dL",
+      "reference": "0.0-100.0",
+      "date": "2025-07-21"
+     },
+     {
+      "analyte": "Potassium",
+      "value": 5.2,
+      "unit": "mEq/L",
+      "reference": "3.5-5.0",
+      "date": "2025-12-21"
+     }
+    ],
+    "normal_count": 6
+   },
+   "outstanding_orders": [],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F04",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Blood pressure in the hypertensive crisis range"
+    },
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "conditions",
+     "medications",
+     "vitals",
+     "care claimed vs delivered"
+    ],
+    "note_count": 1
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:15:51+00:00"
+ },
+ "Dickerson, April": {
+  "narrative": "**Before you read on**\nThis patient's record of an SpO2 of 126.364 cannot be correct, as oxygen saturation cannot exceed 100%. Any reasoning based on this value is invalid.\n\n**Last seen**\n2026-03-10, by Linda Short (Neurology). Their next AWV is due 2027-03-10 (derived).\n\n**Why this patient, now**\nDickerson, April is a 22-year-old with a recent blood pressure reading of 181/87, which is in the hypertensive crisis range. This is an urgent finding requiring immediate clinical evaluation.\n\n**What to raise**\n1.  **Hypertensive Crisis:** Raise the blood pressure of 181/87, staged as hypertensive crisis. This requires urgent assessment, especially given the patient is only 22.\n2.  **COPD Diagnosis:** Raise the diagnosis of COPD in a 22-year-old. It is not clear who is managing this or their three respiratory medications (Roflumilast, Fluticasone/Salmeterol, Montelukast), as their last recorded visit was with a Neurologist.\n3.  **Record Inconsistencies:** Raise the unusual data in the record. The last visit was documented with a Neurologist in an OB/GYN clinic, and the SpO2 value is physiologically impossible. These errors call the overall integrity of the patient's record into question.\n\n**Against the clinician's note**\nThe clinician's note does not specify a value for the SpO2, stating only \"Monitoring labs ordered.\" The value of 126.4 % in this brief is from the structured data and is physiologically impossible.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not necessarily what the patient is currently taking, as no discontinuations are recorded.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200043",
+    "name": "Dickerson, April",
+    "age": 22,
+    "sex": "Female",
+    "birth_date": "2003-12-31"
+   },
+   "visit": {
+    "last_awv": "2026-03-10",
+    "next_awv_due_derived": "2027-03-10",
+    "status": "not yet due",
+    "detail": "due in 9 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 1,
+    "last_visit": {
+     "date": "2026-03-10",
+     "department": "OB/GYN Clinic",
+     "provider": "Linda Short",
+     "provider_specialty": "Neurology",
+     "provider_type": "Physician",
+     "insurance": "medicare"
+    },
+    "history": [
+     {
+      "date": "2026-03-10",
+      "department": "OB/GYN Clinic",
+      "provider": "Linda Short",
+      "specialty": "Neurology",
+      "insurance": "medicare"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "SpO2=126.364 (limit 50-100)"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": []
+   },
+   "conditions": [
+    {
+     "icd10": "J44.0",
+     "name": "COPD with Acute Lower Respiratory Infection"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "PDE4i": [
+      {
+       "agent": "Roflumilast 500 mcg",
+       "started": "2026-01-07"
+      }
+     ],
+     "ICS/LABA": [
+      {
+       "agent": "Fluticasone/Salmeterol 250/50 mcg",
+       "started": "2026-01-01"
+      }
+     ],
+     "Leukotriene Inhibitor": [
+      {
+       "agent": "Montelukast 10 mg",
+       "started": "2023-11-27"
+      }
+     ]
+    },
+    "distinct_agents": 3
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "181/87",
+     "stage": "hypertensive crisis",
+     "pulse_pressure": 94,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 57.0,
+    "temperature": 98.4,
+    "resp_rate": 20.0,
+    "weight_lb": 186.1,
+    "bmi": 22.4,
+    "recorded": "2026-03-10"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "SpO2",
+      "value": 126.4,
+      "unit": "%",
+      "reference": "94.0-100.0",
+      "date": "2026-04-04"
+     }
+    ],
+    "normal_count": 4
+   },
+   "outstanding_orders": [],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F04",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Blood pressure in the hypertensive crisis range"
+    },
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [
+     {
+      "field": "lab value",
+      "brief_says": "SpO2: 126.4 %",
+      "note_says": "Not specified; note only says 'Monitoring labs ordered.'",
+      "severity": "medium",
+      "why_it_matters": "The SpO2 value in the brief is physiologically impossible, as saturation cannot exceed 100%. This indicates a data error."
+     }
+    ],
+    "checked": [
+     "conditions",
+     "medications",
+     "vitals",
+     "labs",
+     "care claimed vs delivered"
+    ],
+    "note_count": 1
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:16:38+00:00"
+ },
+ "Black, Tyler": {
+  "narrative": "**Last seen**\n2026-02-04 by Dr. Joseph Costa (Internal Medicine). Next AWV due 2027-02-04 (derived).\n\n**Why this patient, now**\nBlack, Tyler has Type 2 Diabetes with evidence of kidney involvement and unaddressed cardiovascular risk. Guideline-recommended statin therapy is not on file. Lab orders for an LDL and a follow-up kidney screen have been outstanding for 11 months.\n\n**What to raise**\n1.  Diabetes management. The record shows no statin, despite recommendations for patients with diabetes. Orders for LDL Cholesterol and a repeat Urine Albumin/Creat Ratio have been open since June 2025; the last UACR was elevated at 38.8. This is a single conversation about cardiovascular and renal risk reduction.\n2.  Medication history. The record lists four GLP-1 RA agents and two SGLT2i agents started between 2022 and 2025. Confirming which of these, if any, Black, Tyler currently takes is necessary before making any changes.\n3.  Blood pressure. The last reading was 135/74, staged as stage 1 hypertension. This adds to overall cardiovascular risk in a patient with diabetes and albuminuria.\n\n**What you cannot tell from the record**\nThe medication list shows what was ever STARTED, not what is currently taken.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200006",
+    "name": "Black, Tyler",
+    "age": 69,
+    "sex": "Male",
+    "birth_date": "1956-07-14"
+   },
+   "visit": {
+    "last_awv": "2026-02-04",
+    "next_awv_due_derived": "2027-02-04",
+    "status": "not yet due",
+    "detail": "due in 8 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2026-02-04",
+     "department": "Pulmonology Clinic",
+     "provider": "Dr. Joseph Costa",
+     "provider_specialty": "Internal Medicine",
+     "provider_type": "Physician",
+     "insurance": "medicare"
+    },
+    "history": [
+     {
+      "date": "2026-02-04",
+      "department": "Pulmonology Clinic",
+      "provider": "Dr. Joseph Costa",
+      "specialty": "Internal Medicine",
+      "insurance": "medicare"
+     },
+     {
+      "date": "2025-06-15",
+      "department": "Psychiatry Clinic",
+      "provider": "Michael Lee",
+      "specialty": "Endocrinology",
+      "insurance": "medicare"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "GLP-1 RA",
+      "n": 4,
+      "agents": [
+       {
+        "agent": "Liraglutide 1.2 mg",
+        "started": "2025-08-31"
+       },
+       {
+        "agent": "Semaglutide 1 mg (Ozempic)",
+        "started": "2025-04-27"
+       },
+       {
+        "agent": "Liraglutide 1.2 mg",
+        "started": "2024-07-12"
+       },
+       {
+        "agent": "Semaglutide 1 mg (Ozempic)",
+        "started": "2023-04-06"
+       }
+      ],
+      "days_apart": 878
+     },
+     {
+      "class": "SGLT2i",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Empagliflozin 10 mg",
+        "started": "2025-04-19"
+       },
+       {
+        "agent": "Empagliflozin 10 mg",
+        "started": "2022-11-27"
+       }
+      ],
+      "days_apart": 874
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "E11.9",
+     "name": "Type 2 Diabetes Mellitus"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "GLP-1 RA": [
+      {
+       "agent": "Liraglutide 1.2 mg",
+       "started": "2025-08-31"
+      },
+      {
+       "agent": "Semaglutide 1 mg (Ozempic)",
+       "started": "2025-04-27"
+      },
+      {
+       "agent": "Liraglutide 1.2 mg",
+       "started": "2024-07-12"
+      },
+      {
+       "agent": "Semaglutide 1 mg (Ozempic)",
+       "started": "2023-04-06"
+      }
+     ],
+     "SGLT2i": [
+      {
+       "agent": "Empagliflozin 10 mg",
+       "started": "2025-04-19"
+      },
+      {
+       "agent": "Empagliflozin 10 mg",
+       "started": "2022-11-27"
+      }
+     ]
+    },
+    "distinct_agents": 3
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "135/74",
+     "stage": "stage 1",
+     "pulse_pressure": 61,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 64.0,
+    "temperature": 98.4,
+    "resp_rate": 16.0,
+    "weight_lb": 187.0,
+    "bmi": 27.7,
+    "recorded": "2026-02-04"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "Fasting Glucose",
+      "value": 137.7,
+      "unit": "mg/dL",
+      "reference": "70.0-100.0",
+      "date": "2025-07-31"
+     },
+     {
+      "analyte": "Triglycerides",
+      "value": 163.7,
+      "unit": "mg/dL",
+      "reference": "0.0-150.0",
+      "date": "2026-02-04"
+     },
+     {
+      "analyte": "Urine Albumin/Creat Ratio",
+      "value": 38.8,
+      "unit": "mg/g",
+      "reference": "0.0-30.0",
+      "date": "2024-11-29"
+     }
+    ],
+    "normal_count": 5
+   },
+   "outstanding_orders": [
+    {
+     "test": "LDL Cholesterol",
+     "ordered": "2025-06-12",
+     "months_open": 11
+    },
+    {
+     "test": "Urine Albumin/Creat Ratio",
+     "ordered": "2025-06-14",
+     "months_open": 11
+    }
+   ],
+   "care_gaps": [
+    {
+     "id": "G1",
+     "title": "Statin therapy in type 2 diabetes",
+     "recommendation": "Moderate-intensity statin is recommended for adults aged 40-75 with diabetes, irrespective of baseline LDL.",
+     "source": "ADA Standards of Care; ACC/AHA cholesterol guideline",
+     "caveat": ""
+    }
+   ],
+   "panel_findings": [
+    {
+     "finding_id": "F05",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Orders open 6+ months for a condition the patient has"
+    },
+    {
+     "finding_id": "F10",
+     "agent": "followup",
+     "severity": "high",
+     "headline": "Stale order for Urine Albumin/Creat Ratio"
+    },
+    {
+     "finding_id": "F18",
+     "agent": "guideline_concordance",
+     "severity": "medium",
+     "headline": "Patients with type 2 diabetes missing recommended statin therapy"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "conditions",
+     "medications",
+     "vitals",
+     "care claimed vs delivered in note from 2026-02-04"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:17:10+00:00"
+ },
+ "Sandoval, John": {
+  "narrative": "**Before you read on**\nThis patient's CBC record from 2025-01-26 shows a hemoglobin of 24.812, which is physiologically impossible. Other results from that date may also be incorrect.\n\n**Last seen**\n2025-10-28 by Gina Powell (Pulmonology). Next AWV due 2026-10-28 (derived).\n\n**Why this patient, now**\nSandoval, John has chronic systolic heart failure and type 2 diabetes but is not on multiple guideline-directed therapies shown to reduce mortality and hospitalisation. His hypertension also remains uncontrolled on two agents.\n\n**What to raise**\n1.  **Heart failure management.** For his chronic systolic heart failure (HFrEF), he is not on a beta-blocker or an SGLT2 inhibitor. Both are recommended to reduce mortality and hospitalisation.\n2.  **Cardiovascular risk reduction.** For his type 2 diabetes, he is not on a statin, which is recommended for adults aged 40-75 to reduce cardiovascular risk. His last LDL was 135.0 mg/dL.\n3.  **Blood pressure control.** His blood pressure is 159/99 (stage 2) despite treatment with lisinopril and amlodipine.\n4.  **Outstanding labs.** An order for a BUN from 7 months ago is still open. This is key for monitoring kidney function in a patient with his conditions and on an ACE inhibitor.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not necessarily what is currently taken, as no stop dates are recorded.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200053",
+    "name": "Sandoval, John",
+    "age": 75,
+    "sex": "Male",
+    "birth_date": "1951-01-24"
+   },
+   "visit": {
+    "last_awv": "2025-10-28",
+    "next_awv_due_derived": "2026-10-28",
+    "status": "not yet due",
+    "detail": "due in 5 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 1,
+    "last_visit": {
+     "date": "2025-10-28",
+     "department": "Endocrinology",
+     "provider": "Gina Powell",
+     "provider_specialty": "Pulmonology",
+     "provider_type": "Physician",
+     "insurance": "commercial"
+    },
+    "history": [
+     {
+      "date": "2025-10-28",
+      "department": "Endocrinology",
+      "provider": "Gina Powell",
+      "specialty": "Pulmonology",
+      "insurance": "commercial"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "CBC \u2014 Hemoglobin=24.812 (limit 4-22)"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": []
+   },
+   "conditions": [
+    {
+     "icd10": "E11.9",
+     "name": "Type 2 Diabetes Mellitus"
+    },
+    {
+     "icd10": "I10",
+     "name": "Essential Hypertension"
+    },
+    {
+     "icd10": "I50.32",
+     "name": "Chronic Systolic Heart Failure (HFrEF)"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "GIP/GLP-1 RA": [
+      {
+       "agent": "Tirzepatide 5 mg (Mounjaro)",
+       "started": "2025-08-26"
+      }
+     ],
+     "CCB": [
+      {
+       "agent": "Amlodipine 5 mg",
+       "started": "2025-04-01"
+      }
+     ],
+     "ACEi": [
+      {
+       "agent": "Lisinopril 10 mg",
+       "started": "2024-05-19"
+      }
+     ]
+    },
+    "distinct_agents": 3
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "159/99",
+     "stage": "stage 2",
+     "pulse_pressure": 60,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 55.0,
+    "temperature": 98.4,
+    "resp_rate": 19.0,
+    "weight_lb": 277.4,
+    "bmi": 44.0,
+    "recorded": "2025-10-28"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "CBC \u2014 Hemoglobin",
+      "value": 24.8,
+      "unit": "g/dL",
+      "reference": "12.0-17.5",
+      "date": "2025-01-26"
+     },
+     {
+      "analyte": "HbA1c",
+      "value": 6.9,
+      "unit": "%",
+      "reference": "4.5-5.6",
+      "date": "2024-06-19"
+     },
+     {
+      "analyte": "LDL Cholesterol",
+      "value": 135.0,
+      "unit": "mg/dL",
+      "reference": "0.0-100.0",
+      "date": "2025-02-06"
+     }
+    ],
+    "normal_count": 4
+   },
+   "outstanding_orders": [
+    {
+     "test": "BUN",
+     "ordered": "2025-10-25",
+     "months_open": 7
+    }
+   ],
+   "care_gaps": [
+    {
+     "id": "G1",
+     "title": "Statin therapy in type 2 diabetes",
+     "recommendation": "Moderate-intensity statin is recommended for adults aged 40-75 with diabetes, irrespective of baseline LDL.",
+     "source": "ADA Standards of Care; ACC/AHA cholesterol guideline",
+     "caveat": ""
+    },
+    {
+     "id": "G2",
+     "title": "Beta-blocker in HFrEF",
+     "recommendation": "An evidence-based beta-blocker is recommended in HFrEF to reduce mortality and hospitalisation.",
+     "source": "ACC/AHA/HFSA heart failure guideline",
+     "caveat": ""
+    },
+    {
+     "id": "G4",
+     "title": "SGLT2 inhibition in HFrEF",
+     "recommendation": "An SGLT2 inhibitor is recommended in HFrEF regardless of diabetes status.",
+     "source": "ACC/AHA/HFSA heart failure guideline",
+     "caveat": ""
+    }
+   ],
+   "panel_findings": [
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    },
+    {
+     "finding_id": "F07",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Beta-blocker in HFrEF \u2014 guideline gap"
+    },
+    {
+     "finding_id": "F09",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "SGLT2 inhibition in HFrEF \u2014 guideline gap"
+    },
+    {
+     "finding_id": "F18",
+     "agent": "guideline_concordance",
+     "severity": "medium",
+     "headline": "Patients with type 2 diabetes missing recommended statin therapy"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "medications",
+     "conditions",
+     "vitals",
+     "care claimed vs delivered"
+    ],
+    "note_count": 1
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:17:48+00:00"
+ },
+ "Stein, Larry": {
+  "narrative": "**Last seen**\n2026-02-20 with Tina Wells, Internal Medicine; their next AWV is not yet due (derived 2027-02-20).\n\n**Why this patient, now**\nStein, Larry has a diagnosis of Chronic Systolic Heart Failure (HFrEF) but is not on any of the three classes of medication recommended by guidelines to reduce mortality. Their blood pressure is stage 2 at 154/98.\n\n**What to raise**\n1.  The absence of guideline-directed medical therapy for Chronic Systolic Heart Failure (HFrEF). The record shows no beta-blocker, renin-angiotensin inhibitor, or SGLT2 inhibitor, all of which are recommended to reduce mortality and hospitalisation for this condition.\n2.  Uncontrolled blood pressure and lipids. Their most recent blood pressure was 154/98 (stage 2), and their LDL Cholesterol was 126.8 mg/dL on 2025-01-31 despite a statin prescription. Their AST is also elevated at 45.8 U/L.\n3.  Outstanding lab orders. Orders for Magnesium, HDL Cholesterol, Total Cholesterol, and Fasting Glucose are open, some for as long as 7 months.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200010",
+    "name": "Stein, Larry",
+    "age": 43,
+    "sex": "Male",
+    "birth_date": "1982-06-09"
+   },
+   "visit": {
+    "last_awv": "2026-02-20",
+    "next_awv_due_derived": "2027-02-20",
+    "status": "not yet due",
+    "detail": "due in 8 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2026-02-20",
+     "department": "Endocrinology",
+     "provider": "Tina Wells",
+     "provider_specialty": "Internal Medicine",
+     "provider_type": "PA",
+     "insurance": "medicare"
+    },
+    "history": [
+     {
+      "date": "2026-02-20",
+      "department": "Endocrinology",
+      "provider": "Tina Wells",
+      "specialty": "Internal Medicine",
+      "insurance": "medicare"
+     },
+     {
+      "date": "2025-10-14",
+      "department": "Internal Medicine Clinic",
+      "provider": "Michael Lee",
+      "specialty": "Endocrinology",
+      "insurance": "medicare"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "PPI",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Esomeprazole 40 mg",
+        "started": "2026-04-02"
+       },
+       {
+        "agent": "Esomeprazole 40 mg",
+        "started": "2025-11-08"
+       }
+      ],
+      "days_apart": 145
+     },
+     {
+      "class": "Fibrate",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Fenofibrate 145 mg",
+        "started": "2025-09-27"
+       },
+       {
+        "agent": "Fenofibrate 145 mg",
+        "started": "2023-08-03"
+       }
+      ],
+      "days_apart": 786
+     },
+     {
+      "class": "Statin",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Atorvastatin 40 mg",
+        "started": "2025-01-25"
+       },
+       {
+        "agent": "Atorvastatin 40 mg",
+        "started": "2023-09-18"
+       }
+      ],
+      "days_apart": 495
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "E78.00",
+     "name": "Pure Hypercholesterolaemia"
+    },
+    {
+     "icd10": "I50.32",
+     "name": "Chronic Systolic Heart Failure (HFrEF)"
+    },
+    {
+     "icd10": "K21.9",
+     "name": "GERD without Oesophagitis"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "PPI": [
+      {
+       "agent": "Esomeprazole 40 mg",
+       "started": "2026-04-02"
+      },
+      {
+       "agent": "Esomeprazole 40 mg",
+       "started": "2025-11-08"
+      }
+     ],
+     "Fibrate": [
+      {
+       "agent": "Fenofibrate 145 mg",
+       "started": "2025-09-27"
+      },
+      {
+       "agent": "Fenofibrate 145 mg",
+       "started": "2023-08-03"
+      }
+     ],
+     "Statin": [
+      {
+       "agent": "Atorvastatin 40 mg",
+       "started": "2025-01-25"
+      },
+      {
+       "agent": "Atorvastatin 40 mg",
+       "started": "2023-09-18"
+      }
+     ]
+    },
+    "distinct_agents": 3
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "154/98",
+     "stage": "stage 2",
+     "pulse_pressure": 56,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 64.0,
+    "temperature": 98.4,
+    "resp_rate": 15.0,
+    "weight_lb": 268.8,
+    "bmi": 36.0,
+    "recorded": "2026-02-20"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "AST",
+      "value": 45.8,
+      "unit": "U/L",
+      "reference": "10.0-40.0",
+      "date": "2026-03-31"
+     },
+     {
+      "analyte": "LDL Cholesterol",
+      "value": 126.8,
+      "unit": "mg/dL",
+      "reference": "0.0-100.0",
+      "date": "2025-01-31"
+     }
+    ],
+    "normal_count": 4
+   },
+   "outstanding_orders": [
+    {
+     "test": "Magnesium",
+     "ordered": "2025-10-12",
+     "months_open": 7
+    },
+    {
+     "test": "HDL Cholesterol",
+     "ordered": "2026-02-17",
+     "months_open": 3
+    },
+    {
+     "test": "Total Cholesterol",
+     "ordered": "2026-02-17",
+     "months_open": 3
+    },
+    {
+     "test": "Fasting Glucose",
+     "ordered": "2026-02-19",
+     "months_open": 3
+    }
+   ],
+   "care_gaps": [
+    {
+     "id": "G2",
+     "title": "Beta-blocker in HFrEF",
+     "recommendation": "An evidence-based beta-blocker is recommended in HFrEF to reduce mortality and hospitalisation.",
+     "source": "ACC/AHA/HFSA heart failure guideline",
+     "caveat": ""
+    },
+    {
+     "id": "G3",
+     "title": "Renin-angiotensin inhibition in HFrEF",
+     "recommendation": "ARNi, ACE inhibitor or ARB is recommended in HFrEF, with ARNi preferred where tolerated.",
+     "source": "ACC/AHA/HFSA heart failure guideline",
+     "caveat": ""
+    },
+    {
+     "id": "G4",
+     "title": "SGLT2 inhibition in HFrEF",
+     "recommendation": "An SGLT2 inhibitor is recommended in HFrEF regardless of diabetes status.",
+     "source": "ACC/AHA/HFSA heart failure guideline",
+     "caveat": ""
+    }
+   ],
+   "panel_findings": [
+    {
+     "finding_id": "F07",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Beta-blocker in HFrEF \u2014 guideline gap"
+    },
+    {
+     "finding_id": "F08",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Renin-angiotensin inhibition in HFrEF \u2014 guideline gap"
+    },
+    {
+     "finding_id": "F09",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "SGLT2 inhibition in HFrEF \u2014 guideline gap"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "brief vs. note from 2026-02-20 11:58:00"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:18:40+00:00"
+ },
+ "Zavala, Manuel": {
+  "narrative": "**Before you read on**\nThe Total Cholesterol value of 16.437 cannot be correct, which means the lipid panel is unreliable.\n\n**Last seen**\n2026-01-10 by Linda Short, Neurology. Their next AWV is due 2027-01-10 (derived).\n\n**Why this patient, now**\nZavala, Manuel has Acute on Chronic Systolic Heart Failure but is not on two foundational therapies: a beta-blocker and a renin-angiotensin system inhibitor. These are recommended to reduce mortality and hospitalisation.\n\n**What to raise**\n*   **Heart failure therapy.** Zavala, Manuel has systolic heart failure but is not recorded as taking a beta-blocker or a renin-angiotensin inhibitor (ARNi/ACEi/ARB).\n*   **Statin for diabetes.** Guideline-directed statin therapy is recommended for cardiovascular risk reduction in patients with diabetes but is not on their medication list.\n*   **Low body weight.** Their BMI is 15.1, which may indicate frailty or malnutrition, of particular concern in a patient with heart failure and diabetes.\n*   **Outstanding lab order.** The last total cholesterol was physiologically impossible, and the order to repeat it from 2026-01-10 remains open after 4 months.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200047",
+    "name": "Zavala, Manuel",
+    "age": 70,
+    "sex": "Male",
+    "birth_date": "1956-04-01"
+   },
+   "visit": {
+    "last_awv": "2026-01-10",
+    "next_awv_due_derived": "2027-01-10",
+    "status": "not yet due",
+    "detail": "due in 7 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 1,
+    "last_visit": {
+     "date": "2026-01-10",
+     "department": "OB/GYN Clinic",
+     "provider": "Linda Short",
+     "provider_specialty": "Neurology",
+     "provider_type": "Physician",
+     "insurance": "medicaid"
+    },
+    "history": [
+     {
+      "date": "2026-01-10",
+      "department": "OB/GYN Clinic",
+      "provider": "Linda Short",
+      "specialty": "Neurology",
+      "insurance": "medicaid"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "Total Cholesterol=16.437 (limit 50-500)"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": []
+   },
+   "conditions": [
+    {
+     "icd10": "E11.9",
+     "name": "Type 2 Diabetes Mellitus"
+    },
+    {
+     "icd10": "E78.1",
+     "name": "Pure Hypertriglyceridaemia"
+    },
+    {
+     "icd10": "I50.33",
+     "name": "Acute on Chronic Systolic Heart Failure"
+    },
+    {
+     "icd10": "K21.0",
+     "name": "GERD with Oesophagitis"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "SGLT2i": [
+      {
+       "agent": "Dapagliflozin 10 mg",
+       "started": "2025-07-31"
+      }
+     ],
+     "Biguanide": [
+      {
+       "agent": "Metformin 1000 mg",
+       "started": "2024-10-30"
+      }
+     ],
+     "Omega-3": [
+      {
+       "agent": "Omega-3 Fatty Acids 4 g",
+       "started": "2023-12-17"
+      }
+     ],
+     "PPI": [
+      {
+       "agent": "Pantoprazole 40 mg",
+       "started": "2022-11-21"
+      }
+     ]
+    },
+    "distinct_agents": 4
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "122/80",
+     "stage": "stage 1",
+     "pulse_pressure": 42,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 87.0,
+    "temperature": 98.4,
+    "resp_rate": 12.0,
+    "weight_lb": 125.7,
+    "bmi": 15.1,
+    "recorded": "2026-01-10"
+   },
+   "labs": {
+    "abnormal": [],
+    "normal_count": 12
+   },
+   "outstanding_orders": [
+    {
+     "test": "Total Cholesterol",
+     "ordered": "2026-01-10",
+     "months_open": 4
+    }
+   ],
+   "care_gaps": [
+    {
+     "id": "G1",
+     "title": "Statin therapy in type 2 diabetes",
+     "recommendation": "Moderate-intensity statin is recommended for adults aged 40-75 with diabetes, irrespective of baseline LDL.",
+     "source": "ADA Standards of Care; ACC/AHA cholesterol guideline",
+     "caveat": ""
+    },
+    {
+     "id": "G2",
+     "title": "Beta-blocker in HFrEF",
+     "recommendation": "An evidence-based beta-blocker is recommended in HFrEF to reduce mortality and hospitalisation.",
+     "source": "ACC/AHA/HFSA heart failure guideline",
+     "caveat": ""
+    },
+    {
+     "id": "G3",
+     "title": "Renin-angiotensin inhibition in HFrEF",
+     "recommendation": "ARNi, ACE inhibitor or ARB is recommended in HFrEF, with ARNi preferred where tolerated.",
+     "source": "ACC/AHA/HFSA heart failure guideline",
+     "caveat": ""
+    }
+   ],
+   "panel_findings": [
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    },
+    {
+     "finding_id": "F07",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Beta-blocker in HFrEF \u2014 guideline gap"
+    },
+    {
+     "finding_id": "F08",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Renin-angiotensin inhibition in HFrEF \u2014 guideline gap"
+    },
+    {
+     "finding_id": "F18",
+     "agent": "guideline_concordance",
+     "severity": "medium",
+     "headline": "Patients with type 2 diabetes missing recommended statin therapy"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "conditions",
+     "medications",
+     "vitals",
+     "care claimed vs delivered"
+    ],
+    "note_count": 1
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:19:12+00:00"
+ },
+ "Rogers, Jessica": {
+  "narrative": "**Before you read on**\nThe records for Rogers, Jessica contain physiologically impossible lab results for Total Cholesterol (9.566) and Triglycerides (15.562). This makes any assessment of her lipid status unreliable.\n\n**Last seen**\n2025-07-03 by Tina Wells, Internal Medicine; her next AWV is due 2026-07-03 (derived).\n\n**Why this patient, now**\nRogers, Jessica has a diagnosis of hyperlipidemia, but her care is unassessable. Key monitoring labs have been outstanding for 11 months, and the lipid results on file are physiologically impossible.\n\n**What to raise**\n1.  Her hyperlipidemia management. An order for LDL Cholesterol has been open for 11 months, and her record contains four different statin prescriptions since 2022. Without valid labs, it is impossible to know if her treatment is effective.\n2.  An outstanding order for a Fasting Glucose has also been open for 11 months.\n3.  Her most recent blood pressure of 135/83 is stage 1 hypertension.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200055",
+    "name": "Rogers, Jessica",
+    "age": 69,
+    "sex": "Female",
+    "birth_date": "1956-08-05"
+   },
+   "visit": {
+    "last_awv": "2025-07-03",
+    "next_awv_due_derived": "2026-07-03",
+    "status": "due soon",
+    "detail": "due in 37 days",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2025-07-03",
+     "department": "GI / Gastroenterology",
+     "provider": "Tina Wells",
+     "provider_specialty": "Internal Medicine",
+     "provider_type": "PA",
+     "insurance": "medicare"
+    },
+    "history": [
+     {
+      "date": "2025-07-03",
+      "department": "GI / Gastroenterology",
+      "provider": "Tina Wells",
+      "specialty": "Internal Medicine",
+      "insurance": "medicare"
+     },
+     {
+      "date": "2025-06-15",
+      "department": "Endocrinology",
+      "provider": "Daniel Mills",
+      "specialty": "Cardiology",
+      "insurance": "medicare"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "Total Cholesterol=9.566 (limit 50-500)",
+     "Triglycerides=15.562 (limit 20-1500)"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "Statin",
+      "n": 4,
+      "agents": [
+       {
+        "agent": "Atorvastatin 40 mg",
+        "started": "2026-03-14"
+       },
+       {
+        "agent": "Rosuvastatin 20 mg",
+        "started": "2023-05-20"
+       },
+       {
+        "agent": "Rosuvastatin 20 mg",
+        "started": "2023-05-08"
+       },
+       {
+        "agent": "Atorvastatin 40 mg",
+        "started": "2022-06-07"
+       }
+      ],
+      "days_apart": 1376
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "E78.5",
+     "name": "Hyperlipidaemia, Unspecified"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "Statin": [
+      {
+       "agent": "Atorvastatin 40 mg",
+       "started": "2026-03-14"
+      },
+      {
+       "agent": "Rosuvastatin 20 mg",
+       "started": "2023-05-20"
+      },
+      {
+       "agent": "Rosuvastatin 20 mg",
+       "started": "2023-05-08"
+      },
+      {
+       "agent": "Atorvastatin 40 mg",
+       "started": "2022-06-07"
+      }
+     ]
+    },
+    "distinct_agents": 2
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "135/83",
+     "stage": "stage 1",
+     "pulse_pressure": 52,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 90.0,
+    "temperature": 98.4,
+    "resp_rate": 21.0,
+    "weight_lb": 174.0,
+    "bmi": 22.1,
+    "recorded": "2025-07-03"
+   },
+   "labs": {
+    "abnormal": [],
+    "normal_count": 8
+   },
+   "outstanding_orders": [
+    {
+     "test": "Fasting Glucose",
+     "ordered": "2025-06-13",
+     "months_open": 11
+    },
+    {
+     "test": "LDL Cholesterol",
+     "ordered": "2025-06-15",
+     "months_open": 11
+    }
+   ],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F05",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Orders open 6+ months for a condition the patient has"
+    },
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    },
+    {
+     "finding_id": "F14",
+     "agent": "followup",
+     "severity": "low",
+     "headline": "Numerous stale orders for routine monitoring"
+    },
+    {
+     "finding_id": "F15",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Missing medication discontinuation data creates false 'duplicate therapy' alerts"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "conditions",
+     "medications",
+     "vitals",
+     "care claimed vs delivered"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:19:50+00:00"
+ },
+ "Schwartz, Mary": {
+  "narrative": "**Before you read on**\nThis patient's record contains a blood pressure of 173/61, which is not physiologically possible, and a sodium level of 163.823 which is outside the reference range. Clinical decisions based on these values may be incorrect.\n\n**Last seen**\n2026-05-24 by William Mccullough (Gastroenterology); next AWV is due 2027-05-24 (derived).\n\n**Why this patient, now**\nSchwartz, Mary has diagnoses of hypertensive heart disease and hypercholesterolemia, but key data points are physiologically impossible, preventing a reliable assessment of cardiovascular risk.\n\n**What to raise**\n*   The record shows treatment for hypertension and high cholesterol, but the most recent BP reading of 173/61 is impossible. A new, reliable BP is needed to assess control, and outstanding orders for Potassium and HDL Cholesterol from 11 months ago should be addressed.\n*   Her recent Fasting Glucose of 124.6 mg/dL requires follow-up, as this adds to her overall cardiovascular risk.\n*   Her last ALT was elevated at 65.1 U/L, which is relevant in the context of her statin prescription.\n*   The medication list shows multiple prescriptions for the same agents (ACEi, thiazide, statin, ezetimibe) started on different dates. Clarifying which medications she is actually taking is essential.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200076",
+    "name": "Schwartz, Mary",
+    "age": 32,
+    "sex": "Female",
+    "birth_date": "1994-02-10"
+   },
+   "visit": {
+    "last_awv": "2026-05-24",
+    "next_awv_due_derived": "2027-05-24",
+    "status": "not yet due",
+    "detail": "due in 12 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2026-05-24",
+     "department": "Pulmonology Clinic",
+     "provider": "William Mccullough",
+     "provider_specialty": "Gastroenterology",
+     "provider_type": "Physician",
+     "insurance": "medicare"
+    },
+    "history": [
+     {
+      "date": "2026-05-24",
+      "department": "Pulmonology Clinic",
+      "provider": "William Mccullough",
+      "specialty": "Gastroenterology",
+      "insurance": "medicare"
+     },
+     {
+      "date": "2025-06-17",
+      "department": "Internal Medicine Clinic",
+      "provider": "Tina Wells",
+      "specialty": "Internal Medicine",
+      "insurance": "medicare"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "Sodium=163.823 (limit 110-160)",
+     "blood pressure 173/61 has a pulse pressure of 112, which is not physiologically possible"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "Cholesterol Absorp. Inhib.",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Ezetimibe 10 mg",
+        "started": "2026-01-27"
+       },
+       {
+        "agent": "Ezetimibe 10 mg",
+        "started": "2024-07-18"
+       }
+      ],
+      "days_apart": 558
+     },
+     {
+      "class": "Thiazide",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Hydrochlorothiazide 25 mg",
+        "started": "2026-01-09"
+       },
+       {
+        "agent": "Hydrochlorothiazide 25 mg",
+        "started": "2024-01-24"
+       }
+      ],
+      "days_apart": 716
+     },
+     {
+      "class": "Statin",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Rosuvastatin 20 mg",
+        "started": "2025-07-04"
+       },
+       {
+        "agent": "Rosuvastatin 20 mg",
+        "started": "2023-08-23"
+       }
+      ],
+      "days_apart": 681
+     },
+     {
+      "class": "ACEi",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Lisinopril 10 mg",
+        "started": "2024-05-22"
+       },
+       {
+        "agent": "Lisinopril 10 mg",
+        "started": "2024-01-18"
+       }
+      ],
+      "days_apart": 125
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "E78.00",
+     "name": "Pure Hypercholesterolaemia"
+    },
+    {
+     "icd10": "I11.9",
+     "name": "Hypertensive Heart Disease, Unspecified"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "Cholesterol Absorp. Inhib.": [
+      {
+       "agent": "Ezetimibe 10 mg",
+       "started": "2026-01-27"
+      },
+      {
+       "agent": "Ezetimibe 10 mg",
+       "started": "2024-07-18"
+      }
+     ],
+     "Thiazide": [
+      {
+       "agent": "Hydrochlorothiazide 25 mg",
+       "started": "2026-01-09"
+      },
+      {
+       "agent": "Hydrochlorothiazide 25 mg",
+       "started": "2024-01-24"
+      }
+     ],
+     "Statin": [
+      {
+       "agent": "Rosuvastatin 20 mg",
+       "started": "2025-07-04"
+      },
+      {
+       "agent": "Rosuvastatin 20 mg",
+       "started": "2023-08-23"
+      }
+     ],
+     "ACEi": [
+      {
+       "agent": "Lisinopril 10 mg",
+       "started": "2024-05-22"
+      },
+      {
+       "agent": "Lisinopril 10 mg",
+       "started": "2024-01-18"
+      }
+     ]
+    },
+    "distinct_agents": 4
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "173/61",
+     "stage": "stage 2",
+     "pulse_pressure": 112,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": true
+    },
+    "heart_rate": 85.0,
+    "temperature": 98.4,
+    "resp_rate": 19.0,
+    "weight_lb": 135.2,
+    "bmi": 16.3,
+    "recorded": "2026-05-24"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "ALT",
+      "value": 65.1,
+      "unit": "U/L",
+      "reference": "7.0-56.0",
+      "date": "2025-10-11"
+     },
+     {
+      "analyte": "Fasting Glucose",
+      "value": 124.6,
+      "unit": "mg/dL",
+      "reference": "70.0-100.0",
+      "date": "2026-03-18"
+     }
+    ],
+    "normal_count": 9
+   },
+   "outstanding_orders": [
+    {
+     "test": "HDL Cholesterol",
+     "ordered": "2025-06-15",
+     "months_open": 11
+    },
+    {
+     "test": "Potassium",
+     "ordered": "2025-06-15",
+     "months_open": 11
+    },
+    {
+     "test": "ALT",
+     "ordered": "2026-05-22",
+     "months_open": 0
+    },
+    {
+     "test": "Total Cholesterol",
+     "ordered": "2026-05-24",
+     "months_open": 0
+    }
+   ],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    },
+    {
+     "finding_id": "F12",
+     "agent": "followup",
+     "severity": "high",
+     "headline": "Stale order for Potassium"
+    },
+    {
+     "finding_id": "F17",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Implausible blood pressure readings recorded"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "conditions",
+     "medications",
+     "vitals",
+     "note of 2026-05-24 08:12:00",
+     "note of 2025-06-17 07:55:00"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:20:28+00:00"
+ },
+ "Taylor, Jonathan": {
+  "narrative": "**Before you read on**\nThis patient's records for Sodium (174.85) and eGFR (168.957, 167.244) are physiologically impossible. These should be treated as data errors, not clinical findings, and new labs will be needed for safe management.\n\n**Last seen**\n2025-11-10 by Daniel Mills (Cardiology); next AWV is due (derived) 2026-11-10.\n\n**Why this patient, now**\nTaylor, Jonathan has type 2 diabetes and hypertensive heart disease with several significant care gaps. Key lab orders for diabetes monitoring are outstanding for 6-11 months and they are not on recommended statin therapy, while data quality issues obscure their true lab values.\n\n**What to raise**\n*   **Diabetes care gaps:** Taylor, Jonathan is not on a statin, which is recommended for adults with diabetes to reduce cardiovascular risk. Key monitoring labs for their diabetes (HbA1c, Fasting Glucose) are also outstanding from 6 and 11 months ago, respectively.\n*   **Hypertension:** Their last blood pressure was 138/98 (stage 2). This is important given their diagnosis of Hypertensive Heart Disease and that they are on two classes of antihypertensives.\n*   **Long-term PPI use:** An order for Vitamin B12 has been outstanding for 6 months. This is a relevant check for patients on long-term proton-pump inhibitors for GERD.\n\n**Against the clinician's note**\nThe note from 2025-11-10 states \"Lab orders placed based on guideline intervals.\" However, the record shows that labs ordered at that visit (HbA1c, Vitamin B12) have not been resulted, which is the basis for the care gaps identified in the brief.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped; it is not a list of current therapy.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200064",
+    "name": "Taylor, Jonathan",
+    "age": 57,
+    "sex": "Male",
+    "birth_date": "1968-06-29"
+   },
+   "visit": {
+    "last_awv": "2025-11-10",
+    "next_awv_due_derived": "2026-11-10",
+    "status": "not yet due",
+    "detail": "due in 5 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2025-11-10",
+     "department": "OB/GYN Clinic",
+     "provider": "Daniel Mills",
+     "provider_specialty": "Cardiology",
+     "provider_type": "Physician",
+     "insurance": "medicare"
+    },
+    "history": [
+     {
+      "date": "2025-11-10",
+      "department": "OB/GYN Clinic",
+      "provider": "Daniel Mills",
+      "specialty": "Cardiology",
+      "insurance": "medicare"
+     },
+     {
+      "date": "2025-06-22",
+      "department": "OB/GYN Clinic",
+      "provider": "David White",
+      "specialty": "Gastroenterology",
+      "insurance": "medicare"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "Sodium=174.85 (limit 110-160)",
+     "eGFR=168.957 (limit 3-150)",
+     "eGFR=167.244 (limit 3-150)"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "ARB",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Losartan 50 mg",
+        "started": "2026-02-27"
+       },
+       {
+        "agent": "Losartan 50 mg",
+        "started": "2025-06-20"
+       }
+      ],
+      "days_apart": 252
+     },
+     {
+      "class": "PPI",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Pantoprazole 40 mg",
+        "started": "2024-02-20"
+       },
+       {
+        "agent": "Pantoprazole 40 mg",
+        "started": "2023-05-24"
+       }
+      ],
+      "days_apart": 272
+     },
+     {
+      "class": "Beta-blocker",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Metoprolol Succinate 50 mg",
+        "started": "2023-05-31"
+       },
+       {
+        "agent": "Metoprolol Succinate 50 mg",
+        "started": "2022-11-09"
+       }
+      ],
+      "days_apart": 203
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "E11.51",
+     "name": "Type 2 DM with Diabetic Peripheral Neuropathy"
+    },
+    {
+     "icd10": "I11.9",
+     "name": "Hypertensive Heart Disease, Unspecified"
+    },
+    {
+     "icd10": "K21.0",
+     "name": "GERD with Oesophagitis"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "ARB": [
+      {
+       "agent": "Losartan 50 mg",
+       "started": "2026-02-27"
+      },
+      {
+       "agent": "Losartan 50 mg",
+       "started": "2025-06-20"
+      }
+     ],
+     "PPI": [
+      {
+       "agent": "Pantoprazole 40 mg",
+       "started": "2024-02-20"
+      },
+      {
+       "agent": "Pantoprazole 40 mg",
+       "started": "2023-05-24"
+      }
+     ],
+     "Beta-blocker": [
+      {
+       "agent": "Metoprolol Succinate 50 mg",
+       "started": "2023-05-31"
+      },
+      {
+       "agent": "Metoprolol Succinate 50 mg",
+       "started": "2022-11-09"
+      }
+     ]
+    },
+    "distinct_agents": 3
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "138/98",
+     "stage": "stage 2",
+     "pulse_pressure": 40,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 96.0,
+    "temperature": 98.4,
+    "resp_rate": 18.0,
+    "weight_lb": 210.1,
+    "bmi": 37.7,
+    "recorded": "2025-11-10"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "ALT",
+      "value": 59.1,
+      "unit": "U/L",
+      "reference": "7.0-56.0",
+      "date": "2025-08-17"
+     },
+     {
+      "analyte": "H. pylori Ag Stool",
+      "value": 1.0,
+      "unit": "negative/positive",
+      "reference": "0.0-1.0",
+      "date": "2025-07-01"
+     },
+     {
+      "analyte": "Sodium",
+      "value": 174.9,
+      "unit": "mEq/L",
+      "reference": "136.0-145.0",
+      "date": "2025-01-30"
+     },
+     {
+      "analyte": "Triglycerides",
+      "value": 179.5,
+      "unit": "mg/dL",
+      "reference": "0.0-150.0",
+      "date": "2026-04-03"
+     },
+     {
+      "analyte": "Vitamin B12",
+      "value": 992.5,
+      "unit": "pg/mL",
+      "reference": "200.0-900.0",
+      "date": "2026-03-15"
+     },
+     {
+      "analyte": "eGFR",
+      "value": 169.0,
+      "unit": "mL/min/1.73m2",
+      "reference": "60.0-120.0",
+      "date": "2025-12-07"
+     }
+    ],
+    "normal_count": 6
+   },
+   "outstanding_orders": [
+    {
+     "test": "Fasting Glucose",
+     "ordered": "2025-06-19",
+     "months_open": 11
+    },
+    {
+     "test": "HbA1c",
+     "ordered": "2025-11-08",
+     "months_open": 6
+    },
+    {
+     "test": "Vitamin B12",
+     "ordered": "2025-11-10",
+     "months_open": 6
+    }
+   ],
+   "care_gaps": [
+    {
+     "id": "G1",
+     "title": "Statin therapy in type 2 diabetes",
+     "recommendation": "Moderate-intensity statin is recommended for adults aged 40-75 with diabetes, irrespective of baseline LDL.",
+     "source": "ADA Standards of Care; ACC/AHA cholesterol guideline",
+     "caveat": ""
+    }
+   ],
+   "panel_findings": [
+    {
+     "finding_id": "F05",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Orders open 6+ months for a condition the patient has"
+    },
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    },
+    {
+     "finding_id": "F11",
+     "agent": "followup",
+     "severity": "high",
+     "headline": "Stale order for Fasting Glucose"
+    },
+    {
+     "finding_id": "F14",
+     "agent": "followup",
+     "severity": "low",
+     "headline": "Numerous stale orders for routine monitoring"
+    },
+    {
+     "finding_id": "F18",
+     "agent": "guideline_concordance",
+     "severity": "medium",
+     "headline": "Patients with type 2 diabetes missing recommended statin therapy"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [
+     {
+      "field": "care claimed vs delivered",
+      "brief_says": "Record shows all labs ordered at the 2025-11-10 visit (HbA1c, Vitamin B12) are unresulted.",
+      "note_says": "Lab orders placed based on guideline intervals.",
+      "severity": "medium",
+      "why_it_matters": "The note implies that guideline-based lab monitoring was handled, but the record shows no results were ever returned for the labs ordered at this visit. A clinician might mistakenly believe these tests were completed, leading to a gap in chronic disease monitoring."
+     }
+    ],
+    "checked": [
+     "conditions",
+     "medications",
+     "vitals",
+     "care delivery claims in note from 2025-11-10"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:21:30+00:00"
+ },
+ "Vargas, Kimberly": {
+  "narrative": "**Last seen**\n2025-11-21 by Tina Wells (Internal Medicine). Their next AWV is due on 2026-11-21 (derived).\n\n**Why this patient, now**\nVargas, Kimberly has multiple lab orders, including for eGFR and lipids, that have been outstanding for over 6 months. These are necessary to monitor their Type 2 DM and Pure Hypercholesterolaemia.\n\n**What to raise**\n1.  **Stale labs for chronic conditions.** Orders for eGFR, Potassium, and HDL Cholesterol are open from 10 months ago, and an order for Total Cholesterol is open from 6 months ago. These are needed for monitoring their diabetes and hypercholesterolaemia.\n2.  **Unaddressed stage 2 hypertension.** Their blood pressure on 2025-11-21 was 173/98, which is stage 2. This is a significant cardiovascular risk, particularly given their other diagnoses.\n3.  **Ambiguous medication history.** The record shows multiple starts for the same drug classes, such as Rosuvastatin 20 mg started on 2023-09-03 and again on 2026-02-25. The lack of stop dates makes it impossible to know their current regimen.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped. It is impossible to determine which of the listed medications Vargas, Kimberly is currently taking.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200085",
+    "name": "Vargas, Kimberly",
+    "age": 18,
+    "sex": "Female",
+    "birth_date": "2008-02-25"
+   },
+   "visit": {
+    "last_awv": "2025-11-21",
+    "next_awv_due_derived": "2026-11-21",
+    "status": "not yet due",
+    "detail": "due in 5 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2025-11-21",
+     "department": "Primary Care \u2014 Main",
+     "provider": "Tina Wells",
+     "provider_specialty": "Internal Medicine",
+     "provider_type": "PA",
+     "insurance": "medicare"
+    },
+    "history": [
+     {
+      "date": "2025-11-21",
+      "department": "Primary Care \u2014 Main",
+      "provider": "Tina Wells",
+      "specialty": "Internal Medicine",
+      "insurance": "medicare"
+     },
+     {
+      "date": "2025-07-15",
+      "department": "Cardiology Clinic",
+      "provider": "Breanna Schmitt",
+      "specialty": "Pulmonology",
+      "insurance": "medicare"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "Statin",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Rosuvastatin 20 mg",
+        "started": "2026-02-25"
+       },
+       {
+        "agent": "Rosuvastatin 20 mg",
+        "started": "2023-09-03"
+       }
+      ],
+      "days_apart": 906
+     },
+     {
+      "class": "SGLT2i",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Empagliflozin 10 mg",
+        "started": "2026-02-24"
+       },
+       {
+        "agent": "Empagliflozin 10 mg",
+        "started": "2022-10-16"
+       }
+      ],
+      "days_apart": 1227
+     },
+     {
+      "class": "PCSK9i",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Evolocumab 140 mg (Repatha)",
+        "started": "2025-12-03"
+       },
+       {
+        "agent": "Evolocumab 140 mg (Repatha)",
+        "started": "2025-09-15"
+       }
+      ],
+      "days_apart": 79
+     },
+     {
+      "class": "DPP-4i",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Sitagliptin 100 mg",
+        "started": "2025-11-09"
+       },
+       {
+        "agent": "Sitagliptin 100 mg",
+        "started": "2023-04-17"
+       }
+      ],
+      "days_apart": 937
+     },
+     {
+      "class": "Omega-3",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Omega-3 Fatty Acids 4 g",
+        "started": "2023-08-21"
+       },
+       {
+        "agent": "Omega-3 Fatty Acids 4 g",
+        "started": "2022-07-04"
+       }
+      ],
+      "days_apart": 413
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "E11.65",
+     "name": "Type 2 DM with Hyperglycaemia"
+    },
+    {
+     "icd10": "E78.00",
+     "name": "Pure Hypercholesterolaemia"
+    },
+    {
+     "icd10": "K21.9",
+     "name": "GERD without Oesophagitis"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "Statin": [
+      {
+       "agent": "Rosuvastatin 20 mg",
+       "started": "2026-02-25"
+      },
+      {
+       "agent": "Rosuvastatin 20 mg",
+       "started": "2023-09-03"
+      }
+     ],
+     "SGLT2i": [
+      {
+       "agent": "Empagliflozin 10 mg",
+       "started": "2026-02-24"
+      },
+      {
+       "agent": "Empagliflozin 10 mg",
+       "started": "2022-10-16"
+      }
+     ],
+     "PCSK9i": [
+      {
+       "agent": "Evolocumab 140 mg (Repatha)",
+       "started": "2025-12-03"
+      },
+      {
+       "agent": "Evolocumab 140 mg (Repatha)",
+       "started": "2025-09-15"
+      }
+     ],
+     "DPP-4i": [
+      {
+       "agent": "Sitagliptin 100 mg",
+       "started": "2025-11-09"
+      },
+      {
+       "agent": "Sitagliptin 100 mg",
+       "started": "2023-04-17"
+      }
+     ],
+     "Omega-3": [
+      {
+       "agent": "Omega-3 Fatty Acids 4 g",
+       "started": "2023-08-21"
+      },
+      {
+       "agent": "Omega-3 Fatty Acids 4 g",
+       "started": "2022-07-04"
+      }
+     ]
+    },
+    "distinct_agents": 5
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "173/98",
+     "stage": "stage 2",
+     "pulse_pressure": 75,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 69.0,
+    "temperature": 98.4,
+    "resp_rate": 20.0,
+    "weight_lb": 267.0,
+    "bmi": 32.5,
+    "recorded": "2025-11-21"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "AST",
+      "value": 40.1,
+      "unit": "U/L",
+      "reference": "10.0-40.0",
+      "date": "2025-05-25"
+     },
+     {
+      "analyte": "Magnesium",
+      "value": 2.4,
+      "unit": "mg/dL",
+      "reference": "1.7-2.4",
+      "date": "2025-02-23"
+     }
+    ],
+    "normal_count": 7
+   },
+   "outstanding_orders": [
+    {
+     "test": "HDL Cholesterol",
+     "ordered": "2025-07-13",
+     "months_open": 10
+    },
+    {
+     "test": "eGFR",
+     "ordered": "2025-07-14",
+     "months_open": 10
+    },
+    {
+     "test": "Potassium",
+     "ordered": "2025-07-15",
+     "months_open": 10
+    },
+    {
+     "test": "Total Cholesterol",
+     "ordered": "2025-11-18",
+     "months_open": 6
+    }
+   ],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F05",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Orders open 6+ months for a condition the patient has"
+    },
+    {
+     "finding_id": "F13",
+     "agent": "followup",
+     "severity": "high",
+     "headline": "Stale orders for eGFR and Potassium"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "conditions",
+     "medications",
+     "vitals",
+     "care claimed vs delivered"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:22:08+00:00"
+ },
+ "Forbes, Tamara": {
+  "narrative": "**Before you read on**\nA blood pressure of 106/90 has a pulse pressure of 16, which is not physiologically possible. This patient's hypertensive status cannot be determined from the record.\n\n**Last seen**\n2026-02-18 by Peter Thomas DVM (Internal Medicine). Next AWV is due (derived) on 2027-02-18.\n\n**Why this patient, now**\nForbes, Tamara has persistent atrial fibrillation, but it is impossible to tell from the record what anticoagulant she is currently taking for stroke prevention. The medication list shows four different agents started between 2023 and 2025, likely representing therapy switches where stop dates were not recorded. Clarifying this is critical, as her last creatinine was elevated at 1.5 mg/dL on 2024-12-31.\n\n**What to raise**\n*   **Current anticoagulation:** The record lists starts for Dabigatran, Rivaroxaban, Warfarin, and Apixaban. Confirm what, if anything, Forbes, Tamara is taking for her atrial fibrillation, as her elevated creatinine of 1.5 mg/dL affects the safety and choice of agent.\n*   **Blood pressure:** The only reading on file (106/90) is implausible. An accurate blood pressure is needed to assess her cardiovascular risk.\n*   **Last visit provider:** The last encounter on 2026-02-18 was recorded with provider \"Peter Thomas DVM\", whose specialty is \"Internal Medicine\", but in the \"Psychiatry Clinic\". Clarifying the details of this visit is important for care coordination.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200092",
+    "name": "Forbes, Tamara",
+    "age": 62,
+    "sex": "Female",
+    "birth_date": "1964-06-07"
+   },
+   "visit": {
+    "last_awv": "2026-02-18",
+    "next_awv_due_derived": "2027-02-18",
+    "status": "not yet due",
+    "detail": "due in 8 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 1,
+    "last_visit": {
+     "date": "2026-02-18",
+     "department": "Psychiatry Clinic",
+     "provider": "Peter Thomas DVM",
+     "provider_specialty": "Internal Medicine",
+     "provider_type": "PA",
+     "insurance": "medicare"
+    },
+    "history": [
+     {
+      "date": "2026-02-18",
+      "department": "Psychiatry Clinic",
+      "provider": "Peter Thomas DVM",
+      "specialty": "Internal Medicine",
+      "insurance": "medicare"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "blood pressure 106/90 has a pulse pressure of 16, which is not physiologically possible"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "DOAC",
+      "n": 3,
+      "agents": [
+       {
+        "agent": "Apixaban 5 mg (Eliquis)",
+        "started": "2025-12-18"
+       },
+       {
+        "agent": "Rivaroxaban 20 mg (Xarelto)",
+        "started": "2024-07-16"
+       },
+       {
+        "agent": "Dabigatran 150 mg (Pradaxa)",
+        "started": "2023-03-22"
+       }
+      ],
+      "days_apart": 1002
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "I48.19",
+     "name": "Other Persistent Atrial Fibrillation"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "DOAC": [
+      {
+       "agent": "Apixaban 5 mg (Eliquis)",
+       "started": "2025-12-18"
+      },
+      {
+       "agent": "Rivaroxaban 20 mg (Xarelto)",
+       "started": "2024-07-16"
+      },
+      {
+       "agent": "Dabigatran 150 mg (Pradaxa)",
+       "started": "2023-03-22"
+      }
+     ],
+     "VKA": [
+      {
+       "agent": "Warfarin 5 mg",
+       "started": "2025-10-20"
+      }
+     ],
+     "Beta-blocker": [
+      {
+       "agent": "Metoprolol Succinate 50 mg",
+       "started": "2023-03-29"
+      }
+     ]
+    },
+    "distinct_agents": 5
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "106/90",
+     "stage": "stage 2",
+     "pulse_pressure": 16,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": true
+    },
+    "heart_rate": 55.0,
+    "temperature": 98.4,
+    "resp_rate": 14.0,
+    "weight_lb": 149.9,
+    "bmi": 23.3,
+    "recorded": "2026-02-18"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "Basic Metabolic Panel \u2014 Creatinine",
+      "value": 1.5,
+      "unit": "mg/dL",
+      "reference": "0.6-1.2",
+      "date": "2024-12-31"
+     }
+    ],
+    "normal_count": 5
+   },
+   "outstanding_orders": [],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F15",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Missing medication discontinuation data creates false 'duplicate therapy' alerts"
+    },
+    {
+     "finding_id": "F16",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Digoxin levels ordered for patients not on Digoxin"
+    },
+    {
+     "finding_id": "F17",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Implausible blood pressure readings recorded"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "note by Peter Thomas DVM at 2026-02-18 11:07:00"
+    ],
+    "note_count": 1
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:22:50+00:00"
+ },
+ "Mckinney, Scott": {
+  "narrative": "**Before you read on**\nThis patient's record of an LDL Cholesterol of 8.56 and a blood pressure of 180/75 are physiologically impossible. Clinical context built on these values may be unreliable.\n\n**Last seen**\n2026-03-11 by Daniel Mills (Cardiology). Next AWV is due 2027-03-11 (derived).\n\n**Why this patient, now**\nMckinney, Scott has several chronic conditions with unaddressed findings. Lab orders for his Pure Hypertriglyceridaemia and GERD have been outstanding for 6 months. A recent fasting glucose of 119.6 mg/dL is in the prediabetic range and is not associated with a diagnosis.\n\n**What to raise**\n*   His fasting glucose was 119.6 mg/dL on 2026-05-16, a new finding which may indicate prediabetes.\n*   Discuss management of his Subclinical Hypothyroidism. His TSH was 5.6 mIU/L on 2025-04-06 and has not been rechecked.\n*   An order for Triglycerides has been outstanding for 6 months. This test is needed to monitor his Pure Hypertriglyceridaemia.\n*   An order for an H. pylori stool antigen test, placed 6 months ago, remains open. This is relevant to the workup of his GERD.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200009",
+    "name": "Mckinney, Scott",
+    "age": 42,
+    "sex": "Male",
+    "birth_date": "1984-02-19"
+   },
+   "visit": {
+    "last_awv": "2026-03-11",
+    "next_awv_due_derived": "2027-03-11",
+    "status": "not yet due",
+    "detail": "due in 9 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2026-03-11",
+     "department": "Internal Medicine Clinic",
+     "provider": "Daniel Mills",
+     "provider_specialty": "Cardiology",
+     "provider_type": "Physician",
+     "insurance": "medicaid"
+    },
+    "history": [
+     {
+      "date": "2026-03-11",
+      "department": "Internal Medicine Clinic",
+      "provider": "Daniel Mills",
+      "specialty": "Cardiology",
+      "insurance": "medicaid"
+     },
+     {
+      "date": "2025-11-16",
+      "department": "Internal Medicine Clinic",
+      "provider": "Miss Adriana Flores",
+      "specialty": "Neurology",
+      "insurance": "medicaid"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "LDL Cholesterol=8.56 (limit 10-400)",
+     "blood pressure 180/75 has a pulse pressure of 105, which is not physiologically possible"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "PPI",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Esomeprazole 40 mg",
+        "started": "2026-03-05"
+       },
+       {
+        "agent": "Esomeprazole 40 mg",
+        "started": "2022-10-11"
+       }
+      ],
+      "days_apart": 1241
+     },
+     {
+      "class": "H2 Blocker",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Famotidine 20 mg",
+        "started": "2025-06-22"
+       },
+       {
+        "agent": "Famotidine 20 mg",
+        "started": "2025-02-03"
+       }
+      ],
+      "days_apart": 139
+     },
+     {
+      "class": "T3 Supplement",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Liothyronine 5 mcg",
+        "started": "2024-11-17"
+       },
+       {
+        "agent": "Liothyronine 5 mcg",
+        "started": "2023-12-19"
+       }
+      ],
+      "days_apart": 334
+     },
+     {
+      "class": "PCSK9i",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Evolocumab 140 mg (Repatha)",
+        "started": "2023-11-05"
+       },
+       {
+        "agent": "Evolocumab 140 mg (Repatha)",
+        "started": "2023-03-02"
+       }
+      ],
+      "days_apart": 248
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "E02",
+     "name": "Subclinical Iodine-Deficiency Hypothyroidism"
+    },
+    {
+     "icd10": "E78.1",
+     "name": "Pure Hypertriglyceridaemia"
+    },
+    {
+     "icd10": "K21.9",
+     "name": "GERD without Oesophagitis"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "PPI": [
+      {
+       "agent": "Esomeprazole 40 mg",
+       "started": "2026-03-05"
+      },
+      {
+       "agent": "Esomeprazole 40 mg",
+       "started": "2022-10-11"
+      }
+     ],
+     "H2 Blocker": [
+      {
+       "agent": "Famotidine 20 mg",
+       "started": "2025-06-22"
+      },
+      {
+       "agent": "Famotidine 20 mg",
+       "started": "2025-02-03"
+      }
+     ],
+     "T3 Supplement": [
+      {
+       "agent": "Liothyronine 5 mcg",
+       "started": "2024-11-17"
+      },
+      {
+       "agent": "Liothyronine 5 mcg",
+       "started": "2023-12-19"
+      }
+     ],
+     "PCSK9i": [
+      {
+       "agent": "Evolocumab 140 mg (Repatha)",
+       "started": "2023-11-05"
+      },
+      {
+       "agent": "Evolocumab 140 mg (Repatha)",
+       "started": "2023-03-02"
+      }
+     ]
+    },
+    "distinct_agents": 4
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "180/75",
+     "stage": "stage 2",
+     "pulse_pressure": 105,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": true
+    },
+    "heart_rate": 82.0,
+    "temperature": 98.4,
+    "resp_rate": 18.0,
+    "weight_lb": 187.6,
+    "bmi": 33.7,
+    "recorded": "2026-03-11"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "Fasting Glucose",
+      "value": 119.6,
+      "unit": "mg/dL",
+      "reference": "70.0-100.0",
+      "date": "2026-05-16"
+     },
+     {
+      "analyte": "TSH",
+      "value": 5.6,
+      "unit": "mIU/L",
+      "reference": "0.4-4.0",
+      "date": "2025-04-06"
+     },
+     {
+      "analyte": "Vitamin B12",
+      "value": 1010.6,
+      "unit": "pg/mL",
+      "reference": "200.0-900.0",
+      "date": "2025-09-16"
+     },
+     {
+      "analyte": "Vitamin D 25-OH",
+      "value": 55.3,
+      "unit": "ng/mL",
+      "reference": "20.0-50.0",
+      "date": "2025-04-25"
+     }
+    ],
+    "normal_count": 4
+   },
+   "outstanding_orders": [
+    {
+     "test": "Triglycerides",
+     "ordered": "2025-11-16",
+     "months_open": 6
+    },
+    {
+     "test": "H. pylori Ag Stool",
+     "ordered": "2025-11-16",
+     "months_open": 6
+    }
+   ],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F05",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Orders open 6+ months for a condition the patient has"
+    },
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    },
+    {
+     "finding_id": "F17",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Implausible blood pressure readings recorded"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "medications",
+     "conditions",
+     "vitals",
+     "care claimed vs delivered"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:23:27+00:00"
+ },
+ "Chandler, Cassandra": {
+  "narrative": "**Before you read on**\nA recent CBC shows a hemoglobin of 25.116 (limit 4-22), which is not a possible value. The patient's lab records may not be reliable.\n\n**Last seen**\n2025-09-20 by Tyler Hill (Psychiatry). Next AWV is not yet due (derived 2026-09-20).\n\n**Why this patient, now**\nChandler, Cassandra has stage 2 hypertension (153/86) and chronic atrial fibrillation. Recent labs show a creatinine of 1.5 mg/dL and a urine albumin/creatinine ratio of 40.2 mg/g, suggesting kidney impact from their blood pressure.\n\n**What to raise**\n*   Review management of stage 2 hypertension (153/86). This is associated with a creatinine of 1.5 mg/dL and albuminuria (40.2 mg/g). The medication record includes orders for both an ACE inhibitor and an ARB, which may require clarification.\n*   Discuss anticoagulation for chronic atrial fibrillation. The patient's last recorded INR was 1.5 on 2026-03-09.\n*   Note the conflicting data in the chart. The provider for the last visit in the Cardiology Clinic, Tyler Hill, is listed with a specialty of Psychiatry.\n\n**What you cannot tell from the record**\nThe medication list shows everything started, but nothing stopped. The current regimen must be confirmed with the patient.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200037",
+    "name": "Chandler, Cassandra",
+    "age": 52,
+    "sex": "Female",
+    "birth_date": "1974-01-30"
+   },
+   "visit": {
+    "last_awv": "2025-09-20",
+    "next_awv_due_derived": "2026-09-20",
+    "status": "not yet due",
+    "detail": "due in 3 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2025-09-20",
+     "department": "Cardiology Clinic",
+     "provider": "Tyler Hill",
+     "provider_specialty": "Psychiatry",
+     "provider_type": "NP",
+     "insurance": "medicaid"
+    },
+    "history": [
+     {
+      "date": "2025-09-20",
+      "department": "Cardiology Clinic",
+      "provider": "Tyler Hill",
+      "specialty": "Psychiatry",
+      "insurance": "medicaid"
+     },
+     {
+      "date": "2025-07-15",
+      "department": "OB/GYN Clinic",
+      "provider": "Michael Lee",
+      "specialty": "Endocrinology",
+      "insurance": "medicaid"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "CBC \u2014 Hemoglobin=25.116 (limit 4-22)"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "ARB",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Losartan 50 mg",
+        "started": "2025-12-17"
+       },
+       {
+        "agent": "Losartan 50 mg",
+        "started": "2022-10-07"
+       }
+      ],
+      "days_apart": 1167
+     },
+     {
+      "class": "CCB (Rate ctrl)",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Diltiazem CD 240 mg",
+        "started": "2025-10-11"
+       },
+       {
+        "agent": "Diltiazem CD 240 mg",
+        "started": "2025-05-09"
+       }
+      ],
+      "days_apart": 155
+     },
+     {
+      "class": "ACEi",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Lisinopril 10 mg",
+        "started": "2025-07-02"
+       },
+       {
+        "agent": "Lisinopril 10 mg",
+        "started": "2022-10-22"
+       }
+      ],
+      "days_apart": 984
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "I10",
+     "name": "Essential Hypertension"
+    },
+    {
+     "icd10": "I48.2",
+     "name": "Chronic Atrial Fibrillation"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "ARB": [
+      {
+       "agent": "Losartan 50 mg",
+       "started": "2025-12-17"
+      },
+      {
+       "agent": "Losartan 50 mg",
+       "started": "2022-10-07"
+      }
+     ],
+     "CCB (Rate ctrl)": [
+      {
+       "agent": "Diltiazem CD 240 mg",
+       "started": "2025-10-11"
+      },
+      {
+       "agent": "Diltiazem CD 240 mg",
+       "started": "2025-05-09"
+      }
+     ],
+     "ACEi": [
+      {
+       "agent": "Lisinopril 10 mg",
+       "started": "2025-07-02"
+      },
+      {
+       "agent": "Lisinopril 10 mg",
+       "started": "2022-10-22"
+      }
+     ]
+    },
+    "distinct_agents": 3
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "153/86",
+     "stage": "stage 2",
+     "pulse_pressure": 67,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 73.0,
+    "temperature": 98.4,
+    "resp_rate": 15.0,
+    "weight_lb": 178.2,
+    "bmi": 23.4,
+    "recorded": "2025-09-20"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "Basic Metabolic Panel \u2014 Creatinine",
+      "value": 1.5,
+      "unit": "mg/dL",
+      "reference": "0.6-1.2",
+      "date": "2025-11-09"
+     },
+     {
+      "analyte": "INR / PT",
+      "value": 1.5,
+      "unit": "ratio",
+      "reference": "0.9-1.1",
+      "date": "2026-03-09"
+     },
+     {
+      "analyte": "Urine Albumin/Creat Ratio",
+      "value": 40.2,
+      "unit": "mg/g",
+      "reference": "0.0-30.0",
+      "date": "2025-08-17"
+     },
+     {
+      "analyte": "eGFR",
+      "value": 122.4,
+      "unit": "mL/min/1.73m2",
+      "reference": "60.0-120.0",
+      "date": "2025-09-04"
+     }
+    ],
+    "normal_count": 6
+   },
+   "outstanding_orders": [],
+   "care_gaps": [],
+   "panel_findings": [
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    },
+    {
+     "finding_id": "F16",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Digoxin levels ordered for patients not on Digoxin"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "medications",
+     "conditions",
+     "vitals",
+     "care claimed vs delivered"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:24:10+00:00"
+ },
+ "Ramirez, William": {
+  "narrative": "**Before you read on**\nThis patient's Sodium of 170.325 is not physiologically possible, which means other lab values in this brief may also be incorrect.\n\n**Last seen**\n2026-02-17 by William Mccullough, Gastroenterology. Their next AWV is due 2027-02-17 (derived).\n\n**Why this patient, now**\nRamirez, William is a 28-year-old with heart failure who is missing guideline-recommended therapy (an SGLT2 inhibitor) and has an outstanding order for a BNP from 2026-02-17.\n\n**What to raise**\n1.  **Heart failure management.** Ramirez, William is missing a guideline-recommended SGLT2 inhibitor. His blood pressure is 151/66 (stage 2), and he has a BNP order from 2026-02-17 that remains open. This is an opportunity to optimize therapy for a young patient with heart failure.\n2.  **Abnormal labs.** His most recent hemoglobin was 21.4 g/dL on 2026-01-16. A past potassium was 5.3 mEq/L, which is relevant given his ARNi therapy.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped. The record of multiple beta-blockers and ARNis likely represents sequential switches, not concurrent therapy.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200090",
+    "name": "Ramirez, William",
+    "age": 28,
+    "sex": "Male",
+    "birth_date": "1997-11-27"
+   },
+   "visit": {
+    "last_awv": "2026-02-17",
+    "next_awv_due_derived": "2027-02-17",
+    "status": "not yet due",
+    "detail": "due in 8 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2026-02-17",
+     "department": "Endocrinology",
+     "provider": "William Mccullough",
+     "provider_specialty": "Gastroenterology",
+     "provider_type": "Physician",
+     "insurance": "medicare"
+    },
+    "history": [
+     {
+      "date": "2026-02-17",
+      "department": "Endocrinology",
+      "provider": "William Mccullough",
+      "specialty": "Gastroenterology",
+      "insurance": "medicare"
+     },
+     {
+      "date": "2025-10-19",
+      "department": "Cardiology Clinic",
+      "provider": "Peter Thomas DVM",
+      "specialty": "Internal Medicine",
+      "insurance": "medicare"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [
+     "Sodium=170.325 (limit 110-160)"
+    ],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "ARNi",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Sacubitril/Valsartan 49/51 mg",
+        "started": "2026-01-15"
+       },
+       {
+        "agent": "Sacubitril/Valsartan 49/51 mg",
+        "started": "2025-07-02"
+       }
+      ],
+      "days_apart": 197
+     },
+     {
+      "class": "Beta-blocker",
+      "n": 4,
+      "agents": [
+       {
+        "agent": "Carvedilol 12.5 mg",
+        "started": "2026-01-07"
+       },
+       {
+        "agent": "Carvedilol 12.5 mg",
+        "started": "2023-04-25"
+       },
+       {
+        "agent": "Metoprolol Succinate 50 mg",
+        "started": "2023-04-21"
+       },
+       {
+        "agent": "Metoprolol Succinate 50 mg",
+        "started": "2023-03-01"
+       }
+      ],
+      "days_apart": 1043
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "I50.9",
+     "name": "Heart Failure, Unspecified"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "ARNi": [
+      {
+       "agent": "Sacubitril/Valsartan 49/51 mg",
+       "started": "2026-01-15"
+      },
+      {
+       "agent": "Sacubitril/Valsartan 49/51 mg",
+       "started": "2025-07-02"
+      }
+     ],
+     "Beta-blocker": [
+      {
+       "agent": "Carvedilol 12.5 mg",
+       "started": "2026-01-07"
+      },
+      {
+       "agent": "Carvedilol 12.5 mg",
+       "started": "2023-04-25"
+      },
+      {
+       "agent": "Metoprolol Succinate 50 mg",
+       "started": "2023-04-21"
+      },
+      {
+       "agent": "Metoprolol Succinate 50 mg",
+       "started": "2023-03-01"
+      }
+     ]
+    },
+    "distinct_agents": 3
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "151/66",
+     "stage": "stage 2",
+     "pulse_pressure": 85,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 60.0,
+    "temperature": 98.4,
+    "resp_rate": 16.0,
+    "weight_lb": 145.3,
+    "bmi": 28.2,
+    "recorded": "2026-02-17"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "CBC \u2014 Hemoglobin",
+      "value": 21.4,
+      "unit": "g/dL",
+      "reference": "12.0-17.5",
+      "date": "2026-01-16"
+     },
+     {
+      "analyte": "Potassium",
+      "value": 5.3,
+      "unit": "mEq/L",
+      "reference": "3.5-5.0",
+      "date": "2025-04-13"
+     },
+     {
+      "analyte": "Sodium",
+      "value": 170.3,
+      "unit": "mEq/L",
+      "reference": "136.0-145.0",
+      "date": "2025-08-25"
+     }
+    ],
+    "normal_count": 5
+   },
+   "outstanding_orders": [
+    {
+     "test": "BNP",
+     "ordered": "2026-02-17",
+     "months_open": 3
+    }
+   ],
+   "care_gaps": [
+    {
+     "id": "G4",
+     "title": "SGLT2 inhibition in HFrEF",
+     "recommendation": "An SGLT2 inhibitor is recommended in HFrEF regardless of diabetes status.",
+     "source": "ACC/AHA/HFSA heart failure guideline",
+     "caveat": ""
+    }
+   ],
+   "panel_findings": [
+    {
+     "finding_id": "F06",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "Physiologically impossible laboratory values"
+    },
+    {
+     "finding_id": "F09",
+     "agent": "guaranteed",
+     "severity": "high",
+     "headline": "SGLT2 inhibition in HFrEF \u2014 guideline gap"
+    }
+   ],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "medications",
+     "conditions",
+     "vitals",
+     "care claimed vs delivered",
+     "note dated 2026-02-17 16:08:00"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-20T22:24:43+00:00"
+ }
+}

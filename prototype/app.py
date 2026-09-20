@@ -131,13 +131,19 @@ if view == "Panel review":
     goal = st.text_input(
         "What should the supervisor focus on?",
         "Anything that needs attention this week.",
-        help="This steers what the supervisor emphasises and how it ranks. It "
-             "cannot change the structure of the review: the three specialists, "
-             "the data-integrity check, the guaranteed findings and the "
-             "twelve-patient cap are fixed.")
-    st.caption("A steer, not a configuration. The shortlist is capped at twelve "
-               "regardless of what you ask for — say so here and it will be "
-               "ignored.")
+        help="Say what this week is about in your own words. The supervisor "
+             "turns it into a brief for each specialist, so it changes what they "
+             "look for — not just how the answer is worded. What it cannot "
+             "change: the three specialists, the data-integrity check, the nine "
+             "guaranteed findings and the twelve-patient cap.")
+    st.caption(
+        "**This is the part a fixed ranking cannot do.** Ask for "
+        "*\"a diabetes clinic Thursday — glycaemic control and kidney screening, "
+        "skip lipids\"* and the supervisor writes `guideline_concordance` a brief "
+        "saying to check HbA1c and urine albumin and to ignore lipid management. "
+        "Measured against an unsteered run: HbA1c mentioned 4 times against 0, "
+        "statins 0 times against 15. The floor still fires and the cap still "
+        "holds, so it steers emphasis, never past the safety net.")
     # A review takes minutes, so it is entirely possible to start a second one
     # on top of the first -- a stray click, or a second browser tab left open.
     # Observed exactly that: two reviews ran concurrently, the completion line
