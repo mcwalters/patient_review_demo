@@ -386,3 +386,27 @@ def test_high_severity_findings_left_out_of_the_report_are_reported():
     assert uncited_high_severity(" ".join(highs), rows) == []
     missed = uncited_high_severity(" ".join(highs[:-1]), rows)
     assert [m["finding_id"] for m in missed] == [highs[-1]]
+
+
+def test_a_refused_finding_is_not_counted_as_recorded():
+    """_consult reported len(rows) regardless, so a refused row looked filed.
+
+    The supervisor would have been told a finding existed that it could never
+    read back out of the store -- the exact silent disagreement between two
+    components that the structured store exists to prevent.
+    """
+    from prototype.panel import Findings
+    f = Findings()
+    rows = [
+        {"headline": "Real gap", "patients": ["Stein, Larry"], "severity": "high",
+         "evidence": "e", "recommended_action": "r"},
+        {"headline": "Invented person", "patients": ["Nobody, Fictional"],
+         "severity": "high", "evidence": "e", "recommended_action": "r"},
+    ]
+    results = [f.record("followup", **r) for r in rows]
+    assert sum(1 for r in results if r.get("recorded")) == 1
+    refused = [(rows[i], res) for i, res in enumerate(results) if res.get("error")]
+    assert len(refused) == 1
+    assert refused[0][1]["unknown_patients"] == ["Nobody, Fictional"]
+    # The store and any count derived from it agree.
+    assert len(f.all()) == sum(1 for r in results if r.get("recorded"))

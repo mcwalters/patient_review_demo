@@ -909,11 +909,28 @@ def build_supervisor(trace: list | None = None,
     async def _consult(agent: LlmAgent, name: str, request: str) -> dict:
         report = await _run_agent(agent, request, f"spec_{name}", usage)
         rows = await _extract(report, usage)
-        for r in rows:
-            findings.record(name, **r)
-        return {"specialist": name, "findings_recorded": len(rows),
-                "note": "Its findings are already in the store. Read them with "
-                        "get_all_findings; do not rely on this summary."}
+        # record() can refuse a row -- an unrecognised patient name. Reporting
+        # len(rows) here regardless would tell the supervisor that a finding it
+        # will never see was recorded, which is the specific kind of quiet
+        # disagreement between two components this whole store exists to stop.
+        recorded = [findings.record(name, **r) for r in rows]
+        refused = [(rows[i], res) for i, res in enumerate(recorded)
+                   if res.get("error")]
+        out = {"specialist": name,
+               "findings_recorded": sum(1 for r in recorded if r.get("recorded")),
+               "note": "Its findings are already in the store. Read them with "
+                       "get_all_findings; do not rely on this summary."}
+        if refused:
+            out["findings_refused"] = [
+                {"headline": r.get("headline", ""),
+                 "unknown_patients": res["unknown_patients"]}
+                for r, res in refused]
+            out["refusal_note"] = (
+                "These were NOT recorded: the patient names are not in the patient "
+                "table. Do not repeat them in your report. If you believe the "
+                "finding is real, look the patient up with find_patients and ask "
+                "the specialist again with the correct name.")
+        return out
 
     async def consult_data_integrity(request: str) -> dict:
         """Ask the data-integrity specialist which records cannot be trusted.

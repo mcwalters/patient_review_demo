@@ -63,8 +63,13 @@ INVARIANTS = {
         and not re.search(r"sequential|not concurrent|appears? as|stop date|discontinu",
                           f["evidence"], re.I)
         for f in fs),
-    "no duplicate headlines": lambda fs: len({f["headline"].strip().lower() for f in fs})
-        == len(fs),
+    # Matches the dedup key in Findings._key -- headline AND patients. Checking
+    # the headline alone was stricter than the rule it polices and failed a
+    # correct run: "INR ordered for a patient not on the drug it monitors" is
+    # one finding per patient, and three people had an open triglycerides order.
+    "no duplicate findings": lambda fs: len(
+        {(f["headline"].strip().lower(), frozenset(f.get("patients") or []))
+         for f in fs}) == len(fs),
     "followup reports at most 9": lambda fs: sum(
         1 for f in fs if f["agent"] == "followup") <= 9,
     "every finding names its agent": lambda fs: all(f.get("agent") for f in fs),
