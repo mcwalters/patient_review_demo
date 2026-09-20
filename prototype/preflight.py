@@ -25,33 +25,56 @@ from google.adk.agents import LlmAgent
 from google.adk.runners import InMemoryRunner
 from google.genai import types
 
+from .rules import SHARED
 from .tools import connect
 
 MODEL = "gemini-2.5-pro"
 CACHE = Path(__file__).parent / "preflight_findings.json"
 
-INSTRUCTION = """\
+# Ordered worst-first: the first two are true whatever this panel is.
+KINDS = ("impossible", "internally inconsistent", "population-dependent")
+
+INSTRUCTION = SHARED + """\
 You are auditing a 100-patient EHR extract for CLINICAL implausibility before
 any algorithm is run against it. You are not checking types or nulls -- other
 tooling does that. You are checking whether a clinician would believe these
 records.
 
-Call the inspection tools to get real numbers. Do not guess rates. Then judge
-them against what you know about real practice:
-  - Is this prevalence plausible for a primary-care panel?
-  - Is this prescribing rate plausible, especially for expensive or
-    specialist-initiated drugs?
-  - Are there combinations that should never co-occur in one patient?
-  - Do demographics line up with the coverage and visit type?
+YOU DO NOT KNOW WHERE THIS PANEL CAME FROM. Nothing tells you it is a general
+primary-care population, and it may well not be: an extract assembled to
+exercise a tool, a specialty clinic's list, or a deliberately enriched cohort
+would all carry disease and prescribing rates that look absurd against national
+averages and are entirely ordinary in context. "Rare in the general population"
+is therefore NOT a finding on its own. Treating it as one is how an audit tells
+a cardiology service its lipid clinic is implausible.
 
-Call flag_finding once per distinct problem. Be specific and quantitative:
-give the observed number, say what would be expected in real practice, and
-state what it would break if someone screened a cohort on this data. Do not
-flag something merely because it is uncommon -- flag it because it is not
-credible. If a pattern is plausible, leave it alone.
+So separate what you find into three kinds, and say which each one is:
+
+  impossible              No patient anywhere could have this value. SpO2 above
+                          100%, a sodium incompatible with life. True whatever
+                          the panel is.
+  internally inconsistent The record contradicts itself: a drug level for a drug
+                          nobody is prescribed, coverage a patient is not
+                          eligible for. True whatever the panel is.
+  population-dependent    Surprising only if you assume a particular population.
+                          A 16% PCSK9 rate is absurd in general practice and
+                          unremarkable in a refractory-lipid clinic.
+
+The first two are defects. The third is a QUESTION FOR WHOEVER SUPPLIED THE
+DATA, and you must phrase it as one: state the rate, name the population that
+would make it ordinary, and say what you would need to know to settle it. Do
+not dress it up as an error. Getting this wrong in the other direction is worse
+than missing it -- an audit that cries wolf about a sick panel being sick is an
+audit nobody reads twice.
+
+Call the inspection tools to get real numbers. Do not guess rates. Call
+flag_finding once per distinct problem, with the observed number, what would be
+expected and under which assumption, and what it breaks for anyone screening
+cohorts on this data. If a pattern is plausible, leave it alone.
 
 Finish with a one-paragraph verdict on whether this extract is safe to build
-clinical logic on, and what to watch for.
+clinical logic on, separating what is broken from what merely needs confirming
+with the data's owner.
 """
 
 
@@ -133,20 +156,28 @@ def _tools_for(findings: list[dict]):
                               "median": r[4], "max": r[5], "ref_low": r[6],
                               "ref_high": r[7]} for r in rows]}
 
-    def flag_finding(title: str, severity: str, observed: str, expected: str,
-                     impact: str, affected: str) -> dict:
+    def flag_finding(title: str, severity: str, kind: str, observed: str,
+                     expected: str, impact: str, affected: str,
+                     plausible_if: str = "") -> dict:
         """Record one clinical-plausibility problem.
 
         Args:
-            title: short name, e.g. "Triple anticoagulation".
+            title: short name, e.g. "SpO2 above 100%".
             severity: "high", "medium" or "low".
+            kind: "impossible", "internally inconsistent" or
+                "population-dependent" -- the first two are defects whatever
+                this panel is, the third is a question for the data's owner.
             observed: what the data actually shows, with numbers.
-            expected: what real-world practice would look like.
+            expected: what would be expected, and under which assumption.
             impact: what this breaks for anyone screening cohorts on this data.
             affected: the patients, codes or classes involved.
+            plausible_if: REQUIRED for population-dependent findings -- the
+                population in which this rate would be unremarkable.
         """
-        f = {"title": title, "severity": severity, "observed": observed,
-             "expected": expected, "impact": impact, "affected": affected}
+        kind = kind if kind in KINDS else "population-dependent"
+        f = {"title": title, "severity": severity, "kind": kind,
+             "observed": observed, "expected": expected, "impact": impact,
+             "affected": affected, "plausible_if": plausible_if}
         findings.append(f)
         return {"recorded": True, "count": len(findings)}
 
