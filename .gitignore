@@ -14,3 +14,6 @@ __pycache__/
 
 # Python bytecode
 __pycache__/
+
+# Agent worktrees -- scratch checkouts, never part of the project
+.claude/worktrees/

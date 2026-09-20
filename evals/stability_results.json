@@ -1,12 +1,13 @@
 [
  {
   "run": 1,
-  "seconds": 328.2,
-  "findings": 33,
-  "tool_calls": 35,
+  "seconds": 288.4,
+  "findings": 23,
+  "tool_calls": 23,
   "patients": [
    "Anderson, Ann",
    "Bell, Christine",
+   "Bender, Jessica",
    "Black, Tyler",
    "Bond, Katelyn",
    "Bonilla, Andrew",
@@ -18,6 +19,7 @@
    "Cervantes, Stephen",
    "Chandler, Cassandra",
    "Cuevas, Meredith",
+   "Cunningham, David",
    "Davis, Carol",
    "Davis, Shelly",
    "Dickerson, April",
@@ -28,35 +30,35 @@
    "Forbes, Tamara",
    "Fowler, Jessica",
    "Gibson, Christopher",
-   "Harrison, Joseph",
+   "Gomez, Christopher",
    "Hill, Dustin",
    "Jackson, Shawn",
-   "Jacobs, Shannon",
-   "James, Ryan",
    "Juarez, Rebecca",
    "Lang, Amy",
    "Le, Joshua",
    "Lee, Cindy",
    "Lee, Lisa",
+   "Li, Christine",
    "Lowe, Tyler",
-   "Mccoy, Nathan",
    "Mcdaniel, Dana",
    "Mckinney, Noah",
    "Mckinney, Scott",
    "Moore, Ryan",
    "Morgan, Kenneth",
-   "Mullins, Emily",
+   "Mullins, Lauren",
    "Murphy, Matthew",
    "Padilla, Elizabeth",
-   "Payne, Ryan",
    "Pope, Erin",
    "Powell, Shelly",
    "Ramirez, William",
    "Ramsey, Latoya",
    "Reynolds, Lisa",
+   "Richardson, Sherry",
    "Rodriguez, Sarah",
    "Rogers, Jessica",
+   "Rogers, Larry",
    "Romero, Erik",
+   "Russell, James",
    "Sandoval, John",
    "Schmidt, Raven",
    "Schwartz, Mary",
@@ -72,51 +74,52 @@
    "Wade, Kathy",
    "Ware, Cassandra",
    "Williams, Heather",
-   "Wright, Jordan",
    "Young, Cynthia",
    "Zavala, Manuel"
   ],
   "usage": {
-   "model_calls": 38,
-   "input_tokens": 266792,
-   "output_tokens": 7196,
-   "usd": 0.4054,
+   "model_calls": 29,
+   "input_tokens": 120712,
+   "output_tokens": 5605,
+   "usd": 0.2069,
    "per_agent": {
     "panel_review": {
-     "calls": 4,
-     "in": 12509,
-     "out": 770
+     "calls": 5,
+     "in": 15251,
+     "out": 984
     },
     "data_integrity": {
-     "calls": 9,
-     "in": 42499,
-     "out": 889
+     "calls": 10,
+     "in": 44776,
+     "out": 879
     },
     "finding_extractor": {
      "calls": 3,
-     "in": 3437,
-     "out": 3608
+     "in": 3386,
+     "out": 2672
     },
     "guideline_concordance": {
-     "calls": 19,
-     "in": 190121,
-     "out": 1491
+     "calls": 7,
+     "in": 26372,
+     "out": 734
     },
     "followup": {
-     "calls": 3,
-     "in": 18226,
-     "out": 438
+     "calls": 4,
+     "in": 30927,
+     "out": 336
     }
    },
-   "wall_clock_seconds": 328.2
+   "wall_clock_seconds": 288.4
   },
   "invariants": {
    "no invented BP severity": true,
    "no concurrent-duplicate-therapy claim": true,
-   "no duplicate headlines": false,
-   "followup reports at most 9": false,
+   "no duplicate findings": true,
+   "followup reports at most 9": true,
    "every finding names its agent": true,
-   "every finding has evidence": true
+   "every finding has evidence": true,
+   "every named patient is a real patient": true,
+   "the floor is intact": true
   },
   "canaries": {
    "Padilla INR on a DOAC": true,
@@ -129,9 +132,9 @@
  },
  {
   "run": 2,
-  "seconds": 164.4,
-  "findings": 31,
-  "tool_calls": 31,
+  "seconds": 366.0,
+  "findings": 29,
+  "tool_calls": 30,
   "patients": [
    "Anderson, Ann",
    "Bender, Jessica",
@@ -143,169 +146,30 @@
    "Bryan, Amanda",
    "Bryan, Steve",
    "Cain, Jacob",
-   "Castro, Willie",
    "Cervantes, Stephen",
    "Chandler, Cassandra",
    "Cuevas, Meredith",
-   "Cunningham, David",
    "Davis, Carol",
-   "Davis, Shelly",
    "Dickerson, April",
    "Douglas, Ryan",
    "Duncan, Stephen",
    "Ferguson, Pamela",
    "Flores, Sydney",
    "Forbes, Tamara",
-   "Ford, Sylvia",
    "Fowler, Jessica",
    "Gibson, Christopher",
-   "Harrison, Joseph",
-   "Hernandez, Jason",
    "Hill, Dustin",
    "Jackson, Shawn",
-   "James, Ryan",
-   "Juarez, Rebecca",
-   "Lang, Amy",
-   "Lee, Cindy",
-   "Lee, Lisa",
-   "Lowe, Tyler",
-   "Mcdaniel, Dana",
-   "Mckinney, Noah",
-   "Mckinney, Scott",
-   "Moore, Ryan",
-   "Murphy, Matthew",
-   "Padilla, Elizabeth",
-   "Payne, Ryan",
-   "Pope, Erin",
-   "Powell, Shelly",
-   "Ramirez, William",
-   "Ramsey, Latoya",
-   "Reynolds, Lisa",
-   "Rodriguez, Sarah",
-   "Rogers, Jessica",
-   "Rogers, Larry",
-   "Romero, Erik",
-   "Sandoval, John",
-   "Schmidt, Raven",
-   "Schwartz, Mary",
-   "Shah, Mark",
-   "Smith, Antonio",
-   "Smith, Jessica",
-   "Stein, Larry",
-   "Taylor, Jonathan",
-   "Thomas, James",
-   "Tran, Bradley",
-   "Vargas, Kimberly",
-   "Vasquez, Brian",
-   "Williams, Heather",
-   "Wilson, Kelly",
-   "Wright, Jordan",
-   "Young, Cynthia",
-   "Zavala, Manuel"
-  ],
-  "usage": {
-   "model_calls": 31,
-   "input_tokens": 179398,
-   "output_tokens": 6751,
-   "usd": 0.2918,
-   "per_agent": {
-    "panel_review": {
-     "calls": 3,
-     "in": 9510,
-     "out": 1304
-    },
-    "data_integrity": {
-     "calls": 11,
-     "in": 65699,
-     "out": 743
-    },
-    "followup": {
-     "calls": 3,
-     "in": 18665,
-     "out": 351
-    },
-    "guideline_concordance": {
-     "calls": 11,
-     "in": 82569,
-     "out": 1214
-    },
-    "finding_extractor": {
-     "calls": 3,
-     "in": 2955,
-     "out": 3139
-    }
-   },
-   "wall_clock_seconds": 164.4
-  },
-  "invariants": {
-   "no invented BP severity": true,
-   "no concurrent-duplicate-therapy claim": true,
-   "no duplicate headlines": false,
-   "followup reports at most 9": true,
-   "every finding names its agent": true,
-   "every finding has evidence": true
-  },
-  "canaries": {
-   "Padilla INR on a DOAC": true,
-   "Schwartz 11-month potassium": true,
-   "Stein missing HFrEF therapy": true,
-   "digoxin level, nobody on digoxin": true,
-   "physiologically impossible labs": true,
-   "no medication stop dates": true
-  }
- },
- {
-  "run": 3,
-  "seconds": 225.8,
-  "findings": 24,
-  "tool_calls": 32,
-  "patients": [
-   "Anderson, Ann",
-   "Bell, Christine",
-   "Bender, Jessica",
-   "Black, Tyler",
-   "Bond, Katelyn",
-   "Bonilla, Andrew",
-   "Boone, Terri",
-   "Brown, Todd",
-   "Bryan, Amanda",
-   "Bryan, Steve",
-   "Cain, Jacob",
-   "Cervantes, Stephen",
-   "Chandler, Cassandra",
-   "Cooper, Michelle",
-   "Cuevas, Meredith",
-   "Cunningham, David",
-   "Davis, Carol",
-   "Davis, Shelly",
-   "Dickerson, April",
-   "Douglas, Ryan",
-   "Duncan, Stephen",
-   "Ferguson, Pamela",
-   "Flores, Sydney",
-   "Forbes, Tamara",
-   "Ford, Gabriel",
-   "Fowler, Jessica",
-   "Gibson, Christopher",
-   "Gomez, Christopher",
-   "Hill, Dustin",
-   "Jackson, Shawn",
-   "Jacobs, Shannon",
    "Juarez, Rebecca",
    "Lang, Amy",
    "Le, Joshua",
    "Lee, Cindy",
    "Lee, Lisa",
-   "Li, Christine",
    "Lowe, Tyler",
    "Mcdaniel, Dana",
    "Mckinney, Noah",
    "Mckinney, Scott",
-   "Miller, Nancy",
    "Moore, Ryan",
-   "Morgan, Kenneth",
-   "Mullins, Emily",
-   "Mullins, Lauren",
    "Murphy, Matthew",
    "Padilla, Elizabeth",
    "Pope, Erin",
@@ -313,12 +177,9 @@
    "Ramirez, William",
    "Ramsey, Latoya",
    "Reynolds, Lisa",
-   "Richardson, Sherry",
    "Rodriguez, Sarah",
    "Rogers, Jessica",
-   "Rogers, Larry",
    "Romero, Erik",
-   "Russell, James",
    "Sandoval, John",
    "Schmidt, Raven",
    "Schwartz, Mary",
@@ -331,53 +192,53 @@
    "Tran, Bradley",
    "Vargas, Kimberly",
    "Vasquez, Brian",
-   "Wade, Kathy",
-   "Ware, Cassandra",
    "Williams, Heather",
    "Young, Cynthia",
    "Zavala, Manuel"
   ],
   "usage": {
-   "model_calls": 31,
-   "input_tokens": 157631,
-   "output_tokens": 6229,
-   "usd": 0.2593,
+   "model_calls": 37,
+   "input_tokens": 204442,
+   "output_tokens": 6827,
+   "usd": 0.3238,
    "per_agent": {
     "panel_review": {
-     "calls": 4,
-     "in": 10962,
-     "out": 1040
+     "calls": 5,
+     "in": 16191,
+     "out": 928
     },
     "data_integrity": {
-     "calls": 12,
-     "in": 75786,
-     "out": 1306
+     "calls": 16,
+     "in": 118419,
+     "out": 1445
     },
     "finding_extractor": {
      "calls": 3,
-     "in": 3101,
-     "out": 2739
+     "in": 4003,
+     "out": 3262
     },
     "guideline_concordance": {
-     "calls": 9,
-     "in": 48730,
-     "out": 801
+     "calls": 11,
+     "in": 56363,
+     "out": 842
     },
     "followup": {
-     "calls": 3,
-     "in": 19052,
-     "out": 343
+     "calls": 2,
+     "in": 9466,
+     "out": 350
     }
    },
-   "wall_clock_seconds": 225.8
+   "wall_clock_seconds": 366.0
   },
   "invariants": {
    "no invented BP severity": true,
    "no concurrent-duplicate-therapy claim": true,
-   "no duplicate headlines": false,
+   "no duplicate findings": true,
    "followup reports at most 9": true,
    "every finding names its agent": true,
-   "every finding has evidence": true
+   "every finding has evidence": true,
+   "every named patient is a real patient": true,
+   "the floor is intact": true
   },
   "canaries": {
    "Padilla INR on a DOAC": true,
@@ -389,14 +250,12 @@
   }
  },
  {
-  "run": 4,
-  "seconds": 262.3,
-  "findings": 29,
-  "tool_calls": 25,
+  "run": 3,
+  "seconds": 252.4,
+  "findings": 21,
+  "tool_calls": 23,
   "patients": [
    "Anderson, Ann",
-   "Bell, Christine",
-   "Bender, Jessica",
    "Black, Tyler",
    "Bond, Katelyn",
    "Bonilla, Andrew",
@@ -407,7 +266,6 @@
    "Cain, Jacob",
    "Cervantes, Stephen",
    "Chandler, Cassandra",
-   "Cooper, Michelle",
    "Cuevas, Meredith",
    "Davis, Carol",
    "Dickerson, April",
@@ -416,30 +274,19 @@
    "Ferguson, Pamela",
    "Flores, Sydney",
    "Forbes, Tamara",
-   "Ford, Gabriel",
    "Fowler, Jessica",
    "Gibson, Christopher",
-   "Gomez, Christopher",
-   "Hernandez, Jason",
    "Hill, Dustin",
    "Jackson, Shawn",
-   "Jacobs, Shannon",
-   "James, Ryan",
    "Juarez, Rebecca",
    "Lang, Amy",
-   "Le, Joshua",
    "Lee, Cindy",
    "Lee, Lisa",
-   "Li, Christine",
    "Lowe, Tyler",
    "Mcdaniel, Dana",
    "Mckinney, Noah",
    "Mckinney, Scott",
-   "Miller, Nancy",
    "Moore, Ryan",
-   "Morgan, Kenneth",
-   "Mullins, Emily",
-   "Mullins, Lauren",
    "Murphy, Matthew",
    "Padilla, Elizabeth",
    "Pope, Erin",
@@ -447,73 +294,186 @@
    "Ramirez, William",
    "Ramsey, Latoya",
    "Reynolds, Lisa",
-   "Richardson, Sherry",
    "Rodriguez, Sarah",
    "Rogers, Jessica",
    "Romero, Erik",
-   "Russell, James",
    "Sandoval, John",
+   "Schmidt, Raven",
    "Schwartz, Mary",
    "Shah, Mark",
    "Smith, Antonio",
    "Smith, Jessica",
    "Stein, Larry",
    "Taylor, Jonathan",
-   "Taylor,Jonathan",
    "Thomas, James",
    "Tran, Bradley",
    "Vargas, Kimberly",
    "Vasquez, Brian",
-   "Wade, Kathy",
-   "Ware, Cassandra",
-   "Wilcox, Tommy",
    "Williams, Heather",
-   "Wilson, Kelly",
-   "Wright, Jordan",
    "Young, Cynthia",
    "Zavala, Manuel"
   ],
   "usage": {
-   "model_calls": 30,
-   "input_tokens": 155096,
-   "output_tokens": 6841,
-   "usd": 0.2623,
+   "model_calls": 29,
+   "input_tokens": 161589,
+   "output_tokens": 5851,
+   "usd": 0.2605,
    "per_agent": {
     "panel_review": {
      "calls": 4,
-     "in": 11039,
-     "out": 1119
+     "in": 10931,
+     "out": 1161
     },
     "data_integrity": {
-     "calls": 10,
-     "in": 60748,
-     "out": 1163
+     "calls": 6,
+     "in": 25769,
+     "out": 1467
     },
     "finding_extractor": {
      "calls": 3,
-     "in": 3343,
-     "out": 3086
+     "in": 3143,
+     "out": 2037
     },
     "guideline_concordance": {
-     "calls": 11,
-     "in": 70718,
-     "out": 1218
+     "calls": 7,
+     "in": 30084,
+     "out": 792
     },
     "followup": {
-     "calls": 2,
-     "in": 9248,
-     "out": 255
+     "calls": 9,
+     "in": 91662,
+     "out": 394
     }
    },
-   "wall_clock_seconds": 262.3
+   "wall_clock_seconds": 252.4
   },
   "invariants": {
    "no invented BP severity": true,
    "no concurrent-duplicate-therapy claim": true,
-   "no duplicate headlines": false,
+   "no duplicate findings": true,
    "followup reports at most 9": true,
    "every finding names its agent": true,
-   "every finding has evidence": true
+   "every finding has evidence": true,
+   "every named patient is a real patient": true,
+   "the floor is intact": true
+  },
+  "canaries": {
+   "Padilla INR on a DOAC": true,
+   "Schwartz 11-month potassium": true,
+   "Stein missing HFrEF therapy": true,
+   "digoxin level, nobody on digoxin": true,
+   "physiologically impossible labs": true,
+   "no medication stop dates": true
+  }
+ },
+ {
+  "run": 4,
+  "seconds": 328.1,
+  "findings": 21,
+  "tool_calls": 33,
+  "patients": [
+   "Anderson, Ann",
+   "Black, Tyler",
+   "Bond, Katelyn",
+   "Bonilla, Andrew",
+   "Boone, Terri",
+   "Brown, Todd",
+   "Bryan, Amanda",
+   "Bryan, Steve",
+   "Cain, Jacob",
+   "Cervantes, Stephen",
+   "Chandler, Cassandra",
+   "Cuevas, Meredith",
+   "Davis, Carol",
+   "Dickerson, April",
+   "Douglas, Ryan",
+   "Duncan, Stephen",
+   "Ferguson, Pamela",
+   "Flores, Sydney",
+   "Forbes, Tamara",
+   "Fowler, Jessica",
+   "Gibson, Christopher",
+   "Hill, Dustin",
+   "Jackson, Shawn",
+   "Juarez, Rebecca",
+   "Lang, Amy",
+   "Le, Joshua",
+   "Lee, Cindy",
+   "Lee, Lisa",
+   "Lowe, Tyler",
+   "Mcdaniel, Dana",
+   "Mckinney, Noah",
+   "Mckinney, Scott",
+   "Moore, Ryan",
+   "Murphy, Matthew",
+   "Padilla, Elizabeth",
+   "Pope, Erin",
+   "Powell, Shelly",
+   "Ramirez, William",
+   "Ramsey, Latoya",
+   "Reynolds, Lisa",
+   "Rodriguez, Sarah",
+   "Rogers, Jessica",
+   "Romero, Erik",
+   "Sandoval, John",
+   "Schmidt, Raven",
+   "Schwartz, Mary",
+   "Shah, Mark",
+   "Smith, Antonio",
+   "Smith, Jessica",
+   "Stein, Larry",
+   "Taylor, Jonathan",
+   "Thomas, James",
+   "Tran, Bradley",
+   "Vargas, Kimberly",
+   "Vasquez, Brian",
+   "Williams, Heather",
+   "Young, Cynthia",
+   "Zavala, Manuel"
+  ],
+  "usage": {
+   "model_calls": 40,
+   "input_tokens": 222512,
+   "output_tokens": 5901,
+   "usd": 0.3372,
+   "per_agent": {
+    "panel_review": {
+     "calls": 6,
+     "in": 20216,
+     "out": 1050
+    },
+    "data_integrity": {
+     "calls": 13,
+     "in": 75245,
+     "out": 1335
+    },
+    "finding_extractor": {
+     "calls": 3,
+     "in": 3807,
+     "out": 2394
+    },
+    "guideline_concordance": {
+     "calls": 11,
+     "in": 59414,
+     "out": 706
+    },
+    "followup": {
+     "calls": 7,
+     "in": 63830,
+     "out": 416
+    }
+   },
+   "wall_clock_seconds": 328.1
+  },
+  "invariants": {
+   "no invented BP severity": true,
+   "no concurrent-duplicate-therapy claim": true,
+   "no duplicate findings": true,
+   "followup reports at most 9": true,
+   "every finding names its agent": true,
+   "every finding has evidence": true,
+   "every named patient is a real patient": true,
+   "the floor is intact": true
   },
   "canaries": {
    "Padilla INR on a DOAC": true,
@@ -526,12 +486,11 @@
  },
  {
   "run": 5,
-  "seconds": 214.0,
-  "findings": 32,
-  "tool_calls": 33,
+  "seconds": 322.4,
+  "findings": 29,
+  "tool_calls": 35,
   "patients": [
    "Anderson, Ann",
-   "Bell, Christine",
    "Bender, Jessica",
    "Black, Tyler",
    "Bond, Katelyn",
@@ -553,23 +512,18 @@
    "Forbes, Tamara",
    "Fowler, Jessica",
    "Gibson, Christopher",
-   "Gomez, Christopher",
    "Hill, Dustin",
    "Jackson, Shawn",
    "Juarez, Rebecca",
    "Lang, Amy",
-   "Le, Joshua",
    "Lee, Cindy",
    "Lee, Lisa",
-   "Li, Christine",
    "Lowe, Tyler",
    "Mcdaniel, Dana",
    "Mckinney, Noah",
    "Mckinney, Scott",
    "Moore, Ryan",
    "Morales, Patricia",
-   "Morgan, Kenneth",
-   "Mullins, Lauren",
    "Murphy, Matthew",
    "Padilla, Elizabeth",
    "Pope, Erin",
@@ -577,12 +531,11 @@
    "Ramirez, William",
    "Ramsey, Latoya",
    "Reynolds, Lisa",
-   "Richardson, Sherry",
    "Rodriguez, Sarah",
    "Rogers, Jessica",
    "Romero, Erik",
-   "Russell, James",
    "Sandoval, John",
+   "Schmidt, Raven",
    "Schwartz, Mary",
    "Shah, Mark",
    "Smith, Antonio",
@@ -593,53 +546,54 @@
    "Tran, Bradley",
    "Vargas, Kimberly",
    "Vasquez, Brian",
-   "Wade, Kathy",
-   "Ware, Cassandra",
+   "Wilcox, Tommy",
    "Williams, Heather",
    "Young, Cynthia",
    "Zavala, Manuel"
   ],
   "usage": {
-   "model_calls": 38,
-   "input_tokens": 294119,
-   "output_tokens": 6702,
-   "usd": 0.4347,
+   "model_calls": 33,
+   "input_tokens": 167319,
+   "output_tokens": 8138,
+   "usd": 0.2905,
    "per_agent": {
     "panel_review": {
-     "calls": 3,
-     "in": 9554,
-     "out": 878
+     "calls": 5,
+     "in": 16191,
+     "out": 1118
     },
     "data_integrity": {
-     "calls": 10,
-     "in": 54776,
-     "out": 1046
-    },
-    "followup": {
-     "calls": 2,
-     "in": 8919,
-     "out": 316
-    },
-    "guideline_concordance": {
-     "calls": 20,
-     "in": 217744,
-     "out": 1148
+     "calls": 15,
+     "in": 83288,
+     "out": 2015
     },
     "finding_extractor": {
      "calls": 3,
-     "in": 3126,
-     "out": 3314
+     "in": 4487,
+     "out": 3802
+    },
+    "guideline_concordance": {
+     "calls": 7,
+     "in": 43495,
+     "out": 918
+    },
+    "followup": {
+     "calls": 3,
+     "in": 19858,
+     "out": 285
     }
    },
-   "wall_clock_seconds": 214.0
+   "wall_clock_seconds": 322.4
   },
   "invariants": {
    "no invented BP severity": true,
    "no concurrent-duplicate-therapy claim": true,
-   "no duplicate headlines": false,
+   "no duplicate findings": true,
    "followup reports at most 9": true,
    "every finding names its agent": true,
-   "every finding has evidence": true
+   "every finding has evidence": true,
+   "every named patient is a real patient": true,
+   "the floor is intact": true
   },
   "canaries": {
    "Padilla INR on a DOAC": true,

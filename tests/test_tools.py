@@ -523,3 +523,118 @@ def test_preflight_composes_the_shared_rules():
     findings, _ = preflight.cached()
     titles = " ".join(f["title"].lower() for f in findings)
     assert "triple anticoagulation" not in titles
+
+
+def test_units_are_recorded_and_no_analyte_mixes_them():
+    """The first thing to rule out when a value looks impossible.
+
+    Cholesterol reported in mmol/L and labelled mg/dL would look impossibly low
+    and be entirely correct, so the audit needs to be able to check rather than
+    assume. It is not the explanation here -- every analyte carries one unit
+    throughout, and the low LDL values form one smooth tail with nothing in the
+    1.5-5.0 mmol/L window a mislabelled cluster would occupy.
+    """
+    from prototype.preflight import _tools_for
+    ranges = next(f for f in _tools_for([]) if f.__name__ == "check_reference_ranges")()
+    assert ranges["analytes_with_mixed_units"] == []
+    assert all(a["unit"] for a in ranges["analytes"])
+
+    chol = [a for a in ranges["analytes"] if a["analyte"] == "LDL Cholesterol"][0]
+    assert chol["unit"] == "mg/dL"
+    # A reference low of zero is the actual defect, and nine analytes have one.
+    assert ranges["analytes_with_a_zero_reference_low"] == 9
+    assert chol["ref_low_is_zero"] is True
+
+
+def test_the_count_outside_range_is_the_finding_not_the_minimum():
+    """"min 0.54" reads as one bad row; a third of the column is a defect."""
+    from prototype.preflight import _tools_for
+    count = next(f for f in _tools_for([]) if f.__name__ == "count_outside_plausible")
+
+    total = count("Total Cholesterol", 50, 400)
+    assert total["n"] == 50 and total["below"] == 17
+    assert total["share_outside"] == 0.34
+
+    # LDL is the arguable one: under 40 is reachable on maximal therapy, and
+    # this panel has a high PCSK9 rate, so the floor is set lower on purpose.
+    assert count("LDL Cholesterol", 20, 400)["below"] == 9
+    assert count("Not An Analyte", 0, 1)["error"]
+
+
+def test_each_fault_trips_the_control_it_targets():
+    """Every control here is watched failing at least once.
+
+    reconcile.py makes the argument and ships fixtures.py to satisfy it; the
+    findings-store controls were held to a lower bar. One of them had a real
+    bug for exactly that reason -- nothing had ever run the refusal path end to
+    end, so _consult discarded record()'s return value and counted a refused
+    row as filed.
+    """
+    import prototype.floor as floor_mod
+    from prototype import faults
+    from prototype.panel import Findings, uncited_high_severity
+
+    # 1. a name nobody has: refused, and the bad name is named back.
+    f = Findings()
+    f.seed_floor()
+    before = len(f.all())
+    res = faults.inject_unknown_patient(f)
+    assert res["recorded"] is False
+    assert res["unknown_patients"] == ["Nobody, Fictional"]
+    assert len(f.all()) == before and len(f.rejected) == 1
+
+    # 2. a high finding dropped from the narrative: raised above it.
+    rows = f.all()
+    full = " ".join(r["finding_id"] for r in rows)
+    assert uncited_high_severity(full, rows) == []
+    holed, victim = faults.drop_high_finding(full, rows)
+    assert [m["finding_id"] for m in uncited_high_severity(holed, rows)] == [victim]
+
+    # 3. a data layer that half-answers: the run refuses to start.
+    real = floor_mod.compute_floor
+    floor_mod.compute_floor = faults.starve_floor(real, keep=4)
+    try:
+        with pytest.raises(RuntimeError, match="expected 9"):
+            Findings().seed_floor()
+    finally:
+        floor_mod.compute_floor = real
+
+    assert set(faults.FAULTS) == {"unknown-patient", "drop-high-finding", "starve-floor"}
+
+
+def test_a_population_cannot_explain_a_value_a_body_cannot_produce():
+    """The population-dependence framing over-applied on its first outing.
+
+    It labelled haemoglobin "unremarkable in polycythemia vera" for a column
+    containing 25.12 g/dL, past the hard limit of 22, and did the same for eGFR
+    at 173 against a limit of 150. PHYSIOLOGIC_LIMITS already existed in
+    tools.py; the audit agent just could not see it.
+    """
+    from prototype.preflight import _tools_for
+    from prototype.tools import PHYSIOLOGIC_LIMITS
+    limits = next(f for f in _tools_for([]) if f.__name__ == "check_physiologic_limits")()
+    by = {a["analyte"]: a for a in limits["analytes"]}
+
+    # The two the audit got wrong have records beyond the hard bounds.
+    assert by["CBC — Hemoglobin"]["beyond_limits"] == 4
+    assert by["eGFR"]["beyond_limits"] == 8
+
+    # Potassium it got right: the maximum sits inside the limit, so the
+    # prevalence question really is a question about the population.
+    assert by["Potassium"]["beyond_limits"] == 0
+    assert by["Potassium"]["max"] <= PHYSIOLOGIC_LIMITS["Potassium"][1]
+
+
+def test_the_audit_is_told_which_tool_carries_the_dates():
+    """NO_STOP_DATES mandates medication_timeline, which preflight does not have.
+
+    The rule was composed in and unfollowable, so the audit called 20 patients
+    duplicate-therapy without ever seeing that the orders are years apart.
+    """
+    from prototype.preflight import INSTRUCTION, _tools_for
+    assert "find_duplicate_therapy" in INSTRUCTION
+    dup = next(f for f in _tools_for([]) if f.__name__ == "find_duplicate_therapy")()
+    assert dup["orders_with_an_end_date"] == 0
+    assert dup["orders_with_a_discontinuation_time"] == 0
+    assert dup["concurrent_same_day"] == 0
+    assert dup["days_apart_min"] == 113 and dup["days_apart_max"] == 1376

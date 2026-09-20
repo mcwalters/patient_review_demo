@@ -6,7 +6,7 @@ question a clinician actually asks: does it find everything, every time?
 
 This runs the review N times and measures three things.
 
-  invariants     the six properties that must hold on every run
+  invariants     the nine properties that must hold on every run
   coverage       for facts we independently know to be true, how many runs
                  surfaced them -- the closest thing to a recall measure that
                  is available without exhaustive clinical review
@@ -28,7 +28,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from prototype.floor import EXPECTED_FLOOR  # noqa: E402
-from prototype.panel import Findings, review  # noqa: E402
+from prototype.panel import (  # noqa: E402
+    Findings, review, uncited_high_severity)
 
 GOAL = "Who on this panel needs my attention this week? I can review about a dozen."
 OUT = Path(__file__).parent / "stability_results.json"
@@ -55,10 +56,16 @@ CANARIES = {
 
 _ROSTER = Findings._roster()
 
+# Each takes (findings, report). The report is here because "did a high-severity
+# finding actually reach the narrative" is not answerable from the store alone,
+# and it was the control this harness could not see: main() discarded the report
+# and kept only the findings, so uncited_high_severity had never been measured
+# across runs even though the shortlist caps at twelve patients out of a hundred
+# and the supervisor picks the cut itself.
 INVARIANTS = {
-    "no invented BP severity": lambda fs: not any(
+    "no invented BP severity": lambda fs, report: not any(
         re.search(r"severe hypertension", f["headline"] + f["evidence"], re.I) for f in fs),
-    "no concurrent-duplicate-therapy claim": lambda fs: not any(
+    "no concurrent-duplicate-therapy claim": lambda fs, report: not any(
         re.search(r"(duplicate|triple|concurrent) therapy", f["headline"], re.I)
         and not re.search(r"sequential|not concurrent|appears? as|stop date|discontinu",
                           f["evidence"], re.I)
@@ -67,17 +74,20 @@ INVARIANTS = {
     # the headline alone was stricter than the rule it polices and failed a
     # correct run: "INR ordered for a patient not on the drug it monitors" is
     # one finding per patient, and three people had an open triglycerides order.
-    "no duplicate findings": lambda fs: len(
+    "no duplicate findings": lambda fs, report: len(
         {(f["headline"].strip().lower(), frozenset(f.get("patients") or []))
          for f in fs}) == len(fs),
-    "followup reports at most 9": lambda fs: sum(
+    "followup reports at most 9": lambda fs, report: sum(
         1 for f in fs if f["agent"] == "followup") <= 9,
-    "every finding names its agent": lambda fs: all(f.get("agent") for f in fs),
-    "every finding has evidence": lambda fs: all(f.get("evidence", "").strip() for f in fs),
-    "every named patient is a real patient": lambda fs: all(
+    "every finding names its agent": lambda fs, report: all(f.get("agent") for f in fs),
+    "every finding has evidence": lambda fs, report: all(
+        f.get("evidence", "").strip() for f in fs),
+    "every named patient is a real patient": lambda fs, report: all(
         p in _ROSTER for f in fs for p in (f.get("patients") or [])),
-    "the floor is intact": lambda fs: sum(
+    "the floor is intact": lambda fs, report: sum(
         1 for f in fs if f["agent"] == "guaranteed") == EXPECTED_FLOOR,
+    "every high-severity finding reaches the report": lambda fs, report: not
+        uncited_high_severity(report, fs),
 }
 
 
@@ -86,14 +96,18 @@ def main(n: int) -> None:
     for i in range(1, n + 1):
         t0 = time.time()
         print(f"run {i}/{n} …", flush=True)
-        _, trace, findings, usage = review(GOAL, verbose=False)
+        report, trace, findings, usage = review(GOAL, verbose=False)
         patients = sorted({p for f in findings for p in (f.get("patients") or [])})
         runs.append({
             "run": i, "seconds": round(time.time() - t0, 1),
             "findings": len(findings), "tool_calls": len(trace),
             "patients": patients, "usage": usage,
-            "invariants": {k: bool(fn(findings)) for k, fn in INVARIANTS.items()},
+            "invariants": {k: bool(fn(findings, report))
+                           for k, fn in INVARIANTS.items()},
+            "uncited_high": [f["finding_id"]
+                             for f in uncited_high_severity(report, findings)],
             "canaries": {k: any(fn(f) for f in findings) for k, fn in CANARIES.items()},
+            "report": report,
         })
         print(f"   {len(findings)} findings, {len(patients)} patients, "
               f"${usage.get('usd', 0):.2f}, {runs[-1]['seconds']:.0f}s", flush=True)
@@ -106,6 +120,12 @@ def main(n: int) -> None:
     for k in INVARIANTS:
         held = sum(r["invariants"][k] for r in runs)
         print(f"  {'PASS' if held == n else 'FAIL'}  {held}/{n}  {k}")
+
+    missed = [(r["run"], r["uncited_high"]) for r in runs if r["uncited_high"]]
+    if missed:
+        print("\n  high-severity findings that never reached the narrative")
+        for run_no, ids in missed:
+            print(f"    run {run_no}: {', '.join(ids)}")
 
     print("\nCOVERAGE of independently verified facts")
     for k in CANARIES:
