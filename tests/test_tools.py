@@ -725,3 +725,31 @@ def test_coverage_needs_a_real_category():
          "patients": ["Stein, Larry"], "headline": "a different thing"},
     ]
     assert [f["finding_id"] for f in uncited_high_severity("see F02", rows)] == ["F01"]
+
+
+def test_rank_correlation_sees_what_jaccard_cannot():
+    """Two runs can agree perfectly on the set and disagree on who to see first.
+
+    The product is an ordering -- the nurse works down from the top and stops --
+    so set stability was measuring the wrong thing on its own.
+    """
+    import importlib.util as u
+    root = Path(__file__).resolve().parent.parent
+    spec = u.spec_from_file_location("stab", root / "evals" / "stability.py")
+    m = u.module_from_spec(spec)
+    spec.loader.exec_module(m)
+
+    same = ["a", "b", "c", "d", "e"]
+    reversed_ = list(reversed(same))
+    # Identical sets, so Jaccard is 1.0 for both pairs; the ordering is not.
+    assert set(same) == set(reversed_)
+    assert m.spearman(same, same) == 1.0
+    assert m.spearman(same, reversed_) == -1.0
+    assert m.spearman(same, ["b", "a", "c", "d", "e"]) == 0.9
+    assert m.spearman(["a", "b"], ["a", "b"]) is None      # too few to mean anything
+
+    report = "1. Stein, Larry needs ... 2. Cain, Jacob has ... 3. Black, Tyler shows"
+    assert m.shortlist_order(report, ["Black, Tyler", "Stein, Larry", "Cain, Jacob"]) \
+        == ["Stein, Larry", "Cain, Jacob", "Black, Tyler"]
+    # A patient the report never names has no rank and is dropped, not ranked 0.
+    assert "Nobody, Here" not in m.shortlist_order(report, ["Nobody, Here"])
