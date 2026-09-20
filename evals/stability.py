@@ -65,10 +65,17 @@ _ROSTER = Findings._roster()
 INVARIANTS = {
     "no invented BP severity": lambda fs, report: not any(
         re.search(r"severe hypertension", f["headline"] + f["evidence"], re.I) for f in fs),
+    # The exculpation is looked for in the headline AND the evidence, because
+    # it can be in either and this once penalised the right answer: a finding
+    # headed "Medication discontinuation data is missing, creating appearance
+    # of duplicate therapy" tripped the check that exists to produce exactly
+    # that framing. Same mis-specification as the duplicate-headline invariant
+    # in c33170e -- reading one field when the claim can live in two.
     "no concurrent-duplicate-therapy claim": lambda fs, report: not any(
         re.search(r"(duplicate|triple|concurrent) therapy", f["headline"], re.I)
-        and not re.search(r"sequential|not concurrent|appears? as|stop date|discontinu",
-                          f["evidence"], re.I)
+        and not re.search(r"sequential|not concurrent|appears? as|apparent|artifact|"
+                          r"stop date|discontinu",
+                          f["headline"] + " " + f.get("evidence", ""), re.I)
         for f in fs),
     # Matches the dedup key in Findings._key -- headline AND patients. Checking
     # the headline alone was stricter than the rule it polices and failed a
