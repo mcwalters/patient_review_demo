@@ -147,6 +147,12 @@ authoring service.
 
 ---
 
+## Known issues in the prototype
+
+Defects that are diagnosed and not fixed, each with what the fix would cost,
+are in [KNOWN_ISSUES.md](KNOWN_ISSUES.md). That file also records the
+behaviour that looks wrong and is not, so it does not get "fixed".
+
 ## Known limits of the synthetic data
 
 Worth knowing before you build a demo on it:
