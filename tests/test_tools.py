@@ -410,3 +410,74 @@ def test_a_refused_finding_is_not_counted_as_recorded():
     assert refused[0][1]["unknown_patients"] == ["Nobody, Fictional"]
     # The store and any count derived from it agree.
     assert len(f.all()) == sum(1 for r in results if r.get("recorded"))
+
+
+def test_extraction_categories_match_the_floor():
+    """Dedup keys on the category, so the two vocabularies must not drift apart."""
+    import typing
+    from prototype.floor import CATEGORIES
+    from prototype.panel import FindingCategory
+    assert set(typing.get_args(FindingCategory)) == set(CATEGORIES) | {"other"}
+
+
+def test_the_same_problem_worded_differently_is_one_finding():
+    """The exact duplicate a live run filed: same patient, same INR, two wordings.
+
+    The headlines share one word out of seven, so no threshold on word overlap
+    could have merged them without merging unrelated findings too.
+    """
+    from prototype.panel import Findings
+    f = Findings()
+    f.record("guaranteed",
+             headline="INR / PT ordered for a patient not on the drug it monitors",
+             patients=["Mcdaniel, Dana"], category="drug monitoring mismatch",
+             severity="high", evidence="e", recommended_action="r")
+    dup = f.record("followup", headline="Incorrect INR/PT order for patient on DOAC",
+                   patients=["Mcdaniel, Dana"], category="drug monitoring mismatch",
+                   severity="high", evidence="e", recommended_action="r")
+    assert dup["recorded"] is False and dup["merged_into"] == "F01"
+    assert f.all()[0]["also_found_by"] == ["followup"]
+    assert len(f.all()) == 1
+
+
+def test_one_patient_can_have_two_findings_in_one_category():
+    """Mcdaniel, Dana has a mismatched INR and a mismatched digoxin level.
+
+    Deduping on (category, patients) alone merged them, which is why the
+    subject -- read off the controlled vocabulary -- is part of the identity.
+    """
+    from prototype.panel import Findings
+    f = Findings()
+    assert f.seed_floor() == 9
+    mcdaniel = [r for r in f.all() if r.get("patients") == ["Mcdaniel, Dana"]]
+    assert len(mcdaniel) == 2
+    assert {next(iter(Findings._subject(r["headline"]))) for r in mcdaniel} == {
+        "inr pt", "digoxin level"}
+
+
+def test_a_category_is_not_a_finding_about_everyone_in_it():
+    """Two patients can be in one problem class without being one finding."""
+    from prototype.panel import Findings
+    f = Findings()
+    for who in ("Mcdaniel, Dana", "Padilla, Elizabeth"):
+        assert f.record("followup", headline=f"INR ordered for {who}",
+                        patients=[who], category="drug monitoring mismatch",
+                        severity="high", evidence="e",
+                        recommended_action="r")["recorded"] is True
+    assert len(f.all()) == 2
+
+    # "other" is the escape hatch and must never merge on the category alone.
+    g = Findings()
+    for h in ("One problem", "A different problem"):
+        assert g.record("data_integrity", headline=h, patients=["Stein, Larry"],
+                        category="other", severity="low", evidence="e",
+                        recommended_action="r")["recorded"] is True
+    assert len(g.all()) == 2
+
+    # Nor may a category merge two panel-level findings that name nobody.
+    h = Findings()
+    for head in ("Impossible sodium values", "Impossible SpO2 values"):
+        assert h.record("data_integrity", headline=head, patients=[],
+                        category="impossible values", severity="high",
+                        evidence="e", recommended_action="r")["recorded"] is True
+    assert len(h.all()) == 2

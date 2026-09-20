@@ -73,11 +73,28 @@ class Usage:
                 "per_agent": per_agent}
 
 
+# The floor's categories, plus "other" for everything outside them. Findings are
+# deduplicated on (category, patients), so this has to be a closed vocabulary --
+# a free-text label would just move the matching problem somewhere else.
+# test_extraction_categories_match_the_floor keeps it in step with floor.py.
+FindingCategory = Literal[
+    "drug monitoring mismatch",
+    "hypertensive crisis",
+    "stale order with live indication",
+    "impossible values",
+    "HFrEF therapy gap",
+    "other",
+]
+
+
 class ExtractedFinding(BaseModel):
     headline: str = Field(description="one line naming the problem")
     patients: list[str] = Field(default_factory=list,
                                 description="names exactly as written; [] if panel-level")
     severity: Literal["high", "medium", "low"]
+    category: FindingCategory = Field(
+        default="other",
+        description="which known problem class this is, or 'other'")
     evidence: str = Field(description="the numbers and facts the report gave")
     recommended_action: str
 
@@ -105,6 +122,22 @@ a single row and keep the version carrying the patient names; fold any extra
 numbers into its evidence. Two findings are distinct only when they describe
 different problems, not when they describe one problem at different levels of
 detail.
+
+CATEGORISE each finding. Five problem classes are computed independently before
+any specialist runs, and the same problem often comes back worded differently --
+"INR / PT ordered for a patient not on the drug it monitors" and "Incorrect
+INR/PT order for patient on DOAC" are the same finding. The label is how they
+are matched, so choose it from the clinical substance, not the wording:
+
+  drug monitoring mismatch          a lab that monitors a drug the patient is
+                                    not on, or a drug whose monitoring is absent
+  hypertensive crisis               a blood pressure in the crisis range
+  stale order with live indication  an order still open for a condition the
+                                    patient demonstrably still has
+  impossible values                 a recorded value that cannot be physiologic
+  HFrEF therapy gap                 heart failure missing a guideline therapy
+  other                             anything else -- use it freely, a wrong
+                                    label is worse than "other"
 """
 
 
@@ -183,6 +216,74 @@ class Findings:
             if len(w) > 3}
         return frozenset(words), frozenset(patients)
 
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def _clinical_terms() -> tuple[str, ...]:
+        """Analyte and drug-class names, longest first, for subject matching.
+
+        The same controlled vocabulary the screener selects from. Using it here
+        keeps the discriminator deterministic -- which analyte a finding is
+        about is a lookup, not a judgement.
+        """
+        from .vocab import load
+        v = load()
+        terms = {t for t in (v.analyte_names | v.class_names) if len(t) > 2}
+        return tuple(sorted((Findings._squash(t) for t in terms), key=len, reverse=True))
+
+    @staticmethod
+    def _squash(text: str) -> str:
+        """Lowercase to alphanumerics and single spaces.
+
+        Punctuation carries no meaning here and costs matches: the analyte is
+        recorded as "INR / PT" and a specialist writes "INR/PT". Both land on
+        "inr pt".
+        """
+        return " ".join("".join(
+            c if c.isalnum() else " " for c in str(text).lower()).split())
+
+    @classmethod
+    def _subject(cls, headline: str) -> frozenset[str]:
+        """Which known analytes or drug classes a headline is about."""
+        h = f" {cls._squash(headline)} "
+        return frozenset(t for t in cls._clinical_terms() if f" {t} " in h)
+
+    @classmethod
+    def _same_finding(cls, row: dict, kw: dict, key: tuple) -> bool:
+        """Two ways the same problem arrives twice.
+
+        Word overlap alone was not enough. A live run filed Mcdaniel, Dana's
+        INR twice -- the floor called it "INR / PT ordered for a patient not on
+        the drug it monitors" and the followup specialist called it "Incorrect
+        INR/PT order for patient on DOAC". One shared word out of seven, so no
+        threshold on overlap could have merged them without merging unrelated
+        findings too.
+
+        Matching on (category, patients) alone then over-merged in the other
+        direction: Mcdaniel has a mismatched INR *and* a mismatched digoxin
+        level, which are two findings about one person in one category. So the
+        subject has to be part of the identity, and it is read off the
+        controlled vocabulary rather than guessed at.
+        """
+        if cls._key(row.get("headline", ""), row.get("patients") or []) == key:
+            return True
+        cat = kw.get("category")
+        if not cat or cat == "other" or row.get("category") != cat:
+            return False
+        # Category match needs the same people. "impossible values" is a class
+        # many patients are in separately, not one finding about all of them.
+        theirs = frozenset(row.get("patients") or [])
+        if not theirs or theirs != frozenset(kw["patients"]):
+            return False
+        mine = cls._subject(kw.get("headline", ""))
+        theirs_subj = cls._subject(row.get("headline", ""))
+        # Overlap, not equality. The specialist's wording carries the reason as
+        # well as the subject -- "Incorrect INR/PT order for patient on DOAC"
+        # names two terms where the computed version names one. Requiring the
+        # sets to match exactly put that duplicate back. When neither headline
+        # names anything from the vocabulary (a BP crisis has no analyte), the
+        # category and the patient are identity enough.
+        return bool(mine & theirs_subj) if (mine and theirs_subj) else True
+
     def record(self, agent: str, **kw) -> dict:
         kw["patients"] = [self._norm_name(p) for p in (kw.get("patients") or [])]
 
@@ -211,7 +312,7 @@ class Findings:
         # guaranteed version wins, because it is the one that is computed.
         key = self._key(kw.get("headline", ""), kw["patients"])
         for row in self.rows:
-            if self._key(row.get("headline", ""), row.get("patients") or []) == key:
+            if self._same_finding(row, kw, key):
                 if agent != "guaranteed" and row["agent"] == "guaranteed":
                     row.setdefault("also_found_by", []).append(agent)
                 return {"recorded": False, "merged_into": row["finding_id"],
