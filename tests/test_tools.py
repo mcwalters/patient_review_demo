@@ -866,3 +866,36 @@ def test_the_notes_hold_no_clinical_fact_the_tables_do_not():
     # and the reason the notes are worth checking even though nothing is worth
     # extracting from them.
     assert all(re.search(r"lab|monitor|screen|counsel|adherence", t, re.I) for t in tails)
+
+
+def test_the_lab_tables_must_not_be_joined():
+    """"Ordered and never resulted" depends on NOT joining the two lab tables.
+
+    They share no order ids, and the join a reasonable person reaches for --
+    same patient, same analyte -- returns rows rather than failing. It just
+    returns the wrong ones, and it would silently resolve most of the pending
+    orders the follow-up specialist exists to find.
+    """
+    from prototype.tools import connect
+    con = connect()
+    try:
+        shared = con.execute("""
+            SELECT count(*) FROM v_lab_order o
+            WHERE EXISTS (SELECT 1 FROM v_lab_result r
+                          WHERE r.RESULT_ID = o.ORDER_PROC_ID)""").fetchone()[0]
+        pending = con.execute(
+            "SELECT count(*) FROM v_lab_order WHERE is_pending").fetchone()[0]
+        falsely_resolved = con.execute("""
+            SELECT count(DISTINCT o.ORDER_PROC_ID)
+            FROM v_lab_order o
+            JOIN v_lab_result r ON r.PAT_ID = o.PAT_ID
+             AND lower(r.COMPONENT_NAME) = lower(o.test_name)
+            WHERE o.is_pending""").fetchone()[0]
+    finally:
+        con.close()
+
+    assert shared == 0, "the two lab tables share order ids after all -- re-check the premise"
+    assert pending == 120
+    assert falsely_resolved == 85
+    # The slide claims seven in ten. Keep the claim and the data in step.
+    assert 0.65 < falsely_resolved / pending < 0.75
