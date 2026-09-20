@@ -11,6 +11,12 @@ slides can be diffed against the code that backs them.
 | `slides/controls.html` | Six ways this could be wrong, and the control for each |
 | `slides/safety.html` | Where the model is allowed to reason, and what the floor bought |
 
+`assets/architecture.html` is not a slide. It is a standalone page to open in
+a browser tab if anyone asks how the agents relate -- eight model agents, the
+deterministic layer under them, and the counts from a real cached run. Four
+slides was the brief, and an architecture walkthrough is a Q&A answer rather
+than a thing to spend presenting time on.
+
 `deck.json` sets the order. Each slide carries its speaker notes in its
 `<aside>`, which is where the caveats live -- what a number does not prove,
 what to say if someone pushes, and which claims are assumptions.
