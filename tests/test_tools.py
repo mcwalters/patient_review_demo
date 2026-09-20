@@ -897,9 +897,11 @@ def test_the_lab_tables_must_not_be_joined():
     assert shared == 0, "the two lab tables share order ids after all -- re-check the premise"
 
     # These are Epic Clarity names, and in Clarity ORDER_RESULTS is a child of
-    # ORDER_PROC joined on ORDER_PROC_ID. The key is declared and populated
-    # here; it simply resolves to nothing. Rule out the innocent explanation --
-    # parent orders outside the extract -- before calling it broken.
+    # ORDER_PROC, so the join is expected to work. It does not, and the reason
+    # is scope rather than corruption: order_proc_awv holds only what was
+    # ordered at the visit while order_results is two years of longitudinal
+    # labs whose parent orders were never in the extract. Pin the dates, since
+    # they are what distinguishes "different datasets" from "broken key".
     con = connect()
     try:
         nulls = con.execute(
@@ -917,6 +919,23 @@ def test_the_lab_tables_must_not_be_joined():
     assert nulls == 0, "the FK is unpopulated, which would be a different finding"
     assert enc_both == 0, "some results belong to encounters outside the order table"
     assert resolves == 0, "the Clarity FK resolves after all -- the slide is wrong"
+
+    con = connect()
+    try:
+        # Orders are placed at the visit; results span years around it.
+        span = con.execute(
+            "SELECT min(DAYS_FROM_VISIT), max(DAYS_FROM_VISIT) FROM order_proc_awv").fetchone()
+        near, total = con.execute("""
+            SELECT count(*) FILTER (WHERE date_diff('day', e.CONTACT_DATE,
+                                                    r.RESULT_DATE) BETWEEN -14 AND 60),
+                   count(*)
+            FROM order_results r JOIN pat_enc e USING (PAT_ENC_CSN_ID)""").fetchone()
+    finally:
+        con.close()
+    assert span == (-3, 0), f"orders are no longer visit-scoped: {span}"
+    assert total == 1288
+    assert near == 127, "the result history no longer sits outside the visit window"
+    assert near / total < 0.15, "results and orders now overlap -- the slide is wrong"
     assert pending == 120
     assert falsely_resolved == 85
     # The slide claims seven in ten. Keep the claim and the data in step.
