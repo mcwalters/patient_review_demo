@@ -27,7 +27,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from prototype.panel import review  # noqa: E402
+from prototype.floor import EXPECTED_FLOOR  # noqa: E402
+from prototype.panel import Findings, review  # noqa: E402
 
 GOAL = "Who on this panel needs my attention this week? I can review about a dozen."
 OUT = Path(__file__).parent / "stability_results.json"
@@ -52,6 +53,8 @@ CANARIES = {
         f["headline"] + f["evidence"], re.I),
 }
 
+_ROSTER = Findings._roster()
+
 INVARIANTS = {
     "no invented BP severity": lambda fs: not any(
         re.search(r"severe hypertension", f["headline"] + f["evidence"], re.I) for f in fs),
@@ -66,6 +69,10 @@ INVARIANTS = {
         1 for f in fs if f["agent"] == "followup") <= 9,
     "every finding names its agent": lambda fs: all(f.get("agent") for f in fs),
     "every finding has evidence": lambda fs: all(f.get("evidence", "").strip() for f in fs),
+    "every named patient is a real patient": lambda fs: all(
+        p in _ROSTER for f in fs for p in (f.get("patients") or [])),
+    "the floor is intact": lambda fs: sum(
+        1 for f in fs if f["agent"] == "guaranteed") == EXPECTED_FLOOR,
 }
 
 

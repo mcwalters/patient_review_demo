@@ -324,3 +324,65 @@ def test_patient_names_survive_folding_as_links():
     assert "[Wilcox, Tommy](?patient=Wilcox%2C%20Tommy)" in out
     assert "**Do** Investigate urgently." in out
     assert "(#findings-the-specialists-recorded)" in out
+
+
+def test_a_finding_cannot_name_a_patient_who_does_not_exist():
+    """Names become links to a person's brief, so a wrong one is a safety event."""
+    from prototype.panel import Findings
+    f = Findings()
+    ok = f.record("followup", headline="Open INR test",
+                  patients=["Padilla, Elizabeth"], severity="high",
+                  evidence="e", recommended_action="r")
+    assert ok["recorded"] is True
+
+    bad = f.record("followup", headline="Invented person needs review",
+                   patients=["Nobody, Fictional"], severity="high",
+                   evidence="e", recommended_action="r")
+    assert bad["recorded"] is False
+    assert bad["unknown_patients"] == ["Nobody, Fictional"]
+
+    # One bad name in a list rejects the row and names only the bad one.
+    mixed = f.record("followup", headline="Mixed list",
+                     patients=["Stein, Larry", "Ghost, Casper"], severity="high",
+                     evidence="e", recommended_action="r")
+    assert mixed["unknown_patients"] == ["Ghost, Casper"]
+    assert len(f.rejected) == 2
+    assert [r["finding_id"] for r in f.all()] == ["F01"]
+
+
+def test_panel_level_findings_need_no_patient():
+    """"All 522 orders read Active" is about the dataset, not about a person."""
+    from prototype.panel import Findings
+    assert Findings().record("data_integrity", headline="No medication is ever stopped",
+                             patients=[], severity="high", evidence="e",
+                             recommended_action="r")["recorded"] is True
+
+
+def test_the_floor_refuses_to_run_short():
+    """A query that silently returns nothing looks exactly like a quiet week."""
+    import prototype.floor as floor_mod
+    from prototype.panel import Findings
+    assert len(floor_mod.compute_floor()) == floor_mod.EXPECTED_FLOOR
+    assert Findings().seed_floor() == floor_mod.EXPECTED_FLOOR
+
+    real = floor_mod.compute_floor
+    floor_mod.compute_floor = lambda: real()[:4]           # data layer half-answers
+    try:
+        with pytest.raises(RuntimeError, match="expected 9"):
+            Findings().seed_floor()
+    finally:
+        floor_mod.compute_floor = real
+
+
+def test_high_severity_findings_left_out_of_the_report_are_reported():
+    """The supervisor's own account of what it omitted is not a control."""
+    from prototype.panel import Findings, uncited_high_severity
+    f = Findings()
+    f.seed_floor()
+    rows = f.all()
+    highs = [r["finding_id"] for r in rows if r["severity"] == "high"]
+    assert len(highs) > 1
+
+    assert uncited_high_severity(" ".join(highs), rows) == []
+    missed = uncited_high_severity(" ".join(highs[:-1]), rows)
+    assert [m["finding_id"] for m in missed] == [highs[-1]]

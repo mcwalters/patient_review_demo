@@ -24,7 +24,8 @@ from prototype import preflight, theme               # noqa: E402
 from prototype.guidelines import (                   # noqa: E402
     DISCLAIMER, GUIDELINES, check_guideline)
 from prototype.brief import write_brief_async        # noqa: E402
-from prototype.panel import Findings, review_async   # noqa: E402
+from prototype.panel import (                         # noqa: E402
+    Findings, review_async, uncited_high_severity)
 from prototype.screener import screen_async          # noqa: E402
 from prototype.report_md import (                    # noqa: E402
     FINDINGS_ANCHOR, fold_actions, link_citations, link_patients)
@@ -192,6 +193,9 @@ if view == "Panel review":
             f"Done in {int(time.time() - started)}s · {len(live_trace)} tool calls · "
             f"{len(live_findings.all())} findings")
         st.session_state["panel"] = box["result"]
+        # Refused rows never reach the findings list, so they would otherwise
+        # vanish silently -- which is the wrong outcome for a rejected name.
+        st.session_state["panel_rejected"] = list(live_findings.rejected)
 
     if "panel" in st.session_state:
         report, ptrace, pfindings, pusage = st.session_state["panel"]
@@ -209,6 +213,34 @@ if view == "Panel review":
             for col, (agent, c) in zip(cols, counts.items()):
                 col.metric(agent, c["calls"], f"{c['findings']} findings",
                            delta_color="off", help="tool calls made by this agent")
+
+        # The shortlist is capped at twelve out of a hundred and the supervisor
+        # chooses what to leave off. Its own account of the omissions is a
+        # self-report, so the report is checked against the store instead. A
+        # high-severity finding that went unmentioned is raised ABOVE the
+        # narrative -- the finding was always in the table below, but nothing
+        # distinguished "deliberately deprioritised" from "silently dropped".
+        missed = uncited_high_severity(report, pfindings)
+        if missed:
+            st.error(
+                f"**{len(missed)} high-severity finding"
+                f"{'s' if len(missed) > 1 else ''} not mentioned in the report "
+                f"below.** Recorded, but neither shortlisted nor explained away — "
+                f"read these before the narrative.")
+            for f in missed:
+                who = "; ".join(f.get("patients") or []) or "panel-level"
+                st.markdown(f"- **{f['finding_id']}** · {f.get('headline','')} — {who}")
+
+        rejected = st.session_state.get("panel_rejected") or []
+        if rejected:
+            st.warning(
+                f"**{len(rejected)} finding"
+                f"{'s' if len(rejected) > 1 else ''} refused: unrecognised patient "
+                f"name.** The store rejects a name that is not in the patient table, "
+                f"because the UI turns names into links to that person's brief.")
+            for r in rejected:
+                st.markdown(f"- `{r['agent']}` · {r['headline']} — "
+                            f"unknown: {', '.join(r['unknown'])}")
 
         all_named = sorted({p for f in pfindings for p in (f.get("patients") or [])})
         st.markdown(link_patients(link_citations(fold_actions(report)), all_named))

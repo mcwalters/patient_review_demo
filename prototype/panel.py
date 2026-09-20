@@ -27,6 +27,7 @@ from google.adk.agents import LlmAgent
 from google.adk.runners import InMemoryRunner
 from google.genai import types
 
+from functools import lru_cache
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -123,6 +124,22 @@ class Findings:
 
     def __init__(self) -> None:
         self.rows: list[dict] = []
+        self.rejected: list[dict] = []
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def _roster() -> frozenset[str]:
+        """Every patient name on file, normalised the same way findings are.
+
+        Cached: it is 100 rows and record() is called a few dozen times a run.
+        """
+        con = connect()
+        try:
+            names = [r[0] for r in con.execute(
+                "SELECT DISTINCT PAT_NAME FROM patient").fetchall()]
+        finally:
+            con.close()
+        return frozenset(Findings._norm_name(n) for n in names)
 
     def seed_floor(self) -> int:
         """Inject the guaranteed findings before any agent runs.
@@ -133,9 +150,19 @@ class Findings:
         mention it. It is identical data every time; the variance was entirely
         in the choosing.
         """
-        from .floor import compute_floor
+        from .floor import compute_floor, EXPECTED_FLOOR
         for f in compute_floor():
             self.record("guaranteed", **f)
+        # A query that silently returns nothing is indistinguishable from a
+        # panel with nothing wrong, and the failure is invisible in the output:
+        # the run just looks like a quiet week. The floor is the one part of
+        # this system whose size is known in advance, so it is also the only
+        # cheap place to notice that the data layer has stopped answering.
+        if len(self.rows) != EXPECTED_FLOOR:
+            raise RuntimeError(
+                f"floor produced {len(self.rows)} findings, expected {EXPECTED_FLOOR}. "
+                "The database is not answering as expected -- refusing to run a "
+                "review that would look like a clean panel.")
         return len(self.rows)
 
     @staticmethod
@@ -158,6 +185,24 @@ class Findings:
 
     def record(self, agent: str, **kw) -> dict:
         kw["patients"] = [self._norm_name(p) for p in (kw.get("patients") or [])]
+
+        # A finding carries patient names, the UI turns them into links, and the
+        # link opens that person's brief. Nothing upstream checked that the name
+        # exists: a misattributed or invented one would have been stored, shown
+        # and clicked through to whoever it happened to resolve to. Names are
+        # the one field where being wrong is a patient-safety event rather than
+        # a quality problem, so the store refuses the row and tells the agent
+        # which name it did not recognise.
+        unknown = [p for p in kw["patients"] if p not in self._roster()]
+        if unknown:
+            self.rejected.append({"agent": agent, "headline": kw.get("headline", ""),
+                                  "unknown": unknown})
+            return {"recorded": False, "error": "unknown patient name",
+                    "unknown_patients": unknown,
+                    "note": ("These names are not in the patient table. Check the "
+                             "spelling against patient_snapshot or find_patients and "
+                             "record the finding again. Do not invent a name."),
+                    "total_findings": len(self.rows)}
 
         # The floor seeds findings before the specialists run, and a specialist
         # then rediscovers the same thing and reports it again -- every run in
@@ -1030,6 +1075,21 @@ async def review_async(goal: str, verbose: bool = True, trace: list | None = Non
             final = "".join(p.text for p in ev.content.parts if getattr(p, "text", None))
     return final, trace, findings.all(), usage.summary() | {
         "wall_clock_seconds": round(_time.time() - _t0, 1)}
+
+
+def uncited_high_severity(report: str, findings: list[dict]) -> list[dict]:
+    """High-severity findings the supervisor's report never mentions.
+
+    The floor guarantees a finding is RECORDED. Nothing guaranteed it was
+    surfaced: the shortlist is capped at twelve out of a hundred, and the
+    supervisor decides what to leave off. Its own account of what it omitted is
+    a self-report, which is not a control -- so the report is checked against
+    the store instead, and anything high that went unmentioned is rendered
+    above the narrative rather than left for a reader to notice it missing.
+    """
+    return [f for f in findings
+            if f.get("severity") == "high"
+            and f.get("finding_id", "\0") not in report]
 
 
 def review(goal: str = "Who on this panel needs attention this week?", verbose: bool = True):

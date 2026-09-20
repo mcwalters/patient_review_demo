@@ -147,6 +147,12 @@ CATEGORIES = {
 }
 
 
+# The floor's size is known before the run. seed_floor() asserts against it so
+# that a data layer which has quietly stopped answering shows up as a refusal
+# rather than as a panel with nothing wrong.
+EXPECTED_FLOOR = 9
+
+
 def compute_floor() -> list[dict]:
     """Every guaranteed finding. Deterministic -- identical on every run."""
     rows = []
