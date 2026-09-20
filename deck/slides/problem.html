@@ -1,0 +1,32 @@
+<section id="problem" data-transition="fade" style="background:#F9FCFF; color:#0A3D63; font-family:'Inter', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:space-between; gap:40px">
+  <div style="display:flex; flex-direction:column; gap:20px">
+    <p style="font-size:26px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#058BE8">The problem</p>
+    <h1 style="font-size:78px; font-weight:700; line-height:1.1"><span style="color:#518AE1">Attention is the scarce resource,</span> <span style="color:#0A3D63">not information</span></h1>
+    <p style="font-size:33px; line-height:1.42; color:#5C6C80; width:1440px">A population&#8209;health nurse working a panel between visits can read a chart quickly &mdash; trained reviewers clear six to twenty a day. <b style="color:#0A3D63">Ninety&#8209;four of these hundred patients have at least one abnormal lab.</b> Reading was never the bottleneck. What each finding costs <i>after</i> you read it is &mdash; the call, the order, the chase &mdash; and so is deciding which ones earn it.</p>
+    <p style="font-size:29px; line-height:1.4; color:#0A3D63; width:1400px">What I built is the weekly worklist. Agents work three questions &mdash; <b>which records cannot be trusted</b>, <b>who is missing recommended therapy</b>, <b>what was started and never finished</b> &mdash; and every patient they name opens a pre&#8209;visit brief.</p>
+    <p style="font-size:26px; line-height:1.4; color:#5C6C80; width:1400px">It runs as a supervisor delegating to three specialists. I A/B&#8209;tested that against one agent holding the same tools, and <b style="color:#B42318">the split does not currently pay for itself</b> &mdash; same findings, 2.6&#215; the wall clock, and it dropped more high&#8209;severity findings from the narrative. That is a result I would act on, not defend.</p>
+  </div>
+
+  <div style="display:flex; gap:32px">
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px; background:#FFFFFF; border:1px solid #C1CFD8; border-radius:12px; padding:36px">
+      <p style="font-size:64px; font-weight:700; color:#0A3D63">74</p>
+      <h3 style="font-size:30px; font-weight:600">lab orders never resulted</h3>
+      <p style="font-size:25px; color:#5C6C80; line-height:1.35">Oldest twelve months. Absence raises no alert anywhere, so nobody notices.</p>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px; background:#FFFFFF; border:1px solid #C1CFD8; border-radius:12px; padding:36px">
+      <p style="font-size:64px; font-weight:700; color:#0A3D63">24 of 28</p>
+      <h3 style="font-size:30px; font-weight:600">diabetics with no statin</h3>
+      <p style="font-size:25px; color:#5C6C80; line-height:1.35">Invisible one chart at a time. Only a systematic sweep finds it.</p>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px; background:#FFFFFF; border:1px solid #C1CFD8; border-radius:12px; padding:36px">
+      <p style="font-size:64px; font-weight:700; color:#B42318">39 of 100</p>
+      <h3 style="font-size:30px; font-weight:600">hold an impossible lab value</h3>
+      <p style="font-size:25px; color:#5C6C80; line-height:1.35">So any list built naively is partly built on records that cannot be correct.</p>
+    </div>
+  </div>
+
+  <p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#5C6C80">Panel review &middot; synthetic EHR, 100 patients, 153 annual wellness visits &middot; real caseloads are multiples of this</p>
+  <aside>The user is the panel manager, not the physician mid-visit. Different latency, different risk. Lead with the ranking problem: the product's job is to decide which patients get acted on, with the reason attached.
+
+WHERE "six to twenty a day" COMES FROM, if asked: the 2025 CDI Week Industry Survey, reported in the ACDIS Q&A on Productivity. Most respondents complete 6-10 new patient reviews per day (59.78%), then 11-15 (18.95%); the CDI specialist interviewed runs an expected daily average of 20 including re-reviews. Give the caveat before they do - that is inpatient clinical documentation integrity, a different role and setting from population-health panel work, which carries outreach the CDI number does not. It is cited as evidence that READING is fast, which is the point, not as a throughput target for this user. An earlier version of this slide claimed a nurse reviews about fifteen a week; that was an assumption I could not source, and the argument is stronger without it. The third number is the one to dwell on - it is why data judgment came before any modelling. Do not hide the A/B line and do not over-claim it: n=3 an arm, the single-agent instruction has had far less tuning, and the canary gap shrinks to 4-of-8 versus 3-of-3 once my own five-run eval is pooled in. The latency gap is the robust part - 267 to 405 seconds against 98 to 162, no overlap. If they push, the answer is that I would ship the single agent and keep the floor, the structured store and the uncited-high check, because the A/B held those constant and neither arm drives uncited findings to zero. Volunteering a negative result about my own architecture is the whole point of the next two slides.</aside>
+</section>

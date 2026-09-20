@@ -1,0 +1,66 @@
+<section id="safety" data-transition="fade" style="background:#F9FCFF; color:#0A3D63; font-family:'Inter', Arial, sans-serif; padding:104px 128px 140px; display:flex; flex-direction:column; gap:30px">
+  <div style="display:flex; flex-direction:column; gap:12px">
+    <p style="font-size:26px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#058BE8">Safety and what is actually verified</p>
+    <h2 style="font-size:58px; font-weight:700; line-height:1.15">No model computes what code can compute</h2>
+    <p style="font-size:28px; line-height:1.4; color:#5C6C80; width:1600px">The second control on the last slide, stated as a rule. It is not a rule against using the model &mdash; it is what makes the judgement left to it worth trusting.</p>
+  </div>
+
+  <div style="display:flex; gap:32px; align-items:stretch">
+    <div style="flex:1; display:flex; flex-direction:column; gap:12px; background:#FFFFFF; border:1px solid #C1CFD8; border-radius:12px; padding:28px 32px">
+      <h3 style="font-size:31px; font-weight:600">What is left to the model &mdash; and worth it</h3>
+      <ul style="font-size:25px; line-height:1.45; color:#5C6C80; margin:0">
+        <li>Whether a gap is real given the whole regimen</li>
+        <li>Whether an unreturned test still matters</li>
+        <li>Whether a rate is clinically credible</li>
+        <li>What to raise first, and in what words</li>
+      </ul>
+      <p style="font-size:25px; line-height:1.4; color:#5C6C80">None of those is a calculation, and it found defects I had missed: an SpO&#8322; of 126%, six digoxin levels with nobody prescribed digoxin, an INR ordered for a patient on a DOAC.</p>
+    </div>
+    <div style="flex:1.35; display:flex; flex-direction:column; gap:14px; background:#FFFFFF; border:1px solid #C1CFD8; border-radius:12px; padding:28px 32px">
+      <div style="display:flex; align-items:baseline; gap:18px; flex-wrap:wrap">
+        <h3 style="font-size:31px; font-weight:600">What the controls bought</h3>
+        <p style="font-size:24px; color:#5C6C80">Same five&#8209;run eval, first build and today</p>
+      </div>
+      <div style="display:flex; gap:24px">
+        <div style="flex:1.2; display:flex; flex-direction:column; gap:4px; border-left:6px solid #058BE8; padding-left:16px">
+          <p style="font-size:23px; color:#5C6C80">Overdue INR surfaced</p>
+          <p style="font-size:31px; font-weight:700"><span style="color:#B42318">1 in 5</span> <span style="color:#C1CFD8">&rarr;</span> 5 in 5</p>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; gap:4px; border-left:1px solid #C1CFD8; padding-left:16px">
+          <p style="font-size:23px; color:#5C6C80">Named every run</p>
+          <p style="font-size:31px; font-weight:700">23 <span style="color:#C1CFD8">&rarr;</span> 57</p>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; gap:4px; border-left:1px solid #C1CFD8; padding-left:16px">
+          <p style="font-size:23px; color:#5C6C80">Invariants failing</p>
+          <p style="font-size:31px; font-weight:700">2 <span style="color:#C1CFD8">&rarr;</span> 0 of 8</p>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; gap:4px; border-left:1px solid #C1CFD8; padding-left:16px">
+          <p style="font-size:23px; color:#5C6C80">Run&#8209;to&#8209;run overlap</p>
+          <p style="font-size:31px; font-weight:700">0.56 <span style="color:#C1CFD8">&rarr;</span> 0.90</p>
+        </div>
+      </div>
+      <p style="font-size:25px; line-height:1.4; color:#5C6C80">All eight invariants hold 5 runs in 5, six verified facts are surfaced in every run, and the run went from <b style="color:#0A3D63">$0.38 to $0.28</b> on the API&rsquo;s own token counts. Findings per run fell 29.8 to 24.6 &mdash; duplicates merging, not findings lost.</p>
+    </div>
+  </div>
+
+  <div style="background:#FFFFFF; border:1px solid #C1CFD8; border-left:6px solid #B42318; border-radius:12px; padding:24px 32px; display:flex; flex-direction:column; gap:12px">
+    <div style="display:flex; align-items:baseline; gap:18px">
+      <h3 style="font-size:30px; font-weight:600; color:#B42318">Residual risk &mdash; named, not mitigated</h3>
+      <p style="font-size:24px; color:#5C6C80">The previous slide is what is controlled. This is what is not, and what each one needs.</p>
+    </div>
+    <div style="display:flex; gap:30px">
+      <div style="flex:1; display:flex; flex-direction:column; gap:6px">
+        <p style="font-size:25px; line-height:1.35; color:#0A3D63"><b>No contraindication data exists.</b> There is no allergy, intolerance or preference anywhere in the extract, so &ldquo;24 of 28 diabetics have no statin&rdquo; cannot tell a care gap from a documented reason. <span style="color:#5C6C80">Needs: that data, before any recommendation is shown as a gap.</span></p>
+        <p style="font-size:25px; line-height:1.35; color:#0A3D63"><b>Nothing validates the ranking.</b> Every control opposite verifies that a <i>fact</i> is true; none verifies that a <i>priority</i> is, and the product is an ordering. <span style="color:#5C6C80">Partly addressed: a transparent score decomposes each patient into named contributions a clinician can edit, and it agrees with the agents on 6 of 12. Needs: 25 pairwise comparisons &mdash; fifteen minutes, not a labelling project.</span></p>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; gap:6px">
+        <p style="font-size:25px; line-height:1.35; color:#0A3D63"><b>The model is not pinned.</b> A provider&#8209;side update changes behaviour and nothing re&#8209;runs the eval. <span style="color:#5C6C80">Needs: a pinned snapshot and the five&#8209;run eval as a release gate.</span></p>
+        <p style="font-size:25px; line-height:1.35; color:#0A3D63"><b>Note text is untrusted input.</b> Free text reaches a model in the reconciliation step. Benign in synthetic data; not an assumption that survives production. <span style="color:#5C6C80">Needs: treating note content as data, never instruction.</span></p>
+      </div>
+    </div>
+    <p style="font-size:25px; line-height:1.35; color:#5C6C80">Nothing here recommends a drug or a dose, and no finding is actioned without a human reading the evidence behind it.</p>
+  </div>
+
+  <p style="position:absolute; left:128px; bottom:56px; font-size:24px; color:#5C6C80">Human in the loop: the criteria plan is approved before the cohort, and data&#8209;quality flags render above clinical content</p>
+  <aside>Land the headline first - it is the one sentence worth remembering from the whole deck. Then make the positive case, because the previous slide was five controls constraining the model and this is where it earns its place: none of the four items on the left is a calculation, and the model found real defects I had missed. The right-hand panel is the evidence for row 3 of the previous table, re-measured today rather than quoted from the build that introduced the floor - the floor is not a hedge, it measurably changed what the system guarantees, and it got cheaper. The red box is the point of the pair: the previous slide is the controlled hazards, this is the accepted residual, and naming it with what it needs is what a hazard analysis looks like. Volunteering the limit is stronger than being asked for it, and "I am not a clinician so precision is unvalidated" is a better answer than a number I cannot defend. The first item is the one I would fix first and it is a data problem, not a modelling problem - which is worth saying out loud, because it is the honest answer to "what would you do with a real extract".</aside>
+</section>

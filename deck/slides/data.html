@@ -1,0 +1,47 @@
+<section id="data" data-transition="fade" style="background:#F9FCFF; color:#0A3D63; font-family:'Inter', Arial, sans-serif; padding:104px 128px 140px; display:flex; flex-direction:column; gap:30px">
+  <div style="display:flex; flex-direction:column; gap:12px">
+    <p style="font-size:26px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#058BE8">What the data actually is</p>
+    <h2 style="font-size:58px; font-weight:700; line-height:1.15">Four findings that changed the design</h2>
+    <p style="font-size:28px; line-height:1.4; color:#5C6C80; width:1600px">I audited the data before building anything. Each of these closed off an obvious product and opened a better one.</p>
+  </div>
+
+  <table style="font-family:'Inter', Arial, sans-serif; font-size:26px; color:#0A3D63; border:1px solid #C1CFD8; border-radius:12px; padding:16px">
+    <tr style="background:#FFFFFF">
+      <th style="width:25%; text-align:left; font-size:24px; font-weight:600; color:#5C6C80">Finding</th>
+      <th style="width:29%; text-align:left; font-size:24px; font-weight:600; color:#5C6C80">Evidence</th>
+      <th style="width:46%; text-align:left; font-size:24px; font-weight:600; color:#5C6C80">What it changed</th>
+    </tr>
+    <tr>
+      <td><b>The notes are generated from the tables</b></td>
+      <td>153 of 153 fields agree &mdash; conditions, medications, BP, BMI</td>
+      <td>No extraction &mdash; it would be a lossy reimplementation of a join. The notes became a <b>check on</b> the brief instead, and that check finds three encounters where the note says labs were ordered and not one came back.</td>
+    </tr>
+    <tr style="background:#FFFFFF">
+      <td><b>The two lab tables do not join</b></td>
+      <td>0 of 1,288 <span style="color:#5C6C80">ORDER_PROC_ID</span> match; values and dates disagree</td>
+      <td>Kept separate, each keyed to the encounter. An invented linkage would have been 60% fabricated rows.</td>
+    </tr>
+    <tr>
+      <td><b>No medication is ever stopped</b></td>
+      <td><span style="color:#5C6C80">END_DATE</span> and <span style="color:#5C6C80">DISCON_TIME</span> 100% null; all 522 read Active</td>
+      <td>&ldquo;Patient is on X&rdquo; is unanswerable. &ldquo;Patient never had X&rdquo; still holds &mdash; which is why care gaps survive as findings and duplicate&#8209;therapy claims do not.</td>
+    </tr>
+    <tr style="background:#FFFFFF">
+      <td><b>Systolic and diastolic generated independently</b></td>
+      <td>27 of 100 have an impossible pulse pressure; one reads 108/111</td>
+      <td>Blood pressure is staged against ACC/AHA thresholds, and implausible readings are separated out as data defects rather than clinical findings.</td>
+    </tr>
+  </table>
+
+  <div style="display:flex; gap:30px; align-items:stretch">
+    <div style="flex:1; background:#FFFFFF; border:1px solid #C1CFD8; border-left:6px solid #ED8D02; border-radius:12px; padding:24px 30px; display:flex; flex-direction:column; gap:8px">
+      <p style="font-size:24px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#5C6C80">How I found the third one</p>
+      <p style="font-size:26px; line-height:1.4; color:#0A3D63">The review reported <b>&ldquo;clinically dangerous triple anticoagulation&rdquo;</b> &mdash; one patient on three DOACs at once. Alarming, specific, repeated in three runs. The start dates are March 2023, July 2024 and December 2025: sequential switching, read as concurrent because <b>nothing is ever recorded as stopped</b>. The data defect and the wrong claim are the same fact.</p>
+    </div>
+  </div>
+
+  <p style="position:absolute; left:128px; bottom:56px; font-size:25px; color:#5C6C80">Every figure here is reproducible from <span style="color:#0A3D63">demo_queries.sql</span> and the test suite &mdash; and the judging of it is itself a product surface. <b style="color:#0A3D63">Let me show you it running.</b></p>
+  <aside>This is the slide to spend time on. The notes finding is the one they are most likely to push on, so lead with it rather than defending it later: I audited them first, they agree 153 out of 153, so extraction adds nothing - here is the query. Then say where the model went instead. The orange box is the honest beat: I did not find "no medication is ever stopped" by reading a schema, I found it because the system made a frightening claim and I asked which columns it could possibly be reading. Two findings held back for questions rather than crowding the slide. ICD-10 codes fragment across near-duplicates, so grouping on the raw code halves most cohorts - hypertension is 46 patients across two codes, not 25; it is the single best example of real preprocessing, silent and quantified. And provider attribution is random, chi-square over df = 0.94, so scope-of-practice analysis is not supportable at all - some note authors are credentialled DVM.
+
+THIS IS THE PIVOT. The last line hands over to the demo, and the first thing to open is the Pre-flight data audit tab, not the panel review. It is cached so it renders instantly, the impossible / internally inconsistent / population-dependent split reads at a glance, and it makes the point this slide has been making: the audit ran before any patient logic did. The line to say is that the slide is what I found, and this is the thing that finds it. Only two of these four findings appear in that tab, so do not imply it covers the slide - the notes audit and the lab-table join are mine, not its.</aside>
+</section>
