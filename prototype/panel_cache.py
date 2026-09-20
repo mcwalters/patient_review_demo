@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 CACHE = Path(__file__).parent / "panel_cache.json"
+BRIEFS = Path(__file__).parent / "brief_cache.json"
 
 
 def save(goal: str, result: tuple, rejected: list[dict] | None = None) -> Path:
@@ -69,6 +70,52 @@ def age_phrase(blob: dict) -> str:
             n = max(1, int(secs // div))
             return f"{n} {unit}{'s' if n != 1 else ''} ago"
     return "a while ago"
+
+
+# ------------------------------------------------------------------ briefs
+# A brief is a model call plus a reconciliation pass -- about forty seconds
+# warm, and noticeably longer on a cold server.
+# It was cached in st.session_state, which is per browser session: restart the
+# server or open a second tab and every patient costs that again.
+# On a fixed extract the answer never changes, so it belongs on disk.
+
+
+def load_briefs() -> dict[str, tuple]:
+    """Every saved brief. Unreadable or malformed means empty, never an error."""
+    if not BRIEFS.exists():
+        return {}
+    try:
+        blob = json.loads(BRIEFS.read_text())
+    except (json.JSONDecodeError, OSError):
+        return {}
+    if not isinstance(blob, dict):
+        return {}
+    return {k: (v.get("narrative", ""), v.get("pack", {}))
+            for k, v in blob.items() if isinstance(v, dict)}
+
+
+def save_brief(patient: str, narrative: str, pack: dict) -> None:
+    """Add one brief to the file, keeping whatever is already there.
+
+    A brief that failed is not cached -- pack carries an "error" key and the
+    next click should try again rather than replay the failure for ever.
+    """
+    if not narrative.strip() or "error" in pack:
+        return
+    blob = {}
+    if BRIEFS.exists():
+        try:
+            blob = json.loads(BRIEFS.read_text())
+        except (json.JSONDecodeError, OSError):
+            blob = {}
+        # Same guard as load_briefs. Without it, writing over a corrupt file
+        # raised instead of replacing it -- the read path tolerated the wreckage
+        # and the write path fell over on it.
+        if not isinstance(blob, dict):
+            blob = {}
+    blob[patient] = {"narrative": narrative, "pack": pack,
+                     "saved_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    BRIEFS.write_text(json.dumps(blob, indent=1, default=str))
 
 
 def main() -> None:
