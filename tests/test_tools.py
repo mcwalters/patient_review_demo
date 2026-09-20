@@ -753,3 +753,62 @@ def test_rank_correlation_sees_what_jaccard_cannot():
         == ["Stein, Larry", "Cain, Jacob", "Black, Tyler"]
     # A patient the report never names has no rank and is dropped, not ranked 0.
     assert "Nobody, Here" not in m.shortlist_order(report, ["Nobody, Here"])
+
+
+def test_the_score_rolls_conditions_up_before_counting_them():
+    """I10 and I11.9 are one hypertension; three E78 codes are one dyslipidaemia.
+
+    Scoring raw codes would inflate comorbidity exactly as grouping on them
+    halves cohorts -- the same fragmentation the README documents.
+    """
+    from prototype.score import _rollup, score_panel
+    assert _rollup("I11.9") == "I11" and _rollup("I10") == "I10"
+    assert {_rollup(c) for c in ("E78.00", "E78.1", "E78.5")} == {"E78"}
+
+    scored = score_panel()
+    for s in scored:
+        burden = [c for c in s.contributions if c.component == "burden"]
+        cats = [c.because.split("category ")[-1].rstrip(")") for c in burden]
+        assert len(cats) == len(set(cats)), f"{s.patient} counted a category twice"
+
+
+def test_the_score_is_deterministic_and_adds_up():
+    """A model wrote the weights once. Code applies them, so nothing drifts."""
+    from prototype.score import score_panel
+    a, b = score_panel(), score_panel()
+    assert [(s.patient, s.total) for s in a] == [(s.patient, s.total) for s in b]
+    for s in a:
+        assert s.total == round(sum(c.points for c in s.contributions), 2)
+        assert sum(s.by_component().values()) == pytest.approx(s.total)
+
+
+def test_the_score_can_actually_rank_this_panel():
+    """Burden alone sorts 100 people into about four buckets.
+
+    The median patient has 2 distinct conditions and the maximum is 4, which is
+    why instability and neglect are not optional extras.
+    """
+    from prototype.score import score_panel
+    scored = score_panel()
+    assert len(scored) == 100
+    assert len({s.total for s in scored}) > 20, "not enough resolution to rank"
+
+    burden_only = {round(sum(c.points for c in s.contributions
+                             if c.component == "burden"), 2) for s in scored}
+    assert len(burden_only) < 10, "burden alone was expected to be coarse"
+
+    # Neglect dominates by design: something undone outranks something present.
+    top = scored[0]
+    assert top.by_component().get("neglect", 0) > top.by_component().get("burden", 0)
+
+
+def test_every_score_explains_itself():
+    """If it cannot be read aloud to a clinician it is not doing its job."""
+    from prototype.score import score_panel
+    for s in score_panel():
+        if not s.contributions:
+            continue
+        text = s.explain()
+        assert s.patient in text and f"{s.total:g}" in text
+        for c in s.contributions:
+            assert c.label in text and c.because in text

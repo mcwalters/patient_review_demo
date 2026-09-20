@@ -1,0 +1,102 @@
+{
+ "rationale": "Weights prioritize actionable needs (neglect) over stable illness (burden), as the goal is to identify who needs nurse attention, not who is sickest. Burden scores are anchored to Charlson comorbidity weights where applicable, with other conditions scored based on their potential for preventable decline.",
+ "burden": {
+  "default": 1,
+  "categories": {
+   "E02": 1,
+   "E03": 1,
+   "E06": 1,
+   "E11": 2,
+   "E78": 1,
+   "F32": 2,
+   "F33": 2,
+   "F41": 1,
+   "I10": 1,
+   "I11": 1,
+   "I48": 2,
+   "I50": 2,
+   "J44": 1,
+   "J45": 1,
+   "K21": 1,
+   "N95": 0,
+   "Z30": 0
+  }
+ },
+ "instability": {
+  "default": 1,
+  "impossible": 2,
+  "analytes": {
+   "ALT": 1,
+   "AST": 1,
+   "BNP": 3,
+   "BUN": 2,
+   "Basic Metabolic Panel \u2014 Creatinine": 3,
+   "CBC \u2014 Hemoglobin": 2,
+   "CBC \u2014 WBC": 1,
+   "Digoxin Level": 3,
+   "Eosinophil Count": 1,
+   "Estradiol Level": 0,
+   "FSH": 0,
+   "Fasting Glucose": 2,
+   "Free T3": 2,
+   "Free T4": 2,
+   "H. pylori Ag Stool": 0,
+   "HDL Cholesterol": 1,
+   "HbA1c": 2,
+   "INR / PT": 3,
+   "IgE Total": 1,
+   "LDL Cholesterol": 1,
+   "LH": 0,
+   "Lipid Panel \u2014 Total Chol": 1,
+   "Magnesium": 2,
+   "NT-proBNP": 3,
+   "Peak Flow": 3,
+   "Potassium": 3,
+   "Sodium": 2,
+   "SpO2": 3,
+   "TSH": 2,
+   "Total Cholesterol": 1,
+   "Triglycerides": 1,
+   "Urine Albumin/Creat Ratio": 2,
+   "Vitamin B12": 1,
+   "Vitamin D 25-OH": 1,
+   "aPTT": 3,
+   "eGFR": 3
+  },
+  "bp_stages": [
+   [
+    180,
+    3,
+    "Crisis"
+   ],
+   [
+    160,
+    2,
+    "Stage 2 High"
+   ],
+   [
+    140,
+    1,
+    "Stage 2 Low"
+   ]
+  ]
+ },
+ "neglect": {
+  "order_months": [
+   [
+    11,
+    10
+   ],
+   [
+    5,
+    5
+   ],
+   [
+    2,
+    2
+   ]
+  ],
+  "live_indication_bonus": 2,
+  "guideline_gap": 12
+ }
+}
