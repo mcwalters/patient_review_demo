@@ -135,7 +135,7 @@ def main():
     # Progress notes are templated prose generated FROM the structured tables:
     # four note styles, six slots, and every value agrees exactly with
     # ip_flwsht_meas / pat_enc_dx / order_med. Parsing them recovers structure
-    # rather than discovering anything new -- see query 12 for the audit.
+    # rather than discovering anything new -- see test_the_notes_hold_no_clinical_fact_the_tables_do_not.
     con.execute(r"""
     CREATE VIEW v_note_extract AS
     WITH parsed AS (

@@ -1,48 +1,148 @@
-# fake_ehr — synthetic EHR demo dataset
+# fake_ehr — a panel manager's worklist over a synthetic EHR
 
-A synthetic Epic Clarity–style extract built around the **Annual Wellness Visit (AWV)**,
-loaded into a single-file DuckDB database for local analytics.
+A Streamlit demo in which agents rank a 100-patient panel by who needs
+attention this week. The user is the population-health nurse who works the
+list between visits; the product's job is **prioritisation, not retrieval** —
+where to point scarce attention for the most urgent clinical need.
+
+Gemini 2.5 Pro on Vertex AI via application default credentials. No model
+writes SQL, and no model computes what code can compute. The data is a
+synthetic Epic Clarity–style extract (`data/`, 14 CSVs) loaded into a
+single-file DuckDB database.
+
+## Run it
 
 ```bash
 python -m venv .venv && ./.venv/bin/pip install -r requirements.txt
-./.venv/bin/python build_db.py      # writes ehr.duckdb
+gcloud auth application-default login          # project accorded-lake, us-west1
+./.venv/bin/python build_db.py                 # writes ehr.duckdb: 14 tables, 7 views
+./.venv/bin/python -m streamlit run prototype/app.py \
+    --server.port 8501 --server.headless true --server.fileWatcherType none
 ```
 
-`ehr.duckdb` is derived and gitignored — rebuild it any time from `data/`.
+`ehr.duckdb` is derived and gitignored — rebuild it, never patch it. The
+`--server.fileWatcherType none` flag matters: with the watcher on, editing any
+file under `prototype/` during an agent run cancels the run.
 
-## Prototype
+The app opens on a **saved panel review**, so the first screen renders
+instantly rather than after a three-minute agent run. The *Run panel review*
+button is still there for anyone who wants to watch it work end to end.
 
-[`prototype/`](prototype/README.md) holds a working GenAI prototype built on this
-data: **a panel manager's worklist**. The user is the population-health nurse who
-works a list of 100 patients between visits and can meaningfully review about
-fifteen a week — so the product's job is ranking, not retrieval.
+## What is on screen
 
-A supervisor agent decides which of three specialists to consult and in what
-order: `data_integrity` (which records cannot be trusted), `guideline_concordance`
-(who is missing recommended therapy) and `followup` (what was started and never
-finished). Clicking any patient opens a pre-visit brief. Gemini 2.5 Pro on Vertex
-AI via application default credentials — no API key.
+Six sections, reached from the control at the top. A patient name anywhere in
+the app is a link to that patient's brief.
+
+| Section | What it shows | Model involved? |
+|---|---|---|
+| **Panel review** | The supervisor's ranked shortlist (capped at twelve), its report with every number cited to a finding id, and the findings store beneath it. A free-text steer ("I am running a diabetes clinic on Thursday") changes what the specialists are briefed to look for, not just how the answer is worded. | Yes — supervisor, three specialists, an extractor |
+| **Patient brief** | Everything on file for one patient, assembled deterministically, with a narrative on top and a reconciliation of the brief against the clinician's own note. | Yes — one writer, one reconciler with no tools |
+| **Priority score** | A transparent per-patient score (burden / instability / neglect) that decomposes into named contributions a clinician can disagree with line by line. Compared against the review's ranking as convergent validity. | No — a model wrote the weights once, offline, into `score_weights.json`; code applies them |
+| **Pre-flight data audit** | Clinical plausibility of the extract, run before any patient logic. Splits *impossible* values (a defect whatever the population) from *population-dependent* rates (a question for whoever supplied the data). | Yes — an auditing agent, cached |
+| **What the model may select** | The controlled vocabulary — 30 diagnoses, 42 drug classes, 36 analytes — that every agent must choose from. A code absent from the dataset is refused at registration. | No |
+| **Guidelines used** | The four-recommendation guideline pack `guideline_concordance` checks against, with its disclaimer and the deterministic population SQL behind each. | No |
+
+An earlier protocol-screening view is off the nav but still reachable at
+`?view=Screen%20a%20protocol`; it is not part of the presented product.
+
+## How it works
+
+```
+Pre-flight audit ──────────────────────────────┐   (runs first, judges the extract)
+                                               ▼
+Supervisor ── briefs all three at once ──► data_integrity · guideline_concordance · followup
+                                               │  (concurrent; they cannot read each other)
+                                               ▼
+                                     Finding extractor: prose → typed rows
+                                               ▼
+Floor (9 computed findings) ──────────► Findings store ──► Pre-visit brief ──► Note reconciliation
+                                               │
+                              DuckDB · tools.py builds every query · 0 model-written SQL
+```
+
+- **The floor.** Nine findings whose absence would harm someone — drug
+  monitoring mismatches, hypertensive crisis, stale orders with a live
+  indication, HFrEF therapy gaps — are computed and seeded into the store
+  *before* any agent runs. The review refuses to start if the count is wrong.
+  A five-run eval showed agents reliably surface what a deterministic sweep
+  backs and unreliably surface what competes for a reporting slot; the floor
+  removes the choice.
+- **Structured hand-offs.** Findings travel between agents as typed rows, not
+  prose. A finding naming a patient who is not on the roster is refused; one
+  whose evidence discusses a patient it does not list is flagged; the same
+  problem worded twice is one finding.
+- **Code checks the report.** Any high-severity finding the supervisor's
+  narrative fails to cite is raised above the report. An empty report is
+  announced, not swallowed.
+- **Notes are data, never instructions.** The reconciliation agent holds no
+  tools and is bound to a fixed output schema, so a note cannot make it act. A
+  planted prompt-injection note (`fixtures.py`) is reported as a high-severity
+  conflict rather than obeyed.
+- **Every control ships with a fault that trips it** (`faults.py`), because a
+  control nobody has watched fail is not a control.
+
+The full architecture, the controls and their failure modes, and the A/B
+against a single agent are in [`prototype/README.md`](prototype/README.md).
+
+## The caches, and when they go stale
+
+Three artifacts are saved to disk so the demo never waits on a model: the
+panel review (`prototype/panel_cache.json`), the pre-visit briefs
+(`prototype/brief_cache.json`) and the audit (`prototype/preflight_findings.json`).
+Each is real output from a real run, not a fixture.
+
+The review and the briefs carry a **fingerprint** of the database plus the
+eight modules their behaviour depends on — `panel.py`, `floor.py`, `tools.py`,
+`brief.py`, `reconcile.py`, `guidelines.py`, `vocab.py`, `rules.py`. Edit any
+of them and the saved review is shown with a *stale* warning and the briefs are
+dropped, because a cache that is merely stale looks exactly like a current
+result. Regenerate with:
 
 ```bash
-streamlit run prototype/app.py
+./.venv/bin/python -m prototype.panel_cache     # ~3 min, ~$0.15–0.30
+./.venv/bin/python -m prototype.preflight       # the data audit
 ```
 
-Two rules hold throughout: **no model writes SQL**, and **no model computes what
-code can compute**. Every bug in the build came from breaking the second one. See
-[`prototype/README.md`](prototype/README.md) for the architecture, the safety
-properties, and the failure modes with their fixes.
+Briefs regenerate themselves on the next click, about forty seconds each.
 
-Thirteen worked examples live in [`demo_queries.sql`](demo_queries.sql) — panel
-snapshot, chronic-condition registry, care gaps (uncontrolled hypertension,
-heart failure missing guideline-directed therapy, AFib without anticoagulation),
-lab trajectories, outstanding orders, polypharmacy, note search, and two on the
-notes themselves (an extraction audit and the template distribution):
+## Verifying it
 
 ```bash
-duckdb ehr.duckdb -f demo_queries.sql
+./.venv/bin/python -m pytest tests/ -q          # 70 tests, ~7s, no model
+./.venv/bin/python evals/stability.py 5         # ~25 min, ~$1.40
+./.venv/bin/python -m prototype.score           # the priority score, top ten
 ```
+
+The tests re-derive every tool's answer in independent SQL and pin every
+figure quoted on the slides — the note audit, the lab-table scope, the
+blood-pressure correlation, the statin gap. The stability eval runs the review
+N times and reports ten invariants, coverage of independently verified facts,
+and how much the shortlist and its order move between runs (Jaccard and
+Spearman).
+
+Defects that are diagnosed and deliberately not fixed, each with its cost, are
+in [`KNOWN_ISSUES.md`](KNOWN_ISSUES.md), alongside the behaviour that looks
+wrong and is not.
+
+## Repository map
+
+| Path | What it is |
+|---|---|
+| `prototype/` | The app and the agents. See its [README](prototype/README.md). |
+| `build_db.py` | Loads `data/*.csv` into `ehr.duckdb` and defines the views. |
+| `tests/test_tools.py` | The regression suite. |
+| `evals/stability.py` | The repeated-run eval; `stability_results.json` and `steer_test.json` are its last outputs. |
+| `Panel Review — take-home reasoning.pdf` | The four presentation slides, exported from the published deck on 2026-09-21. The tests pin every figure on them. |
+| `KNOWN_ISSUES.md` | Diagnosed, reproducible, not fixed. |
+| `CLAUDE.md` | Operational notes that are easy to get wrong — the file watcher, the database lock, why `curl` cannot verify the UI. |
 
 ---
+
+# The data
+
+Everything below is a measured property of the extract. Each figure is pinned
+by a test in `tests/test_tools.py`, and several of them are what the product's
+design follows from.
 
 ## What we received
 
@@ -69,9 +169,11 @@ detail hangs off those encounters.
 | `order_proc_awv` | 588 | lab order | labs ordered **at** the AWV, result inline |
 | `order_results` | 1,288 | observation | **longitudinal** lab history |
 
-### The two lab tables are separate on purpose
+### The two lab tables are different datasets
 
-They describe different parts of the care journey and are **not** a parent/child pair:
+These are Epic Clarity names, and in Clarity `ORDER_RESULTS` is a child of
+`ORDER_PROC`, so the join is expected to work. It does not, and the reason is
+scope rather than corruption:
 
 |  | `order_proc_awv` | `order_results` |
 |---|---|---|
@@ -80,27 +182,27 @@ They describe different parts of the care journey and are **not** a parent/child
 | Result data | inline on the row | inline + reference ranges |
 | Pending | 120 of 588 unresulted (74 actionable) | n/a |
 
-Of the 120 unresulted orders, **34 are superseded** — the patient has a later
-result for that analyte in `order_results`, so the order was effectively
-answered even though nothing was attached to it. A further 12 monitor a
-condition the patient does not carry. **74 are genuinely outstanding.** Quoting
-120 as the size of the follow-up problem overstates it by nearly a third;
-`prototype.panel._pending_orders()` does this triage deterministically.
+Only 127 of the 1,288 results fall within two months of the visit; the parent
+orders for the rest were never in the extract. `ORDER_PROC_ID` values are
+disjoint (0 of 1,288 match). The fallback join a reasonable person then reaches
+for — patient plus analyte — returns rows, just the wrong ones: it falsely
+resolves **85 of the 120** pending orders against a result from a different
+year. So the tables are kept independent, each keyed to the encounter, and
+"never resulted" is read from a single row.
 
-`ORDER_PROC_ID` values are disjoint between them (0 of 1,288 match), and where
-the same encounter+analyte appears in both, the values and dates disagree. So
-they are kept independent, each keyed to the **encounter**, never to each other.
+Of the 120 unresulted orders, **34 are superseded** by a later result for the
+same analyte and 12 monitor a condition the patient does not carry. **74 are
+genuinely outstanding.** `prototype.panel._pending_orders()` does this triage
+deterministically.
 
----
-
-## How it's represented in DuckDB
+## How it is represented in DuckDB
 
 **14 tables** — one per CSV, loaded verbatim with full-file type inference
 (`sample_size=-1`), so dates land as `DATE`/`TIMESTAMP` rather than text.
 Columns that are 100% empty in the source are explicitly typed in `FORCE_TYPES`
 so they don't silently become `VARCHAR`.
 
-**6 views** — the analyst-facing layer:
+**Views** — the analyst-facing layer:
 
 | View | Rows | Purpose |
 |---|---|---|
@@ -135,23 +237,18 @@ Four quirks in the source data make the raw tables awkward to query directly:
 parses them into `note_style`, `conditions[]`, `medications[]`, `systolic`,
 `diastolic`, `bmi` and `followup_months`.
 
-Query 12 scores that extraction against the structured tables and every field
-comes back at **100%** — the notes agree exactly with `ip_flwsht_meas`,
-`pat_enc_dx` and `order_med`, because they were rendered from them.
+Across 153 notes, **zero** diagnoses and **zero** medications appear that are
+not already rows in the tables, and every parsed field agrees with
+`ip_flwsht_meas`, `pat_enc_dx` and `order_med` at 100% — because the notes were
+rendered from them. Strip the structured values and what remains is exactly
+four fixed sentences, one per template, with no variation. There is no
+negation, hedging, social history, symptom or exam narrative to find.
 
-So the notes are useful for demonstrating extraction *mechanics* against a known
-answer key, but they contain **no information that isn't already in a column**.
-There is no negation, hedging, social history, symptom or exam narrative to
-find. `followup_months` is always 12, and note style is unrelated to the
-authoring service.
-
----
-
-## Known issues in the prototype
-
-Defects that are diagnosed and not fixed, each with what the fix would cost,
-are in [KNOWN_ISSUES.md](KNOWN_ISSUES.md). That file also records the
-behaviour that looks wrong and is not, so it does not get "fixed".
+So there is nothing to *extract*. What the four sentences do carry is a claim
+that care was delivered — "labs ordered per guideline intervals" — which no
+column records. That is why the product uses the notes as a **check on** the
+brief rather than a source for it: the reconciler finds three encounters where
+the note claims labs were ordered and not one ever resulted.
 
 ## Known limits of the synthetic data
 
@@ -159,12 +256,13 @@ Worth knowing before you build a demo on it:
 
 - **Systolic and diastolic do not co-vary, so many blood pressures are not
   physiologically possible.** They correlate at r = −0.37 where real pressures
-  run +0.5 to +0.7, and the pulse-pressure distribution is flat rather than
-  peaked — so this is the shape of the whole column, not entry error in a
-  tail of it. How the generator produced that is not knowable from the data. Pulse pressure (systolic − diastolic)
-  should sit roughly between 20 and 100 mmHg. **27 of 100 patients** have a
-  latest reading outside that, and `Cervantes, Stephen` reads **108/111** —
-  diastolic above systolic, which cannot occur.
+  run +0.5 to +0.7, and the pulse-pressure distribution is flat from 20 to 119
+  rather than peaked — so this is the shape of the whole column, not entry
+  error in a tail of it. How the generator produced that is not knowable from
+  the data. Pulse pressure (systolic − diastolic) should sit roughly between 20
+  and 100 mmHg. **27 of 100 patients** have a latest reading outside that, and
+  `Cervantes, Stephen` reads **108/111** — diastolic above systolic, which
+  cannot occur.
 
   | reading | pulse pressure | |
   |---|---|---|
@@ -172,10 +270,7 @@ Worth knowing before you build a demo on it:
   | `Bender, Jessica` 111/104 | 7 | not a blood pressure |
   | `Ware, Cassandra` 180/61 | 119 | implausibly wide |
 
-  This is a generator flaw affecting a quarter of the panel, not a handful of
-  bad rows, and it undermines any query keyed on a BP threshold — including the
-  "uncontrolled hypertension, BP ≥ 140/90" cohort in `demo_queries.sql`. Some of
-  those patients do not have a real blood pressure. Screen on pulse pressure
+  This undermines any query keyed on a BP threshold. Screen on pulse pressure
   before treating a BP as usable. `prototype.panel.blood_pressure_staging()`
   does this and returns implausible readings separately from staged ones.
 
@@ -213,7 +308,8 @@ Worth knowing before you build a demo on it:
   `PROV_ID`, never on `PROV_NAME`**, and read credentials from `PROV_TYPE`
   rather than parsing the name.
 - **ICD-10 codes fragment across near-duplicates.** Grouping on the raw code
-  silently halves most cohorts. Roll up to condition families first.
+  silently halves most cohorts. Roll up to the 3-character category first, as
+  `v_diagnosis` consumers and `score.py` do.
 
   | family | true patients | largest single code | undercount |
   |---|---|---|---|
@@ -254,12 +350,14 @@ Worth knowing before you build a demo on it:
 
   The real defect is the missing discontinuation data, not the patients. Claims
   of the form "this patient is on X" are unreliable here. Claims of the form
-  "this patient has never had X" survive, which is why the guideline gaps above
-  are still usable.
+  "this patient has never had X" survive, which is why the guideline gaps are
+  findings and duplicate-therapy claims are not.
 - **Some prescribing rates are implausible.** PCSK9i appears in 16 of 100
   patients, half of them not on a statin; real-world use is 1–2% of a lipid
-  population and near-always statin-refractory. Useful for making a mechanism
-  legible, not for citing as epidemiology.
+  population and near-always statin-refractory. Absurd for general practice,
+  ordinary in a refractory-lipid clinic, and nothing in the extract says which
+  this is — so the audit reports it as a question about the population, not a
+  defect.
 - **There is almost no coverage data, and `COVERAGE_ID` is not a coverage key.**
   The entire footprint is two columns on `pat_enc`. `INSURANCE` holds three
   lowercase payer categories — `medicare` (82 encounters / 51 patients),
@@ -338,7 +436,8 @@ different templates, so the same person may be "counselled" in one note and not
 the other.
 
 The six parsed slots in `v_note_extract` are trustworthy — but only because they
-restate the structured tables, which is what query 12 verifies.
+restate the structured tables, which is what
+`test_the_notes_hold_no_clinical_fact_the_tables_do_not` verifies.
 
 ### What's clean
 
