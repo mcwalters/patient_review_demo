@@ -2,7 +2,7 @@
   <div style="display:flex; flex-direction:column; gap:12px">
     <p style="font-family:Inter, Arial, sans-serif; font-size:26px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#058be8">Safety and what is actually verified</p>
     <h2 style="font-family:Inter, Arial, sans-serif; font-size:58px; font-weight:700; line-height:1.15; color:#0a3d63">No model computes what code can compute</h2>
-    <p style="width:1600px; font-family:Inter, Arial, sans-serif; font-size:28px; line-height:1.4; color:#5c6c80">The second control on the last slide, stated as a rule. It is not a rule against using the model — it is what makes the judgement left to it worth trusting.</p>
+    <p style="width:1600px; font-family:Inter, Arial, sans-serif; font-size:28px; line-height:1.4; color:#5c6c80">Not a rule against using the model — it is what makes the judgement left to it worth trusting.</p>
   </div>
   <div style="display:flex; flex-direction:row; gap:32px">
     <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:28px 32px; background:#ffffff; border:1px solid #c1cfd8; border-radius:12px">
@@ -13,7 +13,7 @@
         <li>Whether a rate is clinically credible</li>
         <li>What to raise first, and in what words</li>
       </ul>
-      <p style="font-family:Inter, Arial, sans-serif; font-size:25px; line-height:1.4; color:#5c6c80">None of those is a calculation, and the model finds what the deterministic checks cannot express: an SpO₂ of 126%, six digoxin levels with nobody prescribed digoxin, an INR ordered for a patient on a DOAC.</p>
+      <p style="font-family:Inter, Arial, sans-serif; font-size:25px; line-height:1.4; color:#5c6c80">None is a calculation. The model found an SpO₂ of 126%, digoxin levels with nobody on digoxin, an INR for a patient on a DOAC.</p>
     </div>
     <div style="display:flex; flex-direction:column; gap:14px; flex:1.35; padding:28px 32px; background:#ffffff; border:1px solid #c1cfd8; border-radius:12px">
       <div style="display:flex; flex-direction:row; flex-wrap:wrap; gap:18px; align-items:baseline">
@@ -44,7 +44,7 @@
   <div style="display:flex; flex-direction:column; gap:12px; padding:24px 32px; background:#ffffff; border:1px solid #c1cfd8; border-radius:12px">
     <div style="display:flex; flex-direction:row; gap:18px; align-items:baseline">
       <h3 style="font-family:Inter, Arial, sans-serif; font-size:30px; font-weight:600; color:#b42318">Residual risk — named, not mitigated</h3>
-      <p style="font-family:Inter, Arial, sans-serif; font-size:24px; color:#5c6c80">The previous slide is what is controlled. This is what is not, and what each one needs.</p>
+      <p style="font-family:Inter, Arial, sans-serif; font-size:24px; color:#5c6c80">What is not controlled, and what each needs.</p>
     </div>
     <div style="display:flex; flex-direction:row; gap:30px">
       <div style="display:flex; flex-direction:column; gap:6px; flex:1">
@@ -54,7 +54,7 @@
         <p style="font-family:Inter, Arial, sans-serif; font-size:25px; line-height:1.35; color:#0a3d63"><b>The ranking is corroborated, not validated.</b> Every control opposite verifies a <i>fact</i>; none verifies a <i>priority</i>. <span style="color:#5c6c80">An independent score reaches a similar shortlist &mdash; evidence, not proof. Needs: 25 pairwise comparisons.</span></p>
       </div>
     </div>
-    <p style="font-family:Inter, Arial, sans-serif; font-size:25px; line-height:1.35; color:#5c6c80">Nothing here recommends a drug or a dose, and no finding is actioned without a human reading the evidence behind it.</p>
+    <p style="font-family:Inter, Arial, sans-serif; font-size:25px; line-height:1.35; color:#5c6c80">Nothing recommends a drug or a dose, and nothing is actioned without a human reading the evidence.</p>
   </div>
   <p style="position:absolute; bottom:56px; left:128px; font-family:Inter, Arial, sans-serif; font-size:24px; color:#5c6c80">Human in the loop: the criteria plan is approved before the cohort, and data‑quality flags render above clinical content</p>
   <aside>Land the headline first - it is the one sentence worth remembering from the whole deck. Then make the positive case, because the previous slide was six controls constraining the model and this is where it earns its place: none of the four items on the left is a calculation, and the model finds defects the deterministic checks cannot express. The right-hand panel is what the system currently measures about itself. Say EIGHT invariants, not nine: there are nine in the harness now, but the ninth - every high-severity finding reaches the report - was added after the five-run battery and has never been measured across five. Claiming nine would be claiming a measurement I have not taken. The right-hand panel is also the evidence for row 2 of the previous table - the floor is not a hedge; it is what makes nine findings present by construction rather than by luck. The red box is the point of the pair: the previous slide is the controlled hazards, this is the accepted residual, and naming it with what it needs is what a hazard analysis looks like. Volunteering the limit is stronger than being asked for it, and "I am not a clinician so precision is unvalidated" is a better answer than a number I cannot defend. Prompt injection moved to the previous slide, where it is a control rather than a residual: this extract is synthetic and given, so framing it as an operator-trust problem was beside the point. Model pinning came off this list deliberately: it is a deployment concern and this is a prototype, and a residual box that lists everything dilutes the ones that bear on whether the output can be trusted. The first item is the one I would fix first and it is a data problem, not a modelling problem - which is worth saying out loud, because it is the honest answer to "what would you do with a real extract". On the ranking item, corroborated is the precise word and worth using: two independent mechanisms reaching a similar answer is evidence they are not both arbitrary, and it is not evidence either is right, because neither is ground truth. The Priority score tab computes the disagreement live and it runs around five or six of twelve - do NOT quote a figure, because the score is deterministic and the agents' shortlist is not, so the number moves every run including any run done in the room. The point is not the number, it is that an unvalidated ranking has become a short specific list of patients two independent mechanisms disagree about, which is a question a clinician can answer in a meeting.</aside>
