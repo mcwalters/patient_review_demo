@@ -18,7 +18,7 @@
     </tr>
     <tr style="background:#FFFFFF">
       <td><b>The two lab tables are different datasets</b></td>
-      <td>588 orders placed <i>at</i> the visit against 1,288 results spanning &minus;727 to +345 days &mdash; only <b>127</b> of them within two months of it. No <span style="color:#5C6C80">ORDER_PROC_ID</span> is shared. Joining on patient&#8209;plus&#8209;analyte instead falsely resolves <b>85 of 120</b> pending orders.</td>
+      <td>588 orders placed <i>at</i> the visit against 1,288 results spanning &minus;727 to +345 days &mdash; only <b>127</b> of them within two months of it. No <span style="color:#5C6C80">ORDER_PROC_ID</span> is shared. Joining on patient&#8209;plus&#8209;analyte instead falsely resolves <b>85 of the 120</b> pending orders that triage narrows to 74.</td>
       <td>Kept separate, each keyed to the encounter. &ldquo;Never resulted&rdquo; is read from a single row, never from a join &mdash; the only reason it is a finding rather than a fabrication. Match them on patient and analyte and a pending order acquires a result from a different year.</td>
     </tr>
     <tr>
