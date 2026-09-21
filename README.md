@@ -1,4 +1,4 @@
-# fake_ehr — a panel manager's worklist over a synthetic EHR
+# a panel manager's worklist over a synthetic EHR
 
 A Streamlit demo in which agents rank a 100-patient panel by who needs
 attention this week. The user is the population-health nurse who works the
