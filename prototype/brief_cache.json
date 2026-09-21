@@ -1,6 +1,6 @@
 {
  "Mcdaniel, Dana": {
-  "narrative": "**Last seen**\n2026-04-24, by Barbara Newman (Family Medicine). Their next AWV is not due until 2027-04-24 (derived).\n\n**Why this patient, now**\nMcdaniel, Dana has outstanding orders for INR/PT and Digoxin level monitoring, but no prescription for warfarin or digoxin is on file. Given their history of atrial fibrillation, this suggests a critical gap in the medication record that needs urgent reconciliation.\n\n**What to raise**\n1.  Reconcile medications for atrial fibrillation. The patient has outstanding orders for INR/PT and Digoxin level monitoring but no record of being prescribed warfarin or digoxin.\n2.  Address stage 2 hypertension. Their last blood pressure was 156/79 on 2026-04-24 and no antihypertensive is listed on their medication profile.\n3.  Follow up on the ALT order open for 8 months. Their last ALT result from 2026-01-13 was elevated at 59.0 U/L.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped.",
+  "narrative": "**Last seen**\n2026-04-24 by Barbara Newman, Family Medicine; their next AWV is due 2027-04-24 (derived).\n\n**Why this patient, now**\nThis patient has outstanding orders for drug level monitoring (INR/PT, Digoxin Level) but has no record of being prescribed the corresponding medications. Other key orders have been open for over 6 months, suggesting a need to review and reconcile their chart to prevent clinical errors.\n\n**What to raise**\n*   **Inappropriate and outdated orders.** The patient has open orders for an INR / PT (ordered 2025-09-14) and a Digoxin Level (ordered 2026-04-24) without being on the drugs they monitor. An order for ALT has also been open since 2025-09-13.\n*   **Unaddressed hypertension.** Their blood pressure was 156/79 (stage 2) on 2026-04-24. This is a significant cardiovascular risk factor for a patient with Atrial Fibrillation and a BMI of 51.6.\n*   **Medication reconciliation.** The record shows four SSRI orders (starts from 2024-01-11 to 2025-09-19) and two H2 Blocker orders (starts 2023-01-16 and 2025-07-17). Clarifying their current regimen is necessary for safe prescribing.\n\n**Against the clinician's note**\nA note from 2025-09-15 reports a blood pressure of 156/79 and BMI of 51.6, identical to the values recorded on 2026-04-24. The brief's reliance on the more recent blood pressure reading may be misleading if the data was copied forward.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped.",
   "pack": {
    "patient": {
     "pat_id": "P200012",
@@ -235,22 +235,29 @@
     }
    ],
    "note_reconciliation": {
-    "conflicts": [],
+    "conflicts": [
+     {
+      "field": "vitals",
+      "brief_says": "BP 156/79 and BMI 51.6 recorded on 2026-04-24.",
+      "note_says": "A note from 2025-09-15 claims 'Today's vitals' were also BP 156/79 and BMI 51.6.",
+      "severity": "low",
+      "why_it_matters": "Vitals are identical across two visits seven months apart, suggesting a copy-forward error in the older note. This could obscure trends in the patient's condition."
+     }
+    ],
     "checked": [
      "conditions",
      "medications",
      "vitals",
-     "care claimed vs delivered in note from 2026-04-24",
-     "care claimed vs delivered in note from 2025-09-15"
+     "care claimed vs delivered"
     ],
     "note_count": 2
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:12:07+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:13:28+00:00"
  },
  "Padilla, Elizabeth": {
-  "narrative": "**Before you read on**\nThis patient's blood pressure reading of 177/71 cannot be correct as the pulse pressure of 106 is not physiologically possible. Any assessment of her blood pressure is therefore based on invalid data.\n\n**Last seen**\n2026-05-04 with Tina Wells, Internal Medicine. Her next AWV is due 2027-05-04 (derived).\n\n**Why this patient, now**\nPadilla, Elizabeth has multiple data integrity issues that obscure the management of her persistent atrial fibrillation and hypothyroidism. The record shows lab monitoring for drugs she is not listed as taking and contains a physiologically impossible blood pressure reading. Clarifying her medications and clinical status is the primary task.\n\n**What to raise**\n1.  **Atrial Fibrillation medication reconciliation:** The record is contradictory for the management of her persistent atrial fibrillation. There is a Digoxin level of 2.4 ng/mL from 2025-07-06 but no Digoxin on the medication list, and monitoring for INR (result 1.5) when the record shows she is on Apixaban. Clarifying her current medication regimen is essential for safety.\n2.  **Thyroid management:** For her hypothyroidism, recent labs are conflicting. Her TSH from 2026-02-13 is high at 4.7 mIU/L, but a Free T4 from 2024-11-17 was also high at 2.5 ng/dL. Her current Levothyroxine therapy needs review.\n3.  **Invalid blood pressure reading:** The most recent blood pressure of 177/71 is physiologically impossible. An accurate reading is needed to assess her cardiovascular risk.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "narrative": "**Before you read on**\nThe most recent blood pressure reading of 177/71 cannot be correct as its pulse pressure of 106 is not physiologically possible; any assessment of hypertension is therefore based on older data.\n\n**Last seen**\n2026-05-04 with Tina Wells, Internal Medicine. Her next AWV is due derived 2027-05-04.\n\n**Why this patient, now**\nPadilla, Elizabeth has persistent atrial fibrillation and hypothyroidism with lab results and outstanding orders that conflict with her medication list. The record shows monitoring for drugs she is not listed as taking (Warfarin, Digoxin) and her thyroid labs suggest her condition may be poorly controlled.\n\n**What to raise**\n1.  Anticoagulation and rate control for atrial fibrillation. The record shows an INR of 1.5 and an outstanding order for an INR/PT, which monitors Warfarin. However, her medication list shows Apixaban. Similarly, a lab from 2025-07-06 shows a Digoxin Level of 2.4 ng/mL, but she is not on Digoxin. This requires urgent medication reconciliation.\n\n2.  Management of hypothyroidism. Her most recent TSH was high at 4.7 mIU/L and a prior Free T4 was high at 2.5 ng/dL. This suggests her thyroid replacement may not be optimized.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
   "pack": {
    "patient": {
     "pat_id": "P200032",
@@ -488,33 +495,24 @@
      "agent": "guaranteed",
      "severity": "high",
      "headline": "INR / PT ordered for a patient not on the drug it monitors"
-    },
-    {
-     "finding_id": "F16",
-     "agent": "data_integrity",
-     "severity": "high",
-     "headline": "Digoxin levels ordered for patients not on Digoxin"
-    },
-    {
-     "finding_id": "F17",
-     "agent": "data_integrity",
-     "severity": "high",
-     "headline": "Implausible blood pressure readings recorded"
     }
    ],
    "note_reconciliation": {
     "conflicts": [],
     "checked": [
-     "brief vs. note from 2026-05-04"
+     "conditions against note of 2026-05-04",
+     "medications against note of 2026-05-04",
+     "vitals against note of 2026-05-04",
+     "care claimed vs delivered for note of 2026-05-04"
     ],
     "note_count": 2
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:13:02+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:14:21+00:00"
  },
  "Flores, Sydney": {
-  "narrative": "**Last seen**\n2026-03-29 with Tina Wells (Internal Medicine). Next AWV is due derived 2027-03-29.\n\n**Why this patient, now**\nFlores, Sydney's blood pressure at their last visit on 2026-03-29 was 185/85, which is in the hypertensive crisis range. This appears to have been unaddressed in the record.\n\n**What to raise**\n*   The blood pressure reading of 185/85 from 2026-03-29, staged as hypertensive crisis, requires urgent follow-up.\n*   For their Pure Hypertriglyceridaemia, despite being on Evolocumab, Ezetimibe, and Omega-3 Fatty Acids, their LDL cholesterol was 108.0 mg/dL on 2025-10-30. A Total Cholesterol ordered on 2026-03-26 remains outstanding.\n*   Their ALT was elevated at 64.3 U/L on 2025-12-01, and an AST ordered at the last visit is also outstanding. Separately, their fasting glucose was high at 112.4 mg/dL on 2024-08-02.\n*   The patient is underweight, with a BMI of 17.7 recorded on 2026-03-29.\n\n**Against the clinician's note**\nThe note for the 2026-03-29 visit says \"Preventive labs ordered per condition-specific guidelines.\" The brief above may be wrong on that point, as record review finds that orders for AST and Total Cholesterol from that visit were never resulted.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not necessarily what was stopped.",
+  "narrative": "**Last seen**\n2026-03-29 by Tina Wells, Internal Medicine. Next AWV is due 2027-03-29 (derived).\n\n**Why this patient, now**\nFlores, Sydney's most recent blood pressure was 185/85, which is in the hypertensive crisis range. This reading was recorded at their last visit on 2026-03-29.\n\n**What to raise**\n1.  **Hypertensive crisis.** The blood pressure reading on 2026-03-29 was 185/85. The record shows no diagnosis of hypertension and no antihypertensive medications.\n2.  **Lipid management.** Despite being on Evolocumab, Ezetimibe and Omega-3 Fatty Acids for Pure Hypertriglyceridaemia, their LDL Cholesterol was 108.0 mg/dL on 2025-10-30. An order for Total Cholesterol has been outstanding for 2 months.\n3.  **Abnormal liver enzymes.** Their ALT was 64.3 U/L on 2025-12-01. An order for an AST has been outstanding for 2 months.\n4.  **Impaired fasting glucose.** Their Fasting Glucose was 112.4 mg/dL on 2024-08-02.\n\n**Against the clinician's note**\nThe last note states \"Preventive labs ordered per condition-specific guidelines,\" but orders for AST and Total Cholesterol from that visit were never resulted. The brief above may therefore be wrong about the status of this patient's lab monitoring.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
   "pack": {
    "patient": {
     "pat_id": "P200079",
@@ -648,26 +646,26 @@
     "conflicts": [
      {
       "field": "care claimed vs delivered",
-      "brief_says": "The encounter on 2026-03-29 has 2 lab orders (AST, Total Cholesterol) that were never resulted.",
+      "brief_says": "Orders for AST and Total Cholesterol from the 2026-03-29 visit were never resulted.",
       "note_says": "Preventive labs ordered per condition-specific guidelines.",
       "severity": "medium",
-      "why_it_matters": "The note's claim that labs were ordered is technically true but practically misleading. Because no results were ever returned for any of the orders placed at that visit, a clinician might mistakenly believe that monitoring was completed when it was not."
+      "why_it_matters": "The note suggests that monitoring labs were handled, but no results were returned for any of the orders placed during that encounter. A clinician might mistakenly believe this care was completed."
      }
     ],
     "checked": [
-     "medications",
      "conditions",
+     "medications",
      "vitals",
      "care claimed vs delivered"
     ],
     "note_count": 1
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:13:45+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:15:01+00:00"
  },
  "Cain, Jacob": {
-  "narrative": "**Before you read on**\nThe patient's eGFR of 169.695 cannot be correct. This suggests other lab-based data may also be unreliable.\n\n**Last seen**\n2026-05-22 by Dean Washington Jr. (Pulmonology). Their next AWV is due (derived) 2027-05-22.\n\n**Why this patient, now**\nThis patient's last recorded blood pressure was 184/95, which is in the hypertensive crisis range. They have an existing diagnosis of Hypertensive Heart Disease.\n\n**What to raise**\n1.  The blood pressure of 184/95 recorded on 2026-05-22. For a patient with Hypertensive Heart Disease, this reading is a hypertensive crisis and requires attention.\n2.  Management of their Pure Hypercholesterolaemia. No statin is recorded on their medication list, and their last triglycerides were elevated at 173.3 mg/dL.\n3.  The Vitamin B12 test ordered on 2025-09-22 has been outstanding for 8 months.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "narrative": "**Before you read on**\nThe record for Cain, Jacob contains a physiologically impossible eGFR of 169.7. Any assessment of renal function based on this result will be incorrect.\n\n**Last seen**\n2026-05-22 by Dean Washington Jr., a Pulmonology NP. Next AWV is due 2027-05-22 (derived).\n\n**Why this patient, now**\nThis patient's most recent blood pressure was 184/95, which is in the hypertensive crisis range. He has a diagnosis of hypertensive heart disease. His records also contain a physiologically impossible lab value that invalidates any assessment of his kidney function.\n\n**What to raise**\n*   His blood pressure reading of 184/95 from 2026-05-22. This is staged as a hypertensive crisis and is critical given his diagnosis of Hypertensive Heart Disease, Unspecified.\n*   The impossible eGFR of 169.7 on his record. This value cannot be correct and should not be used for clinical decisions.\n*   His cardiovascular risk management. Cain, Jacob has diagnoses of Pure Hypercholesterolaemia and Hypertensive Heart Disease and recent triglycerides of 173.3 mg/dL, but no statin is listed on his medication record.\n*   The Vitamin B12 test ordered 8 months ago is still outstanding.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped. Two thiazides were started 25 days apart and two NdRIs were started 1095 days apart; these are almost certainly sequential therapies, not concurrent use.",
   "pack": {
    "patient": {
     "pat_id": "P200091",
@@ -862,19 +860,17 @@
    "note_reconciliation": {
     "conflicts": [],
     "checked": [
-     "conditions",
-     "medications",
-     "vitals",
-     "care claimed vs delivered"
+     "note from 2026-05-22 17:59:00",
+     "note from 2025-09-22 16:27:00"
     ],
     "note_count": 2
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:14:30+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:15:47+00:00"
  },
  "Smith, Jessica": {
-  "narrative": "**Before you read on**\nThis patient's record contains physiologically impossible lipid values: Total Cholesterol=41.815 (limit 50-500), Triglycerides=13.873 (limit 20-1500), and Triglycerides=7.256 (limit 20-1500). Any assessment of this patient's lipid status or response to treatment is invalid.\n\n**Last seen**\n2025-08-03 with Tyler Hill (Psychiatry). Her next AWV is not yet due (derived 2026-08-03).\n\n**Why this patient, now**\nSmith, Jessica has a blood pressure of 182/83 recorded on 2025-08-03, which is in the hypertensive crisis range. This is the most urgent finding in a record that also contains impossible lab values, making it difficult to assess her diagnosed Pure Hypertriglyceridaemia.\n\n**What to raise**\n*   Raise the blood pressure reading of 182/83 from her last visit, which is staged as a hypertensive crisis.\n*   Raise her diagnosis of Pure Hypertriglyceridaemia. While her record shows a history of multiple lipid-lowering agents, her current lipid status cannot be determined because the available lab results are physiologically impossible.\n*   Raise the abnormal Fasting Glucose (130.1 mg/dL) and elevated ALT (60.3 U/L) from 2025-04-10. Lab orders to follow up on these findings have been outstanding for 10 months.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped. This patient has multiple orders for agents in the same class (Statin, PCSK9i, Omega-3) with start dates spanning years; these likely represent sequential therapy, but there is no record of discontinuation.",
+  "narrative": "**Before you read on**\nThis patient's lipid panel results for Total Cholesterol (41.815) and Triglycerides (13.873, 7.256) are physiologically impossible. Any assessment based on their lipid management is therefore unreliable.\n\n**Last seen**\n2025-08-03 by Tyler Hill (Psychiatry); next AWV due 2026-08-03 (derived).\n\n**Why this patient, now**\nThe patient's last recorded blood pressure was 182/83, which is in the hypertensive crisis range. This is the most urgent clinical finding, but the note from that same visit describes vitals as 'stable', creating a direct conflict that needs to be resolved.\n\n**What to raise**\n1.  **Hypertension management.** The patient's blood pressure was recorded as 182/83. Clarify whether this was an accurate reading and what the context was, given the note describes vitals as 'stable'.\n2.  **Abnormal labs and follow-up.** The patient's fasting glucose was 130.1 mg/dL and ALT was 60.3 U/L on 2025-04-10. Orders for Fasting Glucose and AST from 2025-07-31 are still open.\n3.  **Medication reconciliation.** The record lists four statins, two PCSK9 inhibitors, and two Omega-3 agents, started between 2022 and 2025. This almost certainly reflects sequential therapy, not current polypharmacy, and the patient's actual regimen should be confirmed.\n\n**Against the clinician's note**\nThe note from 2025-08-03 records a blood pressure of 182/83 but describes vitals as 'stable', which may mean the brief's classification of this reading as a hypertensive crisis is incorrect.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped.",
   "pack": {
    "patient": {
     "pat_id": "P200081",
@@ -1086,21 +1082,38 @@
      "agent": "guaranteed",
      "severity": "high",
      "headline": "Physiologically impossible laboratory values"
+    },
+    {
+     "finding_id": "F20",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Impossibly low lipid panel results"
     }
    ],
    "note_reconciliation": {
-    "conflicts": [],
+    "conflicts": [
+     {
+      "field": "Vitals",
+      "brief_says": "Blood pressure 182/83 is a hypertensive crisis.",
+      "note_says": "The note from 2025-08-03 records a BP of 182/83 and describes vitals as 'stable'.",
+      "severity": "high",
+      "why_it_matters": "The brief's automated classification of the BP as a hypertensive crisis directly contradicts the clinician's assessment of 'stable' from the same encounter. This could create confusion about the clinical urgency."
+     }
+    ],
     "checked": [
-     "note from 2025-08-03"
+     "note of 2025-08-03 vs brief: conditions",
+     "note of 2025-08-03 vs brief: medications",
+     "note of 2025-08-03 vs brief: vitals",
+     "note of 2025-08-03 vs brief: care claims"
     ],
     "note_count": 2
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:15:07+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:16:42+00:00"
  },
  "Bonilla, Andrew": {
-  "narrative": "**Before you read on**\nThe patient's Total Cholesterol is recorded as 29.198, which is physiologically impossible (limit 50-500). Any assessment of lipid status is based on at least one incorrect value.\n\n**Last seen**\n2025-10-22 with Breanna Schmitt (Pulmonology). Their next AWV is due 2026-10-22 (derived).\n\n**Why this patient, now**\nTheir last blood pressure was 181/96, recorded on 2025-10-22, a reading in the hypertensive crisis range. This patient has a diagnosis of Hypertensive Heart Disease, Unspecified.\n\n**What to raise**\n1.  The blood pressure reading of 181/96 from 2025-10-22. This is a hypertensive crisis in a patient with established hypertensive heart disease.\n2.  Lipid management. Despite records showing they started Atorvastatin, Evolocumab and Ezetimibe, their most recent LDL Cholesterol was 129.3 mg/dL (2025-07-21). Their recorded Total Cholesterol is impossible, which may complicate assessment.\n3.  The potassium of 5.2 mEq/L from 2025-12-21, which may be relevant to blood pressure management.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "narrative": "**Before you read on**\nThe Total Cholesterol of 29.198 cannot be correct, which may mean other lab results are also unreliable.\n\n**Last seen**\n2025-10-22 by Breanna Schmitt (Pulmonology). Next AWV due 2026-10-22 (derived).\n\n**Why this patient, now**\nBonilla, Andrew's most recent blood pressure was 181/96, which is in the hypertensive crisis range. This is especially concerning given their history of Hypertensive Heart Disease, Unspecified.\n\n**What to raise**\n1.  **Hypertensive crisis**: Discuss the blood pressure reading of 181/96 to confirm and manage it.\n2.  **Lipid management**: Despite being on Atorvastatin, Ezetimibe, and Evolocumab, their LDL Cholesterol is 129.3. This is an opportunity to discuss adherence and therapy effectiveness for their Pure Hypertriglyceridaemia.\n3.  **Elevated potassium**: Their potassium was recently 5.2 mEq/L, which should be reviewed.\n4.  **Low body weight**: Their BMI is 18.4, which is classified as underweight and may warrant a discussion about nutrition and general health.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what the patient currently takes or has stopped.",
   "pack": {
    "patient": {
     "pat_id": "P200080",
@@ -1242,11 +1255,11 @@
     "note_count": 1
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:15:51+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:17:16+00:00"
  },
  "Dickerson, April": {
-  "narrative": "**Before you read on**\nThis patient's record of an SpO2 of 126.364 cannot be correct, as oxygen saturation cannot exceed 100%. Any reasoning based on this value is invalid.\n\n**Last seen**\n2026-03-10, by Linda Short (Neurology). Their next AWV is due 2027-03-10 (derived).\n\n**Why this patient, now**\nDickerson, April is a 22-year-old with a recent blood pressure reading of 181/87, which is in the hypertensive crisis range. This is an urgent finding requiring immediate clinical evaluation.\n\n**What to raise**\n1.  **Hypertensive Crisis:** Raise the blood pressure of 181/87, staged as hypertensive crisis. This requires urgent assessment, especially given the patient is only 22.\n2.  **COPD Diagnosis:** Raise the diagnosis of COPD in a 22-year-old. It is not clear who is managing this or their three respiratory medications (Roflumilast, Fluticasone/Salmeterol, Montelukast), as their last recorded visit was with a Neurologist.\n3.  **Record Inconsistencies:** Raise the unusual data in the record. The last visit was documented with a Neurologist in an OB/GYN clinic, and the SpO2 value is physiologically impossible. These errors call the overall integrity of the patient's record into question.\n\n**Against the clinician's note**\nThe clinician's note does not specify a value for the SpO2, stating only \"Monitoring labs ordered.\" The value of 126.4 % in this brief is from the structured data and is physiologically impossible.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not necessarily what the patient is currently taking, as no discontinuations are recorded.",
+  "narrative": "**Before you read on**\nThe patient's SpO2 of 126.4 is impossible, per flag `SpO2=126.364 (limit 50-100)`. The device used may be faulty, which could affect other vital signs measured at the same time.\n\n**Last seen**\n2026-03-10 by Linda Short (Neurology). Next AWV is due (derived) on 2027-03-10.\n\n**Why this patient, now**\nDickerson, April's most recent blood pressure reading was 181/87, staged as \"hypertensive crisis\". This is an urgent finding, especially in a 22-year-old with a diagnosis of COPD.\n\n**What to raise**\n1.  The blood pressure reading of 181/87 from 2026-03-10 needs immediate attention, as it falls within the \"hypertensive crisis\" range.\n2.  The patient's COPD (\"COPD with Acute Lower Respiratory Infection\") and its management, especially given their age and severe hypertension.\n3.  The last visit on 2026-03-10 was in the \"OB/GYN Clinic\" but with a \"Neurology\" provider, Linda Short. Clarifying who is managing their care may be necessary.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
   "pack": {
    "patient": {
     "pat_id": "P200043",
@@ -1357,33 +1370,30 @@
      "agent": "guaranteed",
      "severity": "high",
      "headline": "Physiologically impossible laboratory values"
+    },
+    {
+     "finding_id": "F19",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Physiologically impossible SpO2 value"
     }
    ],
    "note_reconciliation": {
-    "conflicts": [
-     {
-      "field": "lab value",
-      "brief_says": "SpO2: 126.4 %",
-      "note_says": "Not specified; note only says 'Monitoring labs ordered.'",
-      "severity": "medium",
-      "why_it_matters": "The SpO2 value in the brief is physiologically impossible, as saturation cannot exceed 100%. This indicates a data error."
-     }
-    ],
+    "conflicts": [],
     "checked": [
      "conditions",
      "medications",
      "vitals",
-     "labs",
      "care claimed vs delivered"
     ],
     "note_count": 1
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:16:38+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:18:06+00:00"
  },
  "Black, Tyler": {
-  "narrative": "**Last seen**\n2026-02-04 by Dr. Joseph Costa (Internal Medicine). Next AWV due 2027-02-04 (derived).\n\n**Why this patient, now**\nBlack, Tyler has Type 2 Diabetes with evidence of kidney involvement and unaddressed cardiovascular risk. Guideline-recommended statin therapy is not on file. Lab orders for an LDL and a follow-up kidney screen have been outstanding for 11 months.\n\n**What to raise**\n1.  Diabetes management. The record shows no statin, despite recommendations for patients with diabetes. Orders for LDL Cholesterol and a repeat Urine Albumin/Creat Ratio have been open since June 2025; the last UACR was elevated at 38.8. This is a single conversation about cardiovascular and renal risk reduction.\n2.  Medication history. The record lists four GLP-1 RA agents and two SGLT2i agents started between 2022 and 2025. Confirming which of these, if any, Black, Tyler currently takes is necessary before making any changes.\n3.  Blood pressure. The last reading was 135/74, staged as stage 1 hypertension. This adds to overall cardiovascular risk in a patient with diabetes and albuminuria.\n\n**What you cannot tell from the record**\nThe medication list shows what was ever STARTED, not what is currently taken.",
+  "narrative": "**Last seen**\n2026-02-04, by Dr. Joseph Costa (Internal Medicine). Their next AWV is due 2027-02-04 (derived).\n\n**Why this patient, now**\nBlack, Tyler has type 2 diabetes with multiple outstanding orders for related care. An order for a kidney screen has been open for 11 months despite a previously abnormal result, and they are not on recommended statin therapy.\n\n**What to raise**\n1.  Discuss management of their type 2 diabetes. They are not on a statin as recommended for their age and condition, and an order for an LDL Cholesterol test has been open for 11 months.\n2.  Raise the overdue kidney screening. An order for a Urine Albumin/Creat Ratio has also been open for 11 months, and their last result from 2024-11-29 was abnormal at 38.8 mg/g.\n3.  Clarify their current diabetes medications. The record shows four GLP-1 RA prescriptions (Liraglutide and Semaglutide) and two SGLT2i prescriptions (Empagliflozin) started between 2022 and 2025, suggesting multiple switches.\n\n**Against the clinician's note**\nA note from 2025-06-15 records vitals (BP 135/74, BMI 27.7) that appear to be copied from the 2026-02-04 visit.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
   "pack": {
    "patient": {
     "pat_id": "P200006",
@@ -1579,32 +1589,38 @@
     {
      "finding_id": "F10",
      "agent": "followup",
-     "severity": "high",
-     "headline": "Stale order for Urine Albumin/Creat Ratio"
+     "severity": "medium",
+     "headline": "Stale Urine Albumin/Creat Ratio order for patient with diabetes"
     },
     {
-     "finding_id": "F18",
+     "finding_id": "F16",
      "agent": "guideline_concordance",
      "severity": "medium",
-     "headline": "Patients with type 2 diabetes missing recommended statin therapy"
+     "headline": "Patients with type 2 diabetes aged 40-75 not on recommended statin therapy"
     }
    ],
    "note_reconciliation": {
-    "conflicts": [],
+    "conflicts": [
+     {
+      "field": "vitals",
+      "brief_says": "Vitals recorded on 2026-02-04 were BP 135/74, BMI 27.7.",
+      "note_says": "A note from 2025-06-15 records the same vitals (BP 135/74, BMI 27.7).",
+      "severity": "low",
+      "why_it_matters": "The note from 2025-06-15 appears to have copied forward vitals from the 2026-02-04 visit, which could mislead a reader about the patient's condition at the time of the older note."
+     }
+    ],
     "checked": [
-     "conditions",
-     "medications",
-     "vitals",
-     "care claimed vs delivered in note from 2026-02-04"
+     "note from 2026-02-04",
+     "note from 2025-06-15"
     ],
     "note_count": 2
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:17:10+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:18:48+00:00"
  },
  "Sandoval, John": {
-  "narrative": "**Before you read on**\nThis patient's CBC record from 2025-01-26 shows a hemoglobin of 24.812, which is physiologically impossible. Other results from that date may also be incorrect.\n\n**Last seen**\n2025-10-28 by Gina Powell (Pulmonology). Next AWV due 2026-10-28 (derived).\n\n**Why this patient, now**\nSandoval, John has chronic systolic heart failure and type 2 diabetes but is not on multiple guideline-directed therapies shown to reduce mortality and hospitalisation. His hypertension also remains uncontrolled on two agents.\n\n**What to raise**\n1.  **Heart failure management.** For his chronic systolic heart failure (HFrEF), he is not on a beta-blocker or an SGLT2 inhibitor. Both are recommended to reduce mortality and hospitalisation.\n2.  **Cardiovascular risk reduction.** For his type 2 diabetes, he is not on a statin, which is recommended for adults aged 40-75 to reduce cardiovascular risk. His last LDL was 135.0 mg/dL.\n3.  **Blood pressure control.** His blood pressure is 159/99 (stage 2) despite treatment with lisinopril and amlodipine.\n4.  **Outstanding labs.** An order for a BUN from 7 months ago is still open. This is key for monitoring kidney function in a patient with his conditions and on an ACE inhibitor.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not necessarily what is currently taken, as no stop dates are recorded.",
+  "narrative": "**Before you read on**\nThis patient's complete blood count shows a Hemoglobin of 24.812, which is physiologically impossible. The result cannot be correct.\n\n**Last seen**\n2025-10-28 by Gina Powell (Pulmonology). Next AWV is due 2026-10-28 (derived).\n\n**Why this patient, now**\nSandoval, John is a 75-year-old man with chronic systolic heart failure (HFrEF) and type 2 diabetes who is not on three classes of guideline-recommended medications. His blood pressure is 159/99 (stage 2) and his LDL is 135.0.\n\n**What to raise**\n*   He has HFrEF but is not on a beta-blocker or an SGLT2 inhibitor. Both are recommended to reduce mortality and hospitalisation in this condition.\n*   His diabetes and cardiovascular risk could be better managed. Statin therapy is recommended for this patient but is not prescribed, his LDL is 135.0 mg/dL, his blood pressure is 159/99, and a BUN ordered on 2025-10-25 is still outstanding.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what is currently taken, as no stop dates are recorded.",
   "pack": {
    "patient": {
     "pat_id": "P200053",
@@ -1773,28 +1789,25 @@
      "headline": "SGLT2 inhibition in HFrEF \u2014 guideline gap"
     },
     {
-     "finding_id": "F18",
+     "finding_id": "F16",
      "agent": "guideline_concordance",
      "severity": "medium",
-     "headline": "Patients with type 2 diabetes missing recommended statin therapy"
+     "headline": "Patients with type 2 diabetes aged 40-75 not on recommended statin therapy"
     }
    ],
    "note_reconciliation": {
     "conflicts": [],
     "checked": [
-     "medications",
-     "conditions",
-     "vitals",
-     "care claimed vs delivered"
+     "Note from Gina Powell on 2025-10-28 07:06:00"
     ],
     "note_count": 1
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:17:48+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:19:59+00:00"
  },
  "Stein, Larry": {
-  "narrative": "**Last seen**\n2026-02-20 with Tina Wells, Internal Medicine; their next AWV is not yet due (derived 2027-02-20).\n\n**Why this patient, now**\nStein, Larry has a diagnosis of Chronic Systolic Heart Failure (HFrEF) but is not on any of the three classes of medication recommended by guidelines to reduce mortality. Their blood pressure is stage 2 at 154/98.\n\n**What to raise**\n1.  The absence of guideline-directed medical therapy for Chronic Systolic Heart Failure (HFrEF). The record shows no beta-blocker, renin-angiotensin inhibitor, or SGLT2 inhibitor, all of which are recommended to reduce mortality and hospitalisation for this condition.\n2.  Uncontrolled blood pressure and lipids. Their most recent blood pressure was 154/98 (stage 2), and their LDL Cholesterol was 126.8 mg/dL on 2025-01-31 despite a statin prescription. Their AST is also elevated at 45.8 U/L.\n3.  Outstanding lab orders. Orders for Magnesium, HDL Cholesterol, Total Cholesterol, and Fasting Glucose are open, some for as long as 7 months.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "narrative": "**Last seen**\n2026-02-20 with Tina Wells, Internal Medicine. Their next AWV is not due until 2027-02-20 (derived).\n\n**Why this patient, now**\nStein, Larry is a 43-year-old with a diagnosis of Chronic Systolic Heart Failure (HFrEF). The record suggests he is not on any of the three foundational medication classes recommended by guidelines to reduce mortality and hospitalisation for this condition.\n\n**What to raise**\n1.  **Guideline-directed therapy for HFrEF.** The record shows a diagnosis of HFrEF but no evidence-based beta-blocker, renin-angiotensin system inhibitor, or SGLT2 inhibitor. All three are recommended for this patient to reduce mortality and hospitalisation.\n\n2.  **Cardiovascular risk factor control.** His last blood pressure was 154/98 (stage 2) and his last LDL cholesterol was 126.8 mg/dL. This is despite treatment on record for hypercholesterolaemia, indicating his risk may not be optimally managed.\n\n3.  **Outstanding and abnormal labs.** Orders for cholesterol panels and fasting glucose from 3 months ago and magnesium from 7 months ago are still open. His most recent AST was elevated at 45.8 U/L, which may be relevant given his BMI of 36.0 and statin use.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped. Orders for the same class of drug with different start dates, such as for Atorvastatin 40 mg, likely represent switches or renewals, not concurrent therapy.",
   "pack": {
    "patient": {
     "pat_id": "P200010",
@@ -2037,16 +2050,19 @@
    "note_reconciliation": {
     "conflicts": [],
     "checked": [
-     "brief vs. note from 2026-02-20 11:58:00"
+     "conditions from note dated 2026-02-20",
+     "medications from note dated 2026-02-20",
+     "vitals from note dated 2026-02-20",
+     "care claims from note dated 2026-02-20"
     ],
     "note_count": 2
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:18:40+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:21:13+00:00"
  },
  "Zavala, Manuel": {
-  "narrative": "**Before you read on**\nThe Total Cholesterol value of 16.437 cannot be correct, which means the lipid panel is unreliable.\n\n**Last seen**\n2026-01-10 by Linda Short, Neurology. Their next AWV is due 2027-01-10 (derived).\n\n**Why this patient, now**\nZavala, Manuel has Acute on Chronic Systolic Heart Failure but is not on two foundational therapies: a beta-blocker and a renin-angiotensin system inhibitor. These are recommended to reduce mortality and hospitalisation.\n\n**What to raise**\n*   **Heart failure therapy.** Zavala, Manuel has systolic heart failure but is not recorded as taking a beta-blocker or a renin-angiotensin inhibitor (ARNi/ACEi/ARB).\n*   **Statin for diabetes.** Guideline-directed statin therapy is recommended for cardiovascular risk reduction in patients with diabetes but is not on their medication list.\n*   **Low body weight.** Their BMI is 15.1, which may indicate frailty or malnutrition, of particular concern in a patient with heart failure and diabetes.\n*   **Outstanding lab order.** The last total cholesterol was physiologically impossible, and the order to repeat it from 2026-01-10 remains open after 4 months.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "narrative": "**Before you read on**\nThe record for Total Cholesterol (16.437) is physiologically impossible. Assessments that rely on lipid values may not be accurate.\n\n**Last seen**\n2026-01-10 by Linda Short (Neurology). Next AWV is due 2027-01-10 (derived).\n\n**Why this patient, now**\nZavala, Manuel is a 70-year-old with systolic heart failure and type 2 diabetes who is not on guideline-recommended medical therapy for either condition. They also have a BMI of 15.1, indicating they are significantly underweight.\n\n**What to raise**\n1.  **Heart failure therapy.** The patient has systolic heart failure but is not on a beta-blocker or a renin-angiotensin system inhibitor (ARNi/ACEi/ARB). Both are recommended to reduce mortality and hospitalisation.\n2.  **Diabetes management.** For a patient aged 70 with type 2 diabetes, statin therapy is recommended to reduce cardiovascular risk.\n3.  **Low body weight.** The patient's BMI is 15.1, which is a significant clinical finding that needs assessment.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped.",
   "pack": {
    "patient": {
     "pat_id": "P200047",
@@ -2203,28 +2219,28 @@
      "headline": "Renin-angiotensin inhibition in HFrEF \u2014 guideline gap"
     },
     {
-     "finding_id": "F18",
+     "finding_id": "F16",
      "agent": "guideline_concordance",
      "severity": "medium",
-     "headline": "Patients with type 2 diabetes missing recommended statin therapy"
+     "headline": "Patients with type 2 diabetes aged 40-75 not on recommended statin therapy"
     }
    ],
    "note_reconciliation": {
     "conflicts": [],
     "checked": [
-     "conditions",
      "medications",
+     "conditions",
      "vitals",
      "care claimed vs delivered"
     ],
     "note_count": 1
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:19:12+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:20:28+00:00"
  },
  "Rogers, Jessica": {
-  "narrative": "**Before you read on**\nThe records for Rogers, Jessica contain physiologically impossible lab results for Total Cholesterol (9.566) and Triglycerides (15.562). This makes any assessment of her lipid status unreliable.\n\n**Last seen**\n2025-07-03 by Tina Wells, Internal Medicine; her next AWV is due 2026-07-03 (derived).\n\n**Why this patient, now**\nRogers, Jessica has a diagnosis of hyperlipidemia, but her care is unassessable. Key monitoring labs have been outstanding for 11 months, and the lipid results on file are physiologically impossible.\n\n**What to raise**\n1.  Her hyperlipidemia management. An order for LDL Cholesterol has been open for 11 months, and her record contains four different statin prescriptions since 2022. Without valid labs, it is impossible to know if her treatment is effective.\n2.  An outstanding order for a Fasting Glucose has also been open for 11 months.\n3.  Her most recent blood pressure of 135/83 is stage 1 hypertension.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "narrative": "**Before you read on**\nThis patient's record of Total Cholesterol=9.566 and Triglycerides=15.562 cannot be correct. Any assessment of their hyperlipidaemia based on this data is unreliable.\n\n**Last seen**\n2025-07-03 by Tina Wells (Internal Medicine); their next AWV is due 2026-07-03 (derived).\n\n**Why this patient, now**\nThe record for their hyperlipidaemia is obscured by multiple data quality issues, including impossible lab values and a confusing medication history. Key lab orders have been outstanding for 11 months, making it impossible to assess their current status.\n\n**What to raise**\n1.  **Unclear hyperlipidaemia status.** The patient's control is unknown because the lab record contains impossible values (Total Cholesterol=9.566, Triglycerides=15.562). An LDL Cholesterol order has also been outstanding for 11 months.\n2.  **Statin history.** The record shows four different statin prescriptions started between 2022-06-07 and 2026-03-14. Clarifying which, if any, Rogers, Jessica is currently taking is essential.\n3.  **Outstanding metabolic screen.** A Fasting Glucose order has been open for 11 months.\n4.  **Blood pressure.** Their last reading was 135/83, classified as stage 1 hypertension.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped.",
   "pack": {
    "patient": {
     "pat_id": "P200055",
@@ -2372,34 +2388,40 @@
      "headline": "Physiologically impossible laboratory values"
     },
     {
-     "finding_id": "F14",
+     "finding_id": "F11",
      "agent": "followup",
-     "severity": "low",
-     "headline": "Numerous stale orders for routine monitoring"
+     "severity": "medium",
+     "headline": "Stale LDL Cholesterol order for patient with hyperlipidemia"
     },
     {
-     "finding_id": "F15",
+     "finding_id": "F20",
      "agent": "data_integrity",
      "severity": "high",
-     "headline": "Missing medication discontinuation data creates false 'duplicate therapy' alerts"
+     "headline": "Impossibly low lipid panel results"
+    },
+    {
+     "finding_id": "F25",
+     "agent": "data_integrity",
+     "severity": "high",
+     "headline": "Missing medication discontinuation data"
     }
    ],
    "note_reconciliation": {
     "conflicts": [],
     "checked": [
-     "conditions",
-     "medications",
-     "vitals",
-     "care claimed vs delivered"
+     "conditions in brief vs. note from 2025-07-03",
+     "medications in brief vs. note from 2025-07-03",
+     "vitals in brief vs. note from 2025-07-03",
+     "care claimed vs delivered in note from 2025-07-03"
     ],
     "note_count": 2
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:19:50+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:19:27+00:00"
  },
  "Schwartz, Mary": {
-  "narrative": "**Before you read on**\nThis patient's record contains a blood pressure of 173/61, which is not physiologically possible, and a sodium level of 163.823 which is outside the reference range. Clinical decisions based on these values may be incorrect.\n\n**Last seen**\n2026-05-24 by William Mccullough (Gastroenterology); next AWV is due 2027-05-24 (derived).\n\n**Why this patient, now**\nSchwartz, Mary has diagnoses of hypertensive heart disease and hypercholesterolemia, but key data points are physiologically impossible, preventing a reliable assessment of cardiovascular risk.\n\n**What to raise**\n*   The record shows treatment for hypertension and high cholesterol, but the most recent BP reading of 173/61 is impossible. A new, reliable BP is needed to assess control, and outstanding orders for Potassium and HDL Cholesterol from 11 months ago should be addressed.\n*   Her recent Fasting Glucose of 124.6 mg/dL requires follow-up, as this adds to her overall cardiovascular risk.\n*   Her last ALT was elevated at 65.1 U/L, which is relevant in the context of her statin prescription.\n*   The medication list shows multiple prescriptions for the same agents (ACEi, thiazide, statin, ezetimibe) started on different dates. Clarifying which medications she is actually taking is essential.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "narrative": "**Before you read on**\nThis patient's record contains physiologically impossible values. The sodium of 163.823 is outside the instrument's reportable range and a blood pressure of 173/61 has a pulse pressure of 112, which is not possible. These data errors mean other lab and vital sign data may be unreliable.\n\n**Last seen**\n2026-05-24 by William Mccullough (Gastroenterology). Next AWV is due (derived) on 2027-05-24.\n\n**Why this patient, now**\nThis patient's record is compromised by multiple impossible values and conflicting dates, suggesting significant data entry errors. The impossible sodium and blood pressure readings make it extremely difficult to assess their true clinical status for their diagnoses of hypertensive heart disease and hypercholesterolemia.\n\n**What to raise**\n*   **Hypertension and Hypercholesterolemia management.** The record shows diagnoses of Hypertensive Heart Disease, Unspecified and Pure Hypercholesterolaemia. However, the most recent BP reading of 173/61 is physiologically impossible, and orders for HDL Cholesterol and Total Cholesterol are outstanding, making it difficult to assess control.\n*   **Abnormal labs.** A fasting glucose of 124.6 mg/dL and an ALT of 65.1 U/L require follow-up. An order for Potassium has been outstanding for 11 months.\n*   **Underweight.** The recorded BMI is 16.3. While this value may be subject to the data quality issues noted elsewhere, it warrants discussion if accurate.\n\n**Against the clinician's note**\nA note from 2025-06-17 reports a BP of 173/61 and BMI of 16.3 as being recorded that day. The brief above reports these same vitals as from 2026-05-24, suggesting a copy/paste error that may affect the accuracy of other information.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped. The record shows multiple orders for the same classes of drug, likely indicating sequential switches rather than concurrent therapy.",
   "pack": {
    "patient": {
     "pat_id": "P200076",
@@ -2631,33 +2653,34 @@
     {
      "finding_id": "F12",
      "agent": "followup",
-     "severity": "high",
-     "headline": "Stale order for Potassium"
-    },
-    {
-     "finding_id": "F17",
-     "agent": "data_integrity",
-     "severity": "high",
-     "headline": "Implausible blood pressure readings recorded"
+     "severity": "medium",
+     "headline": "Stale Potassium order"
     }
    ],
    "note_reconciliation": {
-    "conflicts": [],
+    "conflicts": [
+     {
+      "field": "vitals",
+      "brief_says": "BP 173/61 and BMI 16.3 recorded on 2026-05-24",
+      "note_says": "Note from 2025-06-17 reports BP 173/61 and BMI 16.3 as 'Today's vitals'.",
+      "severity": "medium",
+      "why_it_matters": "The note from 2025-06-17 appears to contain vitals copied from a future visit on 2026-05-24, suggesting a copy/paste error and raising questions about the accuracy of the rest of the note."
+     }
+    ],
     "checked": [
      "conditions",
      "medications",
      "vitals",
-     "note of 2026-05-24 08:12:00",
-     "note of 2025-06-17 07:55:00"
+     "care claimed vs delivered"
     ],
     "note_count": 2
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:20:28+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:22:02+00:00"
  },
  "Taylor, Jonathan": {
-  "narrative": "**Before you read on**\nThis patient's records for Sodium (174.85) and eGFR (168.957, 167.244) are physiologically impossible. These should be treated as data errors, not clinical findings, and new labs will be needed for safe management.\n\n**Last seen**\n2025-11-10 by Daniel Mills (Cardiology); next AWV is due (derived) 2026-11-10.\n\n**Why this patient, now**\nTaylor, Jonathan has type 2 diabetes and hypertensive heart disease with several significant care gaps. Key lab orders for diabetes monitoring are outstanding for 6-11 months and they are not on recommended statin therapy, while data quality issues obscure their true lab values.\n\n**What to raise**\n*   **Diabetes care gaps:** Taylor, Jonathan is not on a statin, which is recommended for adults with diabetes to reduce cardiovascular risk. Key monitoring labs for their diabetes (HbA1c, Fasting Glucose) are also outstanding from 6 and 11 months ago, respectively.\n*   **Hypertension:** Their last blood pressure was 138/98 (stage 2). This is important given their diagnosis of Hypertensive Heart Disease and that they are on two classes of antihypertensives.\n*   **Long-term PPI use:** An order for Vitamin B12 has been outstanding for 6 months. This is a relevant check for patients on long-term proton-pump inhibitors for GERD.\n\n**Against the clinician's note**\nThe note from 2025-11-10 states \"Lab orders placed based on guideline intervals.\" However, the record shows that labs ordered at that visit (HbA1c, Vitamin B12) have not been resulted, which is the basis for the care gaps identified in the brief.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped; it is not a list of current therapy.",
+  "narrative": "**Before you read on**\nThis patient's records for Sodium (174.85) and eGFR (168.957, 167.244) are physiologically impossible. The brief's assessment of kidney function and electrolyte balance cannot be correct.\n\n**Last seen**\n2025-11-10 with Daniel Mills (Cardiology). Next AWV due 2026-11-10 (derived).\n\n**Why this patient, now**\nTaylor, Jonathan is a 57-year-old with type 2 diabetes and hypertensive heart disease who is not on a statin, against guideline recommendations. Key labs for diabetes management (Fasting Glucose, HbA1c) were ordered 11 and 6 months ago, respectively, but have no results on file.\n\n**What to raise**\n1.  **Diabetes management.** Taylor, Jonathan has type 2 diabetes but is not on a statin, which is recommended for patients aged 40-75 with this condition. Orders for HbA1c and Fasting Glucose are 6 and 11 months old respectively, with no results, so glycemic control is unknown.\n2.  **Blood pressure.** The most recent reading was 138/98 (stage 2 hypertension) despite a diagnosis of hypertensive heart disease and orders for an ARB and a beta-blocker. It is worth confirming the current medication regimen.\n3.  **GERD.** The patient has GERD and long-standing orders for Pantoprazole 40 mg. This is an opportunity to review the ongoing need for a PPI.\n4.  **Abnormal labs.** In addition to the impossible Sodium and eGFR values, recent labs show elevated Triglycerides (179.5 mg/dL) and ALT (59.1 U/L), which may be relevant to their metabolic health.\n\n**Against the clinician's note**\nThe note from 2025-11-10 states 'Lab orders placed based on guideline intervals', but the brief above is correct that the record shows no results for the HbA1c and Vitamin B12 ordered at that encounter.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped. The multiple orders for ARBs, beta-blockers, and PPIs likely represent past switches, not current polypharmacy.",
   "pack": {
    "patient": {
     "pat_id": "P200064",
@@ -2904,48 +2927,43 @@
      "headline": "Physiologically impossible laboratory values"
     },
     {
-     "finding_id": "F11",
+     "finding_id": "F13",
      "agent": "followup",
-     "severity": "high",
-     "headline": "Stale order for Fasting Glucose"
+     "severity": "medium",
+     "headline": "Stale Fasting Glucose order for patient with diabetes"
     },
     {
-     "finding_id": "F14",
-     "agent": "followup",
-     "severity": "low",
-     "headline": "Numerous stale orders for routine monitoring"
-    },
-    {
-     "finding_id": "F18",
+     "finding_id": "F16",
      "agent": "guideline_concordance",
      "severity": "medium",
-     "headline": "Patients with type 2 diabetes missing recommended statin therapy"
+     "headline": "Patients with type 2 diabetes aged 40-75 not on recommended statin therapy"
     }
    ],
    "note_reconciliation": {
     "conflicts": [
      {
       "field": "care claimed vs delivered",
-      "brief_says": "Record shows all labs ordered at the 2025-11-10 visit (HbA1c, Vitamin B12) are unresulted.",
-      "note_says": "Lab orders placed based on guideline intervals.",
-      "severity": "medium",
-      "why_it_matters": "The note implies that guideline-based lab monitoring was handled, but the record shows no results were ever returned for the labs ordered at this visit. A clinician might mistakenly believe these tests were completed, leading to a gap in chronic disease monitoring."
+      "brief_says": "The brief shows no results for labs ordered at the 2025-11-10 encounter.",
+      "note_says": "The note from 2025-11-10 states 'Lab orders placed based on guideline intervals', but the record shows that all labs from that encounter (HbA1c, Vitamin B12) were never resulted.",
+      "severity": "high",
+      "why_it_matters": "The note implies that guideline-based lab monitoring was handled, but the results for all labs ordered at that visit are missing. A clinician might mistakenly believe this monitoring is complete and up-to-date."
      }
     ],
     "checked": [
-     "conditions",
      "medications",
+     "conditions",
      "vitals",
-     "care delivery claims in note from 2025-11-10"
+     "care claimed vs delivered from note dated 2025-11-10",
+     "care claimed vs delivered from note dated 2025-06-22"
     ],
     "note_count": 2
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:21:30+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:22:43+00:00"
  },
  "Vargas, Kimberly": {
-  "narrative": "**Last seen**\n2025-11-21 by Tina Wells (Internal Medicine). Their next AWV is due on 2026-11-21 (derived).\n\n**Why this patient, now**\nVargas, Kimberly has multiple lab orders, including for eGFR and lipids, that have been outstanding for over 6 months. These are necessary to monitor their Type 2 DM and Pure Hypercholesterolaemia.\n\n**What to raise**\n1.  **Stale labs for chronic conditions.** Orders for eGFR, Potassium, and HDL Cholesterol are open from 10 months ago, and an order for Total Cholesterol is open from 6 months ago. These are needed for monitoring their diabetes and hypercholesterolaemia.\n2.  **Unaddressed stage 2 hypertension.** Their blood pressure on 2025-11-21 was 173/98, which is stage 2. This is a significant cardiovascular risk, particularly given their other diagnoses.\n3.  **Ambiguous medication history.** The record shows multiple starts for the same drug classes, such as Rosuvastatin 20 mg started on 2023-09-03 and again on 2026-02-25. The lack of stop dates makes it impossible to know their current regimen.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped. It is impossible to determine which of the listed medications Vargas, Kimberly is currently taking.",
+  "narrative": "**Last seen**\n2025-11-21 with Tina Wells (Internal Medicine). Their next AWV is due 2026-11-21 (derived).\n\n**Why this patient, now**\nVargas, Kimberly has lab orders for an eGFR, Potassium, HDL Cholesterol, and Total Cholesterol that have been outstanding for up to 10 months. These are key for monitoring her Type 2 DM and Pure Hypercholesterolaemia.\n\n**What to raise**\n1.  The four outstanding lab orders (eGFR, Potassium, HDL, Total Cholesterol), some open for 10 months, which are needed to monitor her chronic conditions.\n2.  Her last recorded blood pressure was 173/98, classified as stage 2 hypertension.\n3.  The need to clarify her current medication regimen. The record shows multiple starts for the same drug classes (Statin, SGLT2i, PCSK9i, DPP-4i, Omega-3) with start dates years apart, suggesting switches over time that need confirmation.\n4.  Her AST was 40.1 U/L on 2025-05-25, which is just above the reference range of 10.0-40.0 U/L.\n\n**Against the clinician's note**\nA note from 2025-07-15 reports a BP of 173/98 and BMI of 32.5, identical to the vitals recorded on 2025-11-21. This suggests the blood pressure finding above may be based on a single valid measurement, as the earlier record could be a documentation error.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
   "pack": {
    "patient": {
     "pat_id": "P200085",
@@ -3201,25 +3219,31 @@
      "headline": "Orders open 6+ months for a condition the patient has"
     },
     {
-     "finding_id": "F13",
+     "finding_id": "F14",
      "agent": "followup",
-     "severity": "high",
-     "headline": "Stale orders for eGFR and Potassium"
+     "severity": "medium",
+     "headline": "Stale Potassium and eGFR orders"
     }
    ],
    "note_reconciliation": {
-    "conflicts": [],
+    "conflicts": [
+     {
+      "field": "vitals",
+      "brief_says": "BP 173/98 and BMI 32.5 were recorded on 2025-11-21.",
+      "note_says": "The note from 2025-07-15 reports identical vitals (BP 173/98, BMI 32.5), suggesting a documentation error.",
+      "severity": "low",
+      "why_it_matters": "The note from the earlier visit may misrepresent the patient's vitals at that time, likely due to a copy-paste error from a more recent encounter."
+     }
+    ],
     "checked": [
-     "conditions",
-     "medications",
-     "vitals",
-     "care claimed vs delivered"
+     "note from 2025-11-21 by Tina Wells",
+     "note from 2025-07-15 by Breanna Schmitt"
     ],
     "note_count": 2
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:22:08+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:23:36+00:00"
  },
  "Forbes, Tamara": {
   "narrative": "**Before you read on**\nA blood pressure of 106/90 has a pulse pressure of 16, which is not physiologically possible. This patient's hypertensive status cannot be determined from the record.\n\n**Last seen**\n2026-02-18 by Peter Thomas DVM (Internal Medicine). Next AWV is due (derived) on 2027-02-18.\n\n**Why this patient, now**\nForbes, Tamara has persistent atrial fibrillation, but it is impossible to tell from the record what anticoagulant she is currently taking for stroke prevention. The medication list shows four different agents started between 2023 and 2025, likely representing therapy switches where stop dates were not recorded. Clarifying this is critical, as her last creatinine was elevated at 1.5 mg/dL on 2024-12-31.\n\n**What to raise**\n*   **Current anticoagulation:** The record lists starts for Dabigatran, Rivaroxaban, Warfarin, and Apixaban. Confirm what, if anything, Forbes, Tamara is taking for her atrial fibrillation, as her elevated creatinine of 1.5 mg/dL affects the safety and choice of agent.\n*   **Blood pressure:** The only reading on file (106/90) is implausible. An accurate blood pressure is needed to assess her cardiovascular risk.\n*   **Last visit provider:** The last encounter on 2026-02-18 was recorded with provider \"Peter Thomas DVM\", whose specialty is \"Internal Medicine\", but in the \"Psychiatry Clinic\". Clarifying the details of this visit is important for care coordination.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, not what was stopped.",
@@ -3381,7 +3405,7 @@
   "saved_at": "2026-09-20T22:22:50+00:00"
  },
  "Mckinney, Scott": {
-  "narrative": "**Before you read on**\nThis patient's record of an LDL Cholesterol of 8.56 and a blood pressure of 180/75 are physiologically impossible. Clinical context built on these values may be unreliable.\n\n**Last seen**\n2026-03-11 by Daniel Mills (Cardiology). Next AWV is due 2027-03-11 (derived).\n\n**Why this patient, now**\nMckinney, Scott has several chronic conditions with unaddressed findings. Lab orders for his Pure Hypertriglyceridaemia and GERD have been outstanding for 6 months. A recent fasting glucose of 119.6 mg/dL is in the prediabetic range and is not associated with a diagnosis.\n\n**What to raise**\n*   His fasting glucose was 119.6 mg/dL on 2026-05-16, a new finding which may indicate prediabetes.\n*   Discuss management of his Subclinical Hypothyroidism. His TSH was 5.6 mIU/L on 2025-04-06 and has not been rechecked.\n*   An order for Triglycerides has been outstanding for 6 months. This test is needed to monitor his Pure Hypertriglyceridaemia.\n*   An order for an H. pylori stool antigen test, placed 6 months ago, remains open. This is relevant to the workup of his GERD.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "narrative": "**Before you read on**\nThis patient's record contains physiologically impossible data: an LDL Cholesterol of 8.56 and a blood pressure of 180/75 (pulse pressure 105). These values cannot be correct, and other data may also be unreliable.\n\n**Last seen**\n2026-03-11 by Daniel Mills (Cardiology). Their next AWV is due 2027-03-11 (derived).\n\n**Why this patient, now**\nMckinney, Scott has several chronic conditions, including hypertriglyceridaemia and GERD, with key follow-up lab orders (Triglycerides, H. pylori) that have been outstanding for 6 months. Recent labs also show a fasting glucose of 119.6 mg/dL, suggesting unaddressed prediabetes.\n\n**What to raise**\n*   **Metabolic Health**: Mckinney, Scott has a diagnosis of Pure Hypertriglyceridaemia and an outstanding order for Triglycerides from 2025-11-16. Their last fasting glucose was 119.6 mg/dL on 2026-05-16.\n*   **Hypothyroidism**: They have Subclinical Iodine-Deficiency Hypothyroidism. The last TSH on record was 5.6 mIU/L on 2025-04-06, and they are on Liothyronine.\n*   **GERD**: For their diagnosis of GERD without Oesophagitis, an order for an H. pylori Ag Stool test has been open since 2025-11-16.\n\n**Against the clinician's note**\nThe progress note from 2025-11-16 contains identical text to the note from 2026-03-11, including vitals (BP 180/75, BMI 33.7) that were not recorded until the later date. The blood pressure history may be incorrect.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
   "pack": {
    "patient": {
     "pat_id": "P200009",
@@ -3625,25 +3649,33 @@
      "headline": "Physiologically impossible laboratory values"
     },
     {
-     "finding_id": "F17",
+     "finding_id": "F24",
      "agent": "data_integrity",
      "severity": "high",
-     "headline": "Implausible blood pressure readings recorded"
+     "headline": "Impossible or implausible blood pressure readings"
     }
    ],
    "note_reconciliation": {
-    "conflicts": [],
+    "conflicts": [
+     {
+      "field": "Vitals / Cloned Note",
+      "brief_says": "BP of 180/75 and BMI of 33.7 were recorded on 2026-03-11.",
+      "note_says": "The progress note from 2025-11-16 contains identical text to the note from 2026-03-11, including vitals (BP 180/75, BMI 33.7) that were not recorded until the later date.",
+      "severity": "medium",
+      "why_it_matters": "The cloned note misrepresents the patient's vitals on 2025-11-16, creating a misleading history of the patient's condition over time."
+     }
+    ],
     "checked": [
-     "medications",
      "conditions",
+     "medications",
      "vitals",
      "care claimed vs delivered"
     ],
     "note_count": 2
    }
   },
-  "fingerprint": "b6bf37035b4a98e0",
-  "saved_at": "2026-09-20T22:23:27+00:00"
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T15:24:22+00:00"
  },
  "Chandler, Cassandra": {
   "narrative": "**Before you read on**\nA recent CBC shows a hemoglobin of 25.116 (limit 4-22), which is not a possible value. The patient's lab records may not be reliable.\n\n**Last seen**\n2025-09-20 by Tyler Hill (Psychiatry). Next AWV is not yet due (derived 2026-09-20).\n\n**Why this patient, now**\nChandler, Cassandra has stage 2 hypertension (153/86) and chronic atrial fibrillation. Recent labs show a creatinine of 1.5 mg/dL and a urine albumin/creatinine ratio of 40.2 mg/g, suggesting kidney impact from their blood pressure.\n\n**What to raise**\n*   Review management of stage 2 hypertension (153/86). This is associated with a creatinine of 1.5 mg/dL and albuminuria (40.2 mg/g). The medication record includes orders for both an ACE inhibitor and an ARB, which may require clarification.\n*   Discuss anticoagulation for chronic atrial fibrillation. The patient's last recorded INR was 1.5 on 2026-03-09.\n*   Note the conflicting data in the chart. The provider for the last visit in the Cardiology Clinic, Tyler Hill, is listed with a specialty of Psychiatry.\n\n**What you cannot tell from the record**\nThe medication list shows everything started, but nothing stopped. The current regimen must be confirmed with the patient.",
