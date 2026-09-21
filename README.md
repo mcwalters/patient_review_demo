@@ -157,8 +157,11 @@ behaviour that looks wrong and is not, so it does not get "fixed".
 
 Worth knowing before you build a demo on it:
 
-- **Systolic and diastolic were generated independently, so many blood pressures
-  are not physiologically possible.** Pulse pressure (systolic − diastolic)
+- **Systolic and diastolic do not co-vary, so many blood pressures are not
+  physiologically possible.** They correlate at r = −0.37 where real pressures
+  run +0.5 to +0.7, and the pulse-pressure distribution is flat rather than
+  peaked — so this is the shape of the whole column, not entry error in a
+  tail of it. How the generator produced that is not knowable from the data. Pulse pressure (systolic − diastolic)
   should sit roughly between 20 and 100 mmHg. **27 of 100 patients** have a
   latest reading outside that, and `Cervantes, Stephen` reads **108/111** —
   diastolic above systolic, which cannot occur.
