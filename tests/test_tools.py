@@ -1092,3 +1092,55 @@ def test_the_reconciler_is_told_the_note_is_data():
     src = inspect.getsource(reconcile.reconcile_async)
     assert "output_schema=Reconciliation" in src, "schema binding is the hard containment"
     assert "tools=" not in src, "the reconciler must hold no tools"
+
+
+def test_a_finding_cannot_discuss_one_patient_and_be_filed_under_another():
+    """The roster check catches an invented name, not a misplaced real one.
+
+    Stein's missing beta-blocker filed under Sandoval passes the roster
+    cleanly, and the UI links it straight to Sandoval's brief. Nothing can
+    re-derive an arbitrary clinical claim, but the model writes the patient
+    into its own evidence, and that is checkable against the structured list.
+    """
+    from prototype.panel import attribution_gaps
+
+    good = [{"finding_id": "F01", "agent": "followup",
+             "headline": "Stale LDL order", "patients": ["Rogers, Jessica"],
+             "evidence": "Rogers, Jessica: LDL Cholesterol, 11mo."}]
+    assert attribution_gaps(good) == []
+
+    swapped = [{"finding_id": "F02", "agent": "guideline_concordance",
+                "headline": "Missing beta-blocker in HFrEF",
+                "patients": ["Sandoval, John"],
+                "evidence": "Stein, Larry has HFrEF and no beta-blocker."}]
+    gaps = attribution_gaps(swapped)
+    assert [g["discussed_but_not_listed"] for g in gaps] == [["Stein, Larry"]]
+
+    # One direction only: a finding covering many may cite a few as examples.
+    partial = [{"finding_id": "F03", "agent": "data_integrity",
+                "headline": "Impossible values",
+                "patients": ["Dickerson, April", "Bond, Katelyn", "Brown, Todd"],
+                "evidence": "Examples: Dickerson, April SpO2=126.4."}]
+    assert attribution_gaps(partial) == []
+
+
+def test_the_cached_run_has_no_attribution_gaps():
+    """And where the check cannot reach, no model chose the patient.
+
+    The findings whose evidence names nobody are the floor's: computed in SQL,
+    attributed by a join. Every finding a model attributed is checkable.
+    """
+    import re
+    from prototype import panel_cache
+    from prototype.panel import Findings, attribution_gaps
+    blob = panel_cache.load()
+    assert blob, "no cached run to check"
+    findings = blob["findings"]
+    assert attribution_gaps(findings) == []
+
+    roster = sorted(Findings._roster(), key=len, reverse=True)
+    pattern = re.compile("|".join(re.escape(n) for n in roster))
+    unreachable = [f for f in findings if (f.get("patients") or [])
+                   and not pattern.findall(f"{f.get('headline','')} {f.get('evidence','')}")]
+    assert all(f["agent"] == "guaranteed" for f in unreachable), \
+        "a model-attributed finding names nobody in its evidence: unverifiable"

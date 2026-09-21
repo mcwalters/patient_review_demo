@@ -6,7 +6,7 @@ question a clinician actually asks: does it find everything, every time?
 
 This runs the review N times and measures three things.
 
-  invariants     the nine properties that must hold on every run
+  invariants     the ten properties that must hold on every run
   coverage       for facts we independently know to be true, how many runs
                  surfaced them -- the closest thing to a recall measure that
                  is available without exhaustive clinical review
@@ -30,7 +30,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from prototype.floor import EXPECTED_FLOOR  # noqa: E402
 from prototype.panel import (  # noqa: E402
-    Findings, review, uncited_high_severity)
+    Findings, attribution_gaps, review, uncited_high_severity)
 
 GOAL = "Who on this panel needs my attention this week? I can review about a dozen."
 OUT = Path(__file__).parent / "stability_results.json"
@@ -96,6 +96,8 @@ INVARIANTS = {
         1 for f in fs if f["agent"] == "guaranteed") == EXPECTED_FLOOR,
     "every high-severity finding reaches the report": lambda fs, report: not
         uncited_high_severity(report, fs),
+    "no finding discusses a patient it does not list": lambda fs, report: not
+        attribution_gaps(fs),
 }
 
 

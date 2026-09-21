@@ -17,6 +17,7 @@ through deterministic tools, so no model writes SQL anywhere in the system.
 from __future__ import annotations
 
 import asyncio
+import re
 import os
 
 os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "1")
@@ -1262,6 +1263,43 @@ async def review_async(goal: str, verbose: bool = True, trace: list | None = Non
             "calls.)")
     return final, trace, findings.all(), usage.summary() | {
         "wall_clock_seconds": round(_time.time() - _t0, 1)}
+
+
+def attribution_gaps(findings: list[dict]) -> list[dict]:
+    """Findings whose own evidence names a patient the finding does not list.
+
+    The roster check stops an invented name. It does nothing about the worse
+    error: a real patient's name on another patient's finding. Both names pass
+    the roster, and the UI links each one straight to that person's brief.
+
+    Nothing can re-derive an arbitrary clinical claim, but the model usually
+    writes the patient into its own evidence -- "Rogers, Jessica: LDL
+    Cholesterol, 11mo" -- and that is checkable against the structured list.
+    A finding whose evidence discusses Stein while its patients field says
+    Sandoval is caught here, deterministically, whatever either name is.
+
+    One direction only. Every patient named in the text must be listed;
+    the reverse would be wrong, because a finding covering thirty-nine people
+    cites five of them as examples.
+
+    Returns a row per finding with the names it discusses but does not claim.
+    """
+    roster = sorted(Findings._roster(), key=len, reverse=True)
+    if not roster:
+        return []
+    pattern = re.compile("|".join(re.escape(n) for n in roster))
+    out = []
+    for f in findings:
+        listed = {Findings._norm_name(p) for p in (f.get("patients") or [])}
+        text = f"{f.get('headline', '')} {f.get('evidence', '')}"
+        named = set(pattern.findall(text))
+        missing = sorted(named - listed)
+        if missing:
+            out.append({"finding_id": f.get("finding_id", ""),
+                        "agent": f.get("agent", ""),
+                        "headline": f.get("headline", ""),
+                        "discussed_but_not_listed": missing})
+    return out
 
 
 def uncited_high_severity(report: str, findings: list[dict]) -> list[dict]:
