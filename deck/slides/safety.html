@@ -51,10 +51,10 @@
         <p style="font-family:Inter, Arial, sans-serif; font-size:25px; line-height:1.35; color:#0a3d63"><b>No contraindication data exists.</b> There is no allergy, intolerance or preference anywhere in the extract, so “25 of 28 diabetics have no statin” cannot tell a care gap from a documented reason. <span style="color:#5c6c80">Needs: that data, before any recommendation is shown as a gap.</span></p>
       </div>
       <div style="display:flex; flex-direction:column; gap:6px; flex:1">
-        <p style="font-family:Inter, Arial, sans-serif; font-size:25px; line-height:1.35; color:#0a3d63"><b>Note text is untrusted input.</b> Free text reaches a model in the reconciliation step. Benign in synthetic data; not an assumption that survives production. <span style="color:#5c6c80">Needs: treating note content as data, never instruction.</span></p>
+        <p style="font-family:Inter, Arial, sans-serif; font-size:25px; line-height:1.35; color:#0a3d63"><b>Note text is untrusted input.</b> Free text reaches a model in the reconciliation step. Benign in synthetic data; not an assumption that survives a real deployment. <span style="color:#5c6c80">Needs: note content treated as data, never as instruction.</span></p>
       </div>
       <div style="display:flex; flex-direction:column; gap:6px; flex:1">
-        <p style="font-family:Inter, Arial, sans-serif; font-size:25px; line-height:1.35; color:#0a3d63"><b>Nothing validates the ranking.</b> Every control opposite verifies that a <i>fact</i> is true; none verifies that a <i>priority</i> is &mdash; and the product is an ordering. <span style="color:#5c6c80">Partly addressed: a transparent score, computed independently of the agents, so where they disagree is a short list to put in front of a clinician. Needs: 25 pairwise comparisons, fifteen minutes, not a labelling project.</span></p>
+        <p style="font-family:Inter, Arial, sans-serif; font-size:25px; line-height:1.35; color:#0a3d63"><b>Nothing validates the ranking.</b> Every control opposite verifies a <i>fact</i>; none verifies a <i>priority</i>, and the product is an ordering. <span style="color:#5c6c80">Partly addressed by a transparent score, computed independently of the agents. Needs: 25 pairwise comparisons, not a labelling project.</span></p>
       </div>
     </div>
     <p style="font-family:Inter, Arial, sans-serif; font-size:25px; line-height:1.35; color:#5c6c80">Nothing here recommends a drug or a dose, and no finding is actioned without a human reading the evidence behind it.</p>
