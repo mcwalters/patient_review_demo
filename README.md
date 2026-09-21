@@ -132,7 +132,7 @@ wrong and is not.
 | `build_db.py` | Loads `data/*.csv` into `ehr.duckdb` and defines the views. |
 | `tests/test_tools.py` | The regression suite. |
 | `evals/stability.py` | The repeated-run eval; `stability_results.json` and `steer_test.json` are its last outputs. |
-| `deck/` | Source for the four presentation slides and the architecture page, kept here so claims can be diffed against code. |
+| `Panel Review — take-home reasoning.pdf` | The four presentation slides, exported from the published deck on 2026-09-21. The tests pin every figure on them. |
 | `KNOWN_ISSUES.md` | Diagnosed, reproducible, not fixed. |
 | `CLAUDE.md` | Operational notes that are easy to get wrong — the file watcher, the database lock, why `curl` cannot verify the UI. |
 
