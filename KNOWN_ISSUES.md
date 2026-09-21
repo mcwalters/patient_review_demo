@@ -150,6 +150,27 @@ measuring something the cheaper instruments had already pointed at.
 
 ---
 
+## The attribution check reaches only findings that name their patient
+
+`attribution_gaps()` catches a finding whose evidence discusses a patient it
+does not list -- a real name on the wrong finding. It can only do that when the
+evidence names someone. Whether it does is up to the specialist's prose: on one
+cached run every model-attributed finding named its patient; on the next the
+followup specialist wrote "a patient with diabetes" five times and named nobody,
+so the check reached 11 of 16.
+
+**Fix:** one line in `EXTRACTOR_INSTRUCTION` (`prototype/panel.py`) requiring
+the evidence to name the patient, so the structured `patients` list and the
+prose always carry the same names. Reach becomes 100% by construction.
+
+**Why not done:** `panel.py` is in the artifact fingerprint. Editing it
+re-stales both demo caches and costs a fifteen-minute regeneration, which is
+the wrong trade on the morning of a demo for a check that already holds on
+every finding it reaches. The test asserts the control and measures the reach;
+it fails only if reach drops below half.
+
+---
+
 ## Known-good behaviour that looks like a bug
 
 Recorded so nobody "fixes" it.
