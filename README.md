@@ -233,7 +233,7 @@ Worth knowing before you build a demo on it:
   SGLT2i→T2DM/HF, and others) every patient on the drug carries the matching
   diagnosis. The generator assigned drugs from conditions, so **"on a drug with
   no indication" returns zero rows** — overtreatment and wrong-drug detection
-  have no material here. Undertreatment does (24 of 28 diabetics are not on a
+  have no material here. Undertreatment does (25 of 28 diabetics are not on a
   statin).
 - **No medication is ever recorded as stopped, so you cannot tell what a patient
   is currently taking.** `START_DATE` is populated on all 522 orders, but
