@@ -1027,3 +1027,26 @@ def test_briefs_from_other_code_are_dropped_not_shown(tmp_path, monkeypatch):
     blob["Older, Patient"] = {"narrative": "no fingerprint at all", "pack": {}}
     f.write_text(json.dumps(blob))
     assert panel_cache.load_briefs() == {}
+
+
+def test_the_statin_figure_the_deck_quotes_is_the_one_in_the_data():
+    """Slide 1, slide 4 and the README all quote this. It was 24 and is 25.
+
+    An off-by-one nobody would notice is worse than a visible error: it goes
+    unchallenged, and costs disproportionately if anyone does check.
+    """
+    from prototype.tools import connect
+    con = connect()
+    try:
+        diabetics = con.execute(
+            "SELECT count(DISTINCT PAT_ID) FROM v_diagnosis "
+            "WHERE substr(icd10,1,3) = 'E11'").fetchone()[0]
+        without = con.execute("""
+            SELECT count(DISTINCT d.PAT_ID) FROM v_diagnosis d
+            WHERE substr(d.icd10,1,3) = 'E11'
+              AND NOT EXISTS (SELECT 1 FROM v_medication m
+                              WHERE m.PAT_ID = d.PAT_ID
+                                AND lower(m.generic_class) LIKE '%statin%')""").fetchone()[0]
+    finally:
+        con.close()
+    assert (without, diabetics) == (25, 28)
