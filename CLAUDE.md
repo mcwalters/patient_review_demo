@@ -52,15 +52,17 @@ that had actually completed. Use the browser tool (`get_page_text` /
 `screenshot`) — it is the only valid check. `curl /_stcore/health` is fine for
 "is the server up", and nothing else.
 
-Agent runs are slow: screening 35–90s, panel review 4–6 minutes. Budget for it.
+Agent runs are slow: a panel review is 2.5–3 minutes, a pre-visit brief about
+40 seconds. Budget for it. Regenerating the demo caches after editing a
+fingerprinted module (`python -m prototype.panel_cache`) is ~15 minutes.
 
 ## The database lock
 
-DuckDB allows one writer. A Jupyter kernel with `duckdb.connect("ehr.duckdb")`
-open will block `build_db.py` and any read-only connection.
-`prototype/tools.connect()` falls back to a temp copy when it hits the lock, so
-the agents keep working, but `build_db.py` will fail outright — close the kernel
-or run `conn.close()`.
+DuckDB allows one writer. Any process holding `duckdb.connect("ehr.duckdb")`
+open — a stray Python REPL, a second Streamlit server — will block `build_db.py`
+and any read-only connection. `prototype/tools.connect()` falls back to a temp
+copy when it hits the lock, so the agents keep working, but `build_db.py` will
+fail outright — find the holder and close it.
 
 ## Two invariants worth not breaking
 

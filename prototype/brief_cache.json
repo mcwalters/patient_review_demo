@@ -4334,5 +4334,181 @@
   },
   "fingerprint": "b6bf37035b4a98e0",
   "saved_at": "2026-09-21T02:44:46+00:00"
+ },
+ "James, Ryan": {
+  "narrative": "**Last seen**\n2025-09-06 by Daniel Mills (Cardiology); next AWV is due (derived) 2026-09-06.\n\n**Why this patient, now**\nJames, Ryan is an 18-year-old with poorly controlled hypertension and thyroiditis. His last blood pressure was 166/81 (stage 2), his Free T4 is elevated at 2.2 ng/dL, and he has signs of early kidney involvement, including a Urine Albumin/Creat Ratio of 38.8 mg/g.\n\n**What to raise**\n1.  His `stage 2` hypertension (last reading `166/81`). This may be impacting his kidneys, as suggested by his elevated `Urine Albumin/Creat Ratio` of `38.8` mg/g.\n2.  His thyroid management. In the context of his `Autoimmune Thyroiditis (Hashimoto's)`, his `Free T4` is high at `2.2` ng/dL.\n3.  His other abnormal labs for review. His `eGFR` is high at `143.0` mL/min/1.73m2, and his `Vitamin D 25-OH` is `72.3` ng/mL.\n\n**What you cannot tell from the record**\nThe medication list shows what was started but not what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200089",
+    "name": "James, Ryan",
+    "age": 18,
+    "sex": "Male",
+    "birth_date": "2007-07-09"
+   },
+   "visit": {
+    "last_awv": "2025-09-06",
+    "next_awv_due_derived": "2026-09-06",
+    "status": "not yet due",
+    "detail": "due in 3 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2025-09-06",
+     "department": "Cardiology Clinic",
+     "provider": "Daniel Mills",
+     "provider_specialty": "Cardiology",
+     "provider_type": "Physician",
+     "insurance": "medicaid"
+    },
+    "history": [
+     {
+      "date": "2025-09-06",
+      "department": "Cardiology Clinic",
+      "provider": "Daniel Mills",
+      "specialty": "Cardiology",
+      "insurance": "medicaid"
+     },
+     {
+      "date": "2025-08-22",
+      "department": "Psychiatry Clinic",
+      "provider": "Margaret Schneider",
+      "specialty": "Neurology",
+      "insurance": "medicaid"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "Beta-blocker",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Metoprolol Succinate 50 mg",
+        "started": "2025-09-29"
+       },
+       {
+        "agent": "Metoprolol Succinate 50 mg",
+        "started": "2022-12-07"
+       }
+      ],
+      "days_apart": 1027
+     },
+     {
+      "class": "Thyroid Hormone",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Levothyroxine 50 mcg",
+        "started": "2025-03-18"
+       },
+       {
+        "agent": "Levothyroxine 50 mcg",
+        "started": "2023-01-19"
+       }
+      ],
+      "days_apart": 789
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "E06.3",
+     "name": "Autoimmune Thyroiditis (Hashimoto's)"
+    },
+    {
+     "icd10": "I10",
+     "name": "Essential Hypertension"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "Beta-blocker": [
+      {
+       "agent": "Metoprolol Succinate 50 mg",
+       "started": "2025-09-29"
+      },
+      {
+       "agent": "Metoprolol Succinate 50 mg",
+       "started": "2022-12-07"
+      }
+     ],
+     "Thyroid Hormone": [
+      {
+       "agent": "Levothyroxine 50 mcg",
+       "started": "2025-03-18"
+      },
+      {
+       "agent": "Levothyroxine 50 mcg",
+       "started": "2023-01-19"
+      }
+     ]
+    },
+    "distinct_agents": 2
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "166/81",
+     "stage": "stage 2",
+     "pulse_pressure": 85,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 81.0,
+    "temperature": 98.4,
+    "resp_rate": 20.0,
+    "weight_lb": 234.4,
+    "bmi": 31.4,
+    "recorded": "2025-09-06"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "Free T4",
+      "value": 2.2,
+      "unit": "ng/dL",
+      "reference": "0.8-1.8",
+      "date": "2025-10-21"
+     },
+     {
+      "analyte": "Urine Albumin/Creat Ratio",
+      "value": 38.8,
+      "unit": "mg/g",
+      "reference": "0.0-30.0",
+      "date": "2026-04-17"
+     },
+     {
+      "analyte": "Vitamin D 25-OH",
+      "value": 72.3,
+      "unit": "ng/mL",
+      "reference": "20.0-50.0",
+      "date": "2025-06-01"
+     },
+     {
+      "analyte": "eGFR",
+      "value": 143.0,
+      "unit": "mL/min/1.73m2",
+      "reference": "60.0-120.0",
+      "date": "2025-05-08"
+     }
+    ],
+    "normal_count": 4
+   },
+   "outstanding_orders": [],
+   "care_gaps": [],
+   "panel_findings": [],
+   "note_reconciliation": {
+    "conflicts": [],
+    "checked": [
+     "note by Daniel Mills on 2025-09-06 11:40:00",
+     "note by Margaret Schneider on 2025-08-22 16:08:00"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "3f7cea79260af08a",
+  "saved_at": "2026-09-21T16:16:03+00:00"
  }
 }

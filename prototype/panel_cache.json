@@ -1,16 +1,16 @@
 {
- "saved_at": "2026-09-21T15:12:40+00:00",
+ "saved_at": "2026-09-21T19:57:33+00:00",
  "fingerprint": "3f7cea79260af08a",
- "goal": "Anything that needs attention this week.",
- "report": "This week's review surfaced significant data quality problems, guideline-based therapy gaps, and several stale, unanswered orders. The data quality issues are extensive and affect labs and medication records; be skeptical of any alert that rests on a lab value alone, and please see the notes below on data integrity.\n\nDespite these data problems, the following twelve patients need attention.\n\n1.  **Flores, Sydney** is in hypertensive crisis, with a recorded BP of 185/85, and is not on any antihypertensive medication [F04].\n    **Do** confirm the reading and consider starting antihypertensive therapy.\n\n2.  **Bonilla, Andrew** is in hypertensive crisis, with a recorded BP of 181/96, and is not on any antihypertensive medication [F04].\n    **Do** confirm the reading and consider starting antihypertensive therapy.\n\n3.  **Dickerson, April** is in hypertensive crisis, with a recorded BP of 181/87, and is not on any antihypertensive medication [F04]. Note that this patient also has a physiologically impossible SpO2 value recorded [F19], so this reading should be manually confirmed.\n    **Do** confirm the reading and consider starting antihypertensive therapy.\n\n4.  **Smith, Jessica** is in hypertensive crisis, with a recorded BP of 182/83, and is not on any antihypertensive medication [F04]. Note that this patient also has impossibly low lipid panel results [F20].\n    **Do** confirm the reading and consider starting antihypertensive therapy.\n\n5.  **Cain, Jacob** is in hypertensive crisis, with a recorded BP of 184/95 [F04].\n    **Do** confirm the reading and review the patient's current antihypertensive regimen.\n\n6.  **Stein, Larry** has heart failure with reduced ejection fraction and is missing three recommended medications: a beta-blocker, renin-angiotensin system inhibitor, and an SGLT2 inhibitor [F07, F08, F09].\n    **Do** review for contraindications or document the reason for the absence of these therapies.\n\n7.  **Zavala, Manuel** has heart failure with reduced ejection fraction and is not on a beta-blocker or renin-angiotensin system inhibitor [F07, F08]. He also has type 2 diabetes and is not on a statin [F16].\n    **Do** review for contraindications to HFrEF medications and consider starting a statin.\n\n8.  **Sandoval, John** has heart failure with reduced ejection fraction and is not on a beta-blocker or SGLT2 inhibitor [F07, F09]. He also has type 2 diabetes and is not on a statin [F16].\n    **Do** review for contraindications to HFrEF medications and consider starting a statin.\n\n9.  **Mcdaniel, Dana** has open orders for an INR/PT and a Digoxin level, but is not on the medications these tests monitor (warfarin and digoxin) [F01, F02].\n    **Do** confirm what the patient is actually taking and cancel or replace the incorrect orders.\n\n10. **Padilla, Elizabeth** has an open order for an INR/PT, which monitors warfarin, but is on a DOAC, for which this is the wrong test [F03].\n    **Do** confirm what the patient is actually taking and cancel or replace the incorrect order.\n\n11. **Black, Tyler** is a diabetic with a Urine Albumin/Creatinine Ratio order that has been open for 11 months [F10]. He is also not on a statin [F16].\n    **Do** re-order the kidney function screen and consider starting a statin.\n\n12. **Rogers, Jessica** has hyperlipidemia and an LDL Cholesterol order that has been open for 11 months [F11]. The medication history for this patient is also suspect, with multiple statin orders and no discontinuation dates [F25].\n    **Do** re-order the LDL and reconcile the patient's medication list.\n\n**Deliberately Omitted**\n\n*   **Other stale orders**: There are many other stale orders, most for routine monitoring [F15]. I have prioritized those that represent the most significant potential gaps in care.\n*   **Other patients not on statins**: There are thirteen other patients with diabetes who are not on a statin [F16]. I have prioritized those who are on this list for other reasons.\n*   **Patients with impossible lab values**: Thirty-nine patients have at least one physiologically impossible lab value [F06]. I have not placed any patient on the list for this reason alone, as the values themselves are not actionable. However, I have noted where patients on the list for other reasons also have suspect data.\n\n**Data Integrity Caveats**\n\nThe data integrity specialist found significant and widespread problems in this dataset that you should know about:\n*   **Physiologically impossible values** were found for 39 patients, including labs and vitals [F06, F19-24]. Do not act on any lab- or vital-based alert without confirming the value.\n*   **Medication discontinuation is not recorded** [F25]. Apparent duplicate therapy or missing therapy may be a data artifact.\n*   **Tests are ordered for patients not on the drug they monitor**, and labs are present for drugs no one is on [F01, F02, F03, F26]. The link between medications and labs is suspect.",
+ "goal": "Show me diabetic patients without hyperlipidemia",
+ "report": "Based on your request, I looked for diabetic patients with potential care gaps, especially around lipid management. The specialists found several areas of concern.\n\nFirst, the term 'hyperlipidemia' is not consistently used in the records, which makes it hard to find patients by that diagnosis alone [F14]. More importantly, a large number of patients with diabetes are not on statins as recommended by guidelines [F10], and many patients with diagnosed lipid disorders are not being treated for them [F15].\n\nHere is a list of twelve patients who need attention, prioritizing those with immediate risks and those who fall into the care gaps you asked about:\n\n1.  **Flores, Sydney** -- Blood pressure in the hypertensive crisis range, and not on any antihypertensive medication [F04].\n    **Do** confirm the reading and review the need for antihypertensive therapy.\n\n2.  **Cain, Jacob** -- Blood pressure in the hypertensive crisis range [F04].\n    **Do** confirm the reading and review antihypertensive therapy.\n\n3.  **Smith, Jessica** -- Blood pressure in the hypertensive crisis range [F04].\n    **Do** confirm the reading and review antihypertensive therapy.\n\n4.  **Bonilla, Andrew** -- Blood pressure in the hypertensive crisis range, and not on any antihypertensive medication [F04].\n    **Do** confirm the reading and review the need for antihypertensive therapy.\n\n5.  **Dickerson, April** -- Blood pressure in the hypertensive crisis range, and not on any antihypertensive medication [F04].\n    **Do** confirm the reading and review the need for antihypertensive therapy.\n\n6.  **Black, Tyler** -- This patient with diabetes has three separate issues: not on a statin [F10], has a stale order for a key diabetes monitoring test [F12], and has duplicate medication orders for GLP-1 agonists [F17].\n    **Do** review the patient's medication list, update the records, and order the necessary lab test.\n\n7.  **Shah, Mark** -- This patient with Type 2 Diabetes is not on a statin as recommended by guidelines [F10].\n    **Do** conduct a clinical review to see if statin therapy is indicated.\n\n8.  **Bryan, Amanda** -- This patient with Type 2 Diabetes is not on a statin as recommended by guidelines [F10].\n    **Do** conduct a clinical review to see if statin therapy is indicated.\n\n9.  **Douglas, Ryan** -- This patient with Type 2 Diabetes is not on a statin as recommended by guidelines [F10].\n    **Do** conduct a clinical review to see if statin therapy is indicated.\n\n10. **Mullins, Emily** -- This patient has potentially redundant diabetes therapy, being on both a DPP-4 inhibitor and a GLP-1 receptor agonist [F18].\n    **Do** flag for review by the patient's provider.\n\n11. **Mcdaniel, Dana** -- This patient has two high-risk drug monitoring mismatches [F01, F02] and a stale order [F05].\n    **Do** confirm what the patient is actually taking and cancel or replace the incorrect orders.\n\n12. **Padilla, Elizabeth** -- An INR/PT test was ordered for this patient who is on a DOAC, which is a monitoring mismatch [F03].\n    **Do** cancel the order and ensure correct monitoring is in place.\n\n***\n\n**What I deliberately left off and why**\n\nThis list is capped at twelve, so I had to leave many patients off. I did not include most of the 15 diabetic patients who are not on statins [F10], or the 31 patients with undertreated hyperlipidemia [F15]. These are larger issues that require a systematic review rather than individual attention from you today. I also did not include patients with HFrEF therapy gaps [F07, F08, F09] or other non-urgent open orders [F13] to focus on your request and other more immediate risks.\n\n**What I could not determine from this data**\n\nThe data has some significant quality issues. There are physiologically impossible lab values for 39 patients, including some on the list above [F06]. These values should not be trusted. It is also unclear why so many patients are not on recommended therapies; the record does not show a reason (e.g., intolerance, contraindication, or patient preference). This would require a more detailed chart review.",
  "trace": [
   {
    "agent": "panel_review",
    "tool": "consult_all_specialists",
    "args": {
-    "data_integrity_request": "Identify any data quality issues that might impact the interpretation of clinical data, such as physiologically impossible lab values or missing data.",
-    "guideline_concordance_request": "Check for any deviations from established clinical guidelines. Specifically, are there patients with heart failure, diabetes, or atrial fibrillation who are not on recommended medications?",
-    "followup_request": "Identify any open orders that have been pending for an unusually long time and might represent a gap in care."
+    "guideline_concordance_request": "Are diabetic patients on appropriate statin therapy, even in the absence of a hyperlipidemia diagnosis?",
+    "data_integrity_request": "How complete are the diagnosis records for diabetes and hyperlipidemia?",
+    "followup_request": "Are there any open orders or overdue labs for diabetic patients?"
    }
   },
   {
@@ -20,9 +20,18 @@
   },
   {
    "agent": "data_integrity",
-   "tool": "cohort_statistic",
+   "tool": "find_patients",
    "args": {
-    "metric": "lab_ranges"
+    "condition": "diabetes",
+    "drug_class": ""
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "find_patients",
+   "args": {
+    "condition": "hyperlipidemia",
+    "drug_class": ""
    }
   },
   {
@@ -33,134 +42,112 @@
    }
   },
   {
-   "agent": "data_integrity",
-   "tool": "patients_with_value",
-   "args": {
-    "below": "",
-    "above": "100",
-    "analyte": "SpO2"
-   }
-  },
-  {
-   "agent": "data_integrity",
-   "tool": "patients_with_value",
-   "args": {
-    "above": "6.5",
-    "analyte": "Potassium",
-    "below": ""
-   }
-  },
-  {
-   "agent": "guideline_concordance",
-   "tool": "check_guideline",
-   "args": {
-    "guideline_id": "G2"
-   }
-  },
-  {
-   "agent": "data_integrity",
-   "tool": "patients_with_value",
-   "args": {
-    "analyte": "Sodium",
-    "below": "",
-    "above": "160"
-   }
-  },
-  {
-   "agent": "data_integrity",
-   "tool": "patients_with_value",
-   "args": {
-    "above": "20",
-    "analyte": "CBC \u2014 Hemoglobin",
-    "below": ""
-   }
-  },
-  {
-   "agent": "guideline_concordance",
-   "tool": "medication_timeline",
-   "args": {
-    "patient": "Ramirez, William"
-   }
-  },
-  {
-   "agent": "data_integrity",
-   "tool": "patients_with_value",
-   "args": {
-    "above": "",
-    "analyte": "LDL Cholesterol",
-    "below": "1"
-   }
-  },
-  {
-   "agent": "guideline_concordance",
-   "tool": "check_guideline",
-   "args": {
-    "guideline_id": "G3"
-   }
-  },
-  {
-   "agent": "data_integrity",
-   "tool": "patients_with_value",
-   "args": {
-    "analyte": "Lipid Panel \u2014 Total Chol",
-    "below": "10",
-    "above": ""
-   }
-  },
-  {
    "agent": "followup",
    "tool": "_pending_orders",
    "args": {}
   },
   {
-   "agent": "data_integrity",
-   "tool": "patients_with_value",
+   "agent": "followup",
+   "tool": "find_patients",
    "args": {
-    "below": "10",
-    "above": "",
-    "analyte": "Total Cholesterol"
+    "condition": "diabetes"
    }
   },
   {
-   "agent": "guideline_concordance",
-   "tool": "check_guideline",
+   "agent": "followup",
+   "tool": "find_patients",
    "args": {
-    "guideline_id": "G4"
+    "drug_class": "",
+    "condition": "diabetes"
    }
-  },
-  {
-   "agent": "data_integrity",
-   "tool": "patients_with_value",
-   "args": {
-    "above": "",
-    "below": "10",
-    "analyte": "Triglycerides"
-   }
-  },
-  {
-   "agent": "data_integrity",
-   "tool": "blood_pressure_staging",
-   "args": {}
   },
   {
    "agent": "data_integrity",
    "tool": "cohort_statistic",
    "args": {
-    "metric": "duplicate_therapy"
+    "metric": "condition_prevalence"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "find_patients",
+   "args": {
+    "drug_class": "statin",
+    "condition": ""
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "find_patients",
+   "args": {
+    "drug_class": "metformin",
+    "condition": "Type 2 Diabetes Mellitus"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "find_patients",
+   "args": {
+    "drug_class": "",
+    "condition": "Pure Hypercholesterolaemia"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "find_patients",
+   "args": {
+    "drug_class": "",
+    "condition": "Pure Hypertriglyceridaemia"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "find_patients",
+   "args": {
+    "condition": "Hyperlipidaemia, Unspecified",
+    "drug_class": ""
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "patient_snapshot",
+   "args": {
+    "patient": "Black, Tyler"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "patient_snapshot",
+   "args": {
+    "patient": "Bryan, Amanda"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "patient_snapshot",
+   "args": {
+    "patient": "Fowler, Jessica"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "patient_snapshot",
+   "args": {
+    "patient": "Mullins, Emily"
+   }
+  },
+  {
+   "agent": "data_integrity",
+   "tool": "patient_snapshot",
+   "args": {
+    "patient": "Sandoval, John"
    }
   },
   {
    "agent": "data_integrity",
    "tool": "medication_timeline",
    "args": {
-    "patient": "Rogers, Jessica"
-   }
-  },
-  {
-   "agent": "data_integrity",
-   "tool": "cohort_statistic",
-   "args": {
-    "metric": "orphan_lab_results"
+    "patient": "Black, Tyler"
    }
   },
   {
@@ -180,10 +167,7 @@
    "severity": "high",
    "evidence": "INR / PT ordered 2025-09-14 (8 months open). It monitors VKA; this patient is on nothing of that kind. INR monitors warfarin. It is NOT the monitoring test for a DOAC -- ordering it for a DOAC patient is an error, and ordering it for a patient on no anticoagulant needs a reason.",
    "recommended_action": "Confirm what the patient is actually taking and cancel or replace the order with the right test.",
-   "category": "drug monitoring mismatch",
-   "also_found_by": [
-    "followup"
-   ]
+   "category": "drug monitoring mismatch"
   },
   {
    "finding_id": "F02",
@@ -306,10 +290,7 @@
    "severity": "high",
    "evidence": "G2: An evidence-based beta-blocker is recommended in HFrEF to reduce mortality and hospitalisation. 3 of 4 in population lack it. Source: ACC/AHA/HFSA heart failure guideline.",
    "recommended_action": "Review for a contraindication, or document why the therapy is absent.",
-   "category": "HFrEF therapy gap",
-   "also_found_by": [
-    "guideline_concordance"
-   ]
+   "category": "HFrEF therapy gap"
   },
   {
    "finding_id": "F08",
@@ -340,89 +321,14 @@
   },
   {
    "finding_id": "F10",
-   "agent": "followup",
-   "headline": "Stale Urine Albumin/Creat Ratio order for patient with diabetes",
-   "patients": [
-    "Black, Tyler"
-   ],
-   "severity": "medium",
-   "category": "stale order with live indication",
-   "evidence": "A Urine Albumin/Creat Ratio order has been open for 11 months for a patient with diabetes. This is a key screening for diabetic kidney disease.",
-   "recommended_action": "Review the 11-month-old order and either complete the test or cancel the order."
-  },
-  {
-   "finding_id": "F11",
-   "agent": "followup",
-   "headline": "Stale LDL Cholesterol order for patient with hyperlipidemia",
-   "patients": [
-    "Rogers, Jessica"
-   ],
-   "severity": "medium",
-   "category": "stale order with live indication",
-   "evidence": "An LDL Cholesterol order has been open for 11 months. This is the primary monitoring for hyperlipidemia, which the patient has.",
-   "recommended_action": "Review the 11-month-old order and either complete the test or cancel the order."
-  },
-  {
-   "finding_id": "F12",
-   "agent": "followup",
-   "headline": "Stale Potassium order",
-   "patients": [
-    "Schwartz, Mary"
-   ],
-   "severity": "medium",
-   "category": "other",
-   "evidence": "A Potassium order has been open for 11 months.",
-   "recommended_action": "Review the 11-month-old order and either complete the test or cancel the order."
-  },
-  {
-   "finding_id": "F13",
-   "agent": "followup",
-   "headline": "Stale Fasting Glucose order for patient with diabetes",
-   "patients": [
-    "Taylor, Jonathan"
-   ],
-   "severity": "medium",
-   "category": "stale order with live indication",
-   "evidence": "A Fasting Glucose order has been open for 11 months for a patient with diabetes.",
-   "recommended_action": "Review the 11-month-old order and either complete the test or cancel the order."
-  },
-  {
-   "finding_id": "F14",
-   "agent": "followup",
-   "headline": "Stale Potassium and eGFR orders",
-   "patients": [
-    "Vargas, Kimberly"
-   ],
-   "severity": "medium",
-   "category": "other",
-   "evidence": "Potassium and eGFR orders, which are key labs for kidney function, have been open for 10 months.",
-   "recommended_action": "Review the 10-month-old orders and either complete the tests or cancel the orders."
-  },
-  {
-   "finding_id": "F15",
-   "agent": "followup",
-   "headline": "Multiple non-urgent stale orders for routine monitoring",
-   "patients": [
-    "Schmidt, Raven",
-    "Williams, Heather"
-   ],
-   "severity": "low",
-   "category": "other",
-   "evidence": "There are 68 open orders for routine monitoring, none individually urgent. Examples include a Vitamin B12 test open for 12 months for Schmidt, Raven and a Triglycerides test open for 9 months for Williams, Heather.",
-   "recommended_action": "Consider bulk review or cancellation of these non-urgent stale orders."
-  },
-  {
-   "finding_id": "F16",
    "agent": "guideline_concordance",
-   "headline": "Patients with type 2 diabetes aged 40-75 not on recommended statin therapy",
+   "headline": "Patients with Type 2 Diabetes not on guideline-recommended statin therapy",
    "patients": [
     "Black, Tyler",
     "Shah, Mark",
     "Bryan, Amanda",
-    "Tran, Bradley",
     "Douglas, Ryan",
     "Cuevas, Meredith",
-    "Zavala, Manuel",
     "Sandoval, John",
     "Ferguson, Pamela",
     "Thomas, James",
@@ -430,174 +336,181 @@
     "Fowler, Jessica",
     "Romero, Erik",
     "Anderson, Ann",
-    "Davis, Carol"
+    "Davis, Carol",
+    "Tran, Bradley",
+    "Zavala, Manuel"
    ],
    "severity": "medium",
    "category": "other",
-   "evidence": "Fifteen patients with type 2 diabetes between the ages of 40 and 75 are not on a statin, which is recommended by the ADA and ACC/AHA guidelines. Tran, Bradley is on Fenofibrate 145 mg and Omega-3 Fatty Acids 4 g.",
-   "recommended_action": "Review patients for initiation of statin therapy as per ADA and ACC/AHA guidelines."
+   "evidence": "Of 16 patients with type 2 diabetes aged 40-75, 15 are not on a statin as recommended by the ADA and ACC/AHA guidelines. 13 are on no lipid-lowering therapy at all. Two others are on non-statin lipid-lowering agents: Tran, Bradley is on a fibrate and omega-3 fatty acids, and Zavala, Manuel is on omega-3 fatty acids. The record does not show a reason (e.g., statin intolerance, contraindication, patient preference).",
+   "recommended_action": "Clinical review to determine if statin therapy is indicated and not contraindicated for these patients."
   },
   {
-   "finding_id": "F17",
+   "finding_id": "F11",
    "agent": "guideline_concordance",
-   "headline": "Patient initially flagged for missing statin has a reasonable alternative",
+   "headline": "Patient with Type 2 Diabetes on appropriate statin substitute",
    "patients": [
     "Bryan, Steve"
    ],
    "severity": "low",
    "category": "other",
-   "evidence": "Of the patients with diabetes not on a statin, Bryan, Steve is on a PCSK9i (Evolocumab 140 mg), which is a reasonable alternative to a statin.",
-   "recommended_action": "No action needed, patient is on appropriate alternative therapy."
+   "evidence": "One patient in the guideline population, Bryan, Steve, is on a PCSK9 inhibitor. This is a reasonable substitute for a statin and is concordant with the guideline's intent.",
+   "recommended_action": "None; care is appropriate."
   },
   {
-   "finding_id": "F18",
-   "agent": "guideline_concordance",
-   "headline": "Potential duplicate therapy due to data quality issue",
+   "finding_id": "F12",
+   "agent": "followup",
+   "headline": "Stale orders for key diabetes monitoring tests",
    "patients": [
-    "Ramirez, William"
+    "Black, Tyler",
+    "Richardson, Sherry",
+    "Sandoval, John",
+    "Zavala, Manuel"
+   ],
+   "severity": "medium",
+   "category": "stale order with live indication",
+   "evidence": "5 actionable open orders for patients with diabetes. Black, Tyler: a Urine Albumin/Creat Ratio order has been open for 11 months. Richardson, Sherry: a Basic Metabolic Panel \u2014 Creatinine order and an eGFR order have been open for 1 month. Sandoval, John: a BUN order has been open for 7 months. Zavala, Manuel: a Total Cholesterol order has been open for 4 months.",
+   "recommended_action": "Review the open orders for these patients with diabetes and complete the tests or close the orders if no longer indicated."
+  },
+  {
+   "finding_id": "F13",
+   "agent": "followup",
+   "headline": "Numerous non-urgent open orders for routine monitoring",
+   "patients": [
+    "Schmidt, Raven",
+    "Lee, Cindy"
+   ],
+   "severity": "low",
+   "category": "stale order with live indication",
+   "evidence": "There are 69 further open orders, for routine monitoring and none individually urgent. Examples include a Vitamin B12 for Schmidt, Raven and a CBC for Lee, Cindy.",
+   "recommended_action": "Periodically review and address the 69 non-urgent open orders."
+  },
+  {
+   "finding_id": "F14",
+   "agent": "data_integrity",
+   "headline": "Inconsistent diagnosis coding for hyperlipidemia",
+   "patients": [],
+   "severity": "medium",
+   "category": "other",
+   "evidence": "The diagnosis 'hyperlipidemia' is not used. Instead, clinicians have used 'Pure Hypercholesterolaemia' (19 patients), 'Pure Hypertriglyceridaemia' (18 patients), and 'Hyperlipidaemia, Unspecified' (13 patients).",
+   "recommended_action": "Panel managers attempting to identify all patients with high lipids need to search for multiple diagnosis terms."
+  },
+  {
+   "finding_id": "F15",
+   "agent": "data_integrity",
+   "headline": "Significant undertreatment of hyperlipidemia",
+   "patients": [
+    "Brown, Todd",
+    "Cain, Jacob",
+    "Davis, Rebekah",
+    "Duncan, Stephen",
+    "Harrison, Joseph",
+    "Jackson, Shawn",
+    "Lang, Amy",
+    "Lowe, Tyler",
+    "Mullins, Emily",
+    "Tran, Bradley",
+    "Vasquez, Brian",
+    "Wright, Jordan",
+    "Ball, William",
+    "Flores, Sydney",
+    "Juarez, Rebecca",
+    "Lee, Cindy",
+    "Mckinney, Noah",
+    "Mckinney, Scott",
+    "Reynolds, Lisa",
+    "Rodriguez, Matthew",
+    "Schmidt, Raven",
+    "Wilcox, Tommy",
+    "Zavala, Manuel",
+    "Bond, Katelyn",
+    "Bryan, Steve",
+    "Davis, Shelly",
+    "Erickson, Savannah",
+    "Ford, Gabriel",
+    "Moore, Ryan",
+    "Williams, Heather",
+    "Young, Cynthia"
+   ],
+   "severity": "high",
+   "category": "other",
+   "evidence": "A large number of patients with diagnosed lipid disorders are not on a statin. This includes 12 of 19 patients with 'Pure Hypercholesterolaemia', 11 of 18 patients with 'Pure Hypertriglyceridaemia', and 8 of 13 patients with 'Hyperlipidaemia, Unspecified'.",
+   "recommended_action": "Review these patients to determine if they are on other (non-statin) therapies, if there is a documented reason for not prescribing a statin, or if this is a true quality of care issue."
+  },
+  {
+   "finding_id": "F16",
+   "agent": "data_integrity",
+   "headline": "Incomplete medication records for diabetes treatment",
+   "patients": [
+    "Black, Tyler",
+    "Bryan, Amanda",
+    "Fowler, Jessica",
+    "Mullins, Emily",
+    "Sandoval, John"
    ],
    "severity": "low",
    "category": "other",
-   "evidence": "The medication history for Ramirez, William shows multiple orders for beta-blockers (Metoprolol Succinate and Carvedilol) with start dates that suggest a switch in therapy rather than concurrent use. The lack of discontinuation dates makes it appear as if the patient is on duplicate therapy.",
-   "recommended_action": "Address data quality issue by ensuring discontinuation dates are recorded when medications are switched."
+   "evidence": "Initial analysis showed only 2 of 7 patients with 'Type 2 Diabetes Mellitus' on metformin. However, the other five patients were found to be on other appropriate diabetes medications, so this is not a care gap. Bryan, Amanda is on 'Insulin Glargine U-100 20U'. Fowler, Jessica is on 'Semaglutide 1 mg (Ozempic)'. Mullins, Emily is on 'Sitagliptin 100 mg' and 'Semaglutide 1 mg (Ozempic)'. Sandoval, John is on 'Tirzepatide 5 mg (Mounjaro)'. Black, Tyler is on 'Liraglutide 1.2 mg', 'Empagliflozin 10 mg', and 'Semaglutide 1 mg (Ozempic)'.",
+   "recommended_action": "Panel managers should look at all diabetes medications, not just metformin, to understand diabetes management."
   },
   {
-   "finding_id": "F19",
+   "finding_id": "F17",
    "agent": "data_integrity",
-   "headline": "Physiologically impossible SpO2 value",
+   "headline": "Duplicate medication orders due to missing discontinuation data",
    "patients": [
-    "Dickerson, April"
+    "Black, Tyler"
    ],
-   "severity": "high",
-   "category": "impossible values",
-   "evidence": "An SpO2 value of 126.364% was recorded for Dickerson, April. Oxygen saturation cannot exceed 100%.",
-   "recommended_action": "Investigate the source and extraction process for lab values to correct physiologically impossible recordings."
-  },
-  {
-   "finding_id": "F20",
-   "agent": "data_integrity",
-   "headline": "Impossibly low lipid panel results",
-   "patients": [
-    "Lee, Cindy",
-    "Williams, Heather",
-    "Morales, Patricia",
-    "Davis, Carol",
-    "Bryan, Steve",
-    "Rogers, Jessica",
-    "Smith, Jessica"
-   ],
-   "severity": "high",
-   "category": "impossible values",
-   "evidence": "Impossibly low lipid panel results were found: LDL Cholesterol values of 0.133 mg/dL (Lee, Cindy) and 0.518 mg/dL (Williams, Heather); 'Lipid Panel \u2014 Total Chol' values of 0.535 mg/dL (Morales, Patricia) and 7.927 mg/dL (Davis, Carol); 'Total Cholesterol' values of 7.082 mg/dL (Bryan, Steve) and 9.566 mg/dL (Rogers, Jessica); and a Triglycerides value of 7.256 mg/dL (Smith, Jessica).",
-   "recommended_action": "Investigate the source and extraction process for lab values to correct physiologically impossible recordings."
-  },
-  {
-   "finding_id": "F21",
-   "agent": "data_integrity",
-   "headline": "Extremely high and physiologically unlikely sodium levels",
-   "patients": [
-    "Murphy, Matthew",
-    "Brown, Todd"
-   ],
-   "severity": "high",
-   "category": "impossible values",
-   "evidence": "14 patients had sodium levels above 160 mEq/L. Specific examples include Murphy, Matthew with a value of 209.907 mEq/L and Brown, Todd with a value of 208.212 mEq/L.",
-   "recommended_action": "Investigate the source and extraction process for lab values to correct physiologically impossible recordings."
-  },
-  {
-   "finding_id": "F22",
-   "agent": "data_integrity",
-   "headline": "Extremely high and life-threatening potassium levels",
-   "patients": [
-    "Gibson, Christopher"
-   ],
-   "severity": "high",
-   "category": "impossible values",
-   "evidence": "6 patients had potassium levels above 6.5 mEq/L, with the highest recorded value being 7.247 mEq/L for Gibson, Christopher.",
-   "recommended_action": "Investigate the source and extraction process for lab values to correct physiologically impossible recordings."
-  },
-  {
-   "finding_id": "F23",
-   "agent": "data_integrity",
-   "headline": "Extremely high and physiologically unlikely hemoglobin levels",
-   "patients": [
-    "Chandler, Cassandra"
-   ],
-   "severity": "high",
-   "category": "impossible values",
-   "evidence": "10 patients had hemoglobin levels above 20 g/dL, with the highest recorded value being 25.116 g/dL for Chandler, Cassandra.",
-   "recommended_action": "Investigate the source and extraction process for lab values to correct physiologically impossible recordings."
-  },
-  {
-   "finding_id": "F24",
-   "agent": "data_integrity",
-   "headline": "Impossible or implausible blood pressure readings",
-   "patients": [
-    "Le, Joshua",
-    "Mckinney, Scott",
-    "Cervantes, Stephen"
-   ],
-   "severity": "high",
-   "category": "impossible values",
-   "evidence": "27 patients have impossible or implausible blood pressure readings. Examples include Le, Joshua ('115/111', resulting in a pulse pressure of 4), Mckinney, Scott ('180/75', pulse pressure of 105), and Cervantes, Stephen ('108/111', where diastolic pressure is higher than systolic).",
-   "recommended_action": "Investigate the source and extraction process for blood pressure readings to correct impossible values."
-  },
-  {
-   "finding_id": "F25",
-   "agent": "data_integrity",
-   "headline": "Missing medication discontinuation data",
-   "patients": [
-    "Rogers, Jessica"
-   ],
-   "severity": "high",
-   "category": "other",
-   "evidence": "The dataset does not contain medication stop information. Across all 522 medication orders, `END_DATE` and `DISCON_TIME` are always null and `ORDER_STATUS` is always 'Active'. For example, Rogers, Jessica has four statin orders with start dates spanning from 2022-06-07 to 2026-03-14, with no indication of discontinuation.",
-   "recommended_action": "Investigate and correct the data extraction process to include medication end dates, discontinuation times, and accurate order statuses."
-  },
-  {
-   "finding_id": "F26",
-   "agent": "data_integrity",
-   "headline": "Lab results present without corresponding medication orders",
-   "patients": [],
    "severity": "medium",
-   "category": "drug monitoring mismatch",
-   "evidence": "There are numerous instances where lab tests are present without a corresponding medication that would warrant monitoring. For example, 6 patients have 'Digoxin Level' results, but no patients are recorded as taking Digoxin. Similar mismatches exist for eGFR, Potassium, and LDL Cholesterol.",
-   "recommended_action": "Investigate the disconnect between lab and medication data to determine the root cause (e.g., missing medication data, inappropriate lab orders, broken data linkage)."
+   "category": "stale order with live indication",
+   "evidence": "The record for Black, Tyler shows active orders for two drugs in the same class (GLP-1 RA): 'Liraglutide 1.2 mg' and 'Semaglutide 1 mg (Ozempic)'. The orders have start dates years apart and no end dates recorded.",
+   "recommended_action": "Review patient's medication list and update records to reflect any discontinued medications to avoid false appearance of duplicate therapy."
+  },
+  {
+   "finding_id": "F18",
+   "agent": "data_integrity",
+   "headline": "Potentially redundant diabetes therapy",
+   "patients": [
+    "Mullins, Emily"
+   ],
+   "severity": "medium",
+   "category": "other",
+   "evidence": "Mullins, Emily has active orders for both a DPP-4 inhibitor ('Sitagliptin 100 mg') and a GLP-1 receptor agonist ('Semaglutide 1 mg (Ozempic)'). This combination is generally not recommended as it provides little additional clinical benefit.",
+   "recommended_action": "Flag for review by the patient's provider."
   }
  ],
  "usage": {
-  "model_calls": 29,
-  "input_tokens": 124402,
-  "output_tokens": 6434,
-  "usd": 0.2198,
+  "model_calls": 20,
+  "input_tokens": 81015,
+  "output_tokens": 4977,
+  "usd": 0.151,
   "per_agent": {
    "panel_review": {
     "calls": 3,
-    "in": 10620,
-    "out": 1324
+    "in": 11609,
+    "out": 1119
    },
    "guideline_concordance": {
-    "calls": 7,
-    "in": 28623,
-    "out": 669
+    "calls": 3,
+    "in": 7079,
+    "out": 288
    },
    "data_integrity": {
-    "calls": 14,
-    "in": 71840,
-    "out": 1315
+    "calls": 7,
+    "in": 32174,
+    "out": 1419
    },
    "followup": {
-    "calls": 2,
-    "in": 9694,
-    "out": 272
+    "calls": 4,
+    "in": 26805,
+    "out": 220
    },
    "finding_extractor": {
     "calls": 3,
-    "in": 3625,
-    "out": 2854
+    "in": 3348,
+    "out": 1931
    }
   },
-  "wall_clock_seconds": 157.4
+  "wall_clock_seconds": 186.9
  },
  "rejected": []
 }
