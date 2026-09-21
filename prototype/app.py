@@ -25,7 +25,7 @@ from prototype.guidelines import (                   # noqa: E402
     DISCLAIMER, GUIDELINES, check_guideline)
 from prototype.brief import write_brief_async        # noqa: E402
 from prototype.panel import (                         # noqa: E402
-    Findings, review_async, uncited_high_severity)
+    Findings, attribution_gaps, review_async, uncited_high_severity)
 from prototype.screener import screen_async          # noqa: E402
 from prototype.report_md import (                    # noqa: E402
     FINDINGS_ANCHOR, fold_actions, link_citations, link_patients)
@@ -303,6 +303,20 @@ if view == "Panel review":
             for f in missed:
                 who = "; ".join(f.get("patients") or []) or "panel-level"
                 st.markdown(f"- **{f['finding_id']}** · {f.get('headline','')} — {who}")
+
+        # The roster check stops an invented name; this stops a real name on the
+        # wrong finding. Both pass the roster and both become links to a brief.
+        mismatched = attribution_gaps(pfindings)
+        if mismatched:
+            st.error(
+                f"**{len(mismatched)} finding"
+                f"{'s' if len(mismatched) > 1 else ''} discuss a patient they do "
+                f"not list.** The evidence names someone the finding is not "
+                f"attributed to, so that patient is not linked, not counted, and "
+                f"will not open a brief. Read these before the narrative.")
+            for m in mismatched:
+                st.markdown(f"- **{m['finding_id']}** · {m['headline']} — discusses "
+                            f"{', '.join(m['discussed_but_not_listed'])}")
 
         rejected = st.session_state.get("panel_rejected") or []
         if rejected:
