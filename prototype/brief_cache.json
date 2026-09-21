@@ -4075,5 +4075,232 @@
   },
   "fingerprint": "b6bf37035b4a98e0",
   "saved_at": "2026-09-20T22:24:43+00:00"
+ },
+ "Castro, Willie": {
+  "narrative": "**Last seen**\n2025-10-01 by Paige Anderson (Psychiatry). Their next AWV is due on 2026-10-01 (derived).\n\n**Why this patient, now**\nCastro, Willie has a recent and critically high hemoglobin of 20.6 g/dL. This is in the context of untreated stage 2 hypertension and a complex psychiatric medication history for Generalized Anxiety Disorder.\n\n**What to raise**\n1.  The recent hemoglobin result of 20.6 g/dL is severely elevated and requires urgent evaluation.\n2.  Blood pressure was 162/79 at the last visit, which is stage 2 hypertension.\n3.  Review management of Generalized Anxiety Disorder. The medication record suggests multiple sequential trials of antidepressants and includes a benzodiazepine.\n\n**Against the clinician's note**\nA note from 2025-10-01 states 'Preventive labs ordered per condition-specific guidelines.' The brief above may be wrong on that point, as the record shows that labs ordered at that visit (Vitamin D 25-OH, CBC \u2014 WBC, CBC \u2014 Hemoglobin) were not resulted.\n\n**What you cannot tell from the record**\nThe medication list shows what was started, never what was stopped.",
+  "pack": {
+   "patient": {
+    "pat_id": "P200052",
+    "name": "Castro, Willie",
+    "age": 34,
+    "sex": "Male",
+    "birth_date": "1992-02-03"
+   },
+   "visit": {
+    "last_awv": "2025-10-01",
+    "next_awv_due_derived": "2026-10-01",
+    "status": "not yet due",
+    "detail": "due in 4 months",
+    "basis": "last AWV + 12 months; this extract has no scheduled appointments, so the date is derived, not booked",
+    "encounters_on_file": 2,
+    "last_visit": {
+     "date": "2025-10-01",
+     "department": "OB/GYN Clinic",
+     "provider": "Paige Anderson",
+     "provider_specialty": "Psychiatry",
+     "provider_type": "PA",
+     "insurance": "medicare"
+    },
+    "history": [
+     {
+      "date": "2025-10-01",
+      "department": "OB/GYN Clinic",
+      "provider": "Paige Anderson",
+      "specialty": "Psychiatry",
+      "insurance": "medicare"
+     },
+     {
+      "date": "2025-07-22",
+      "department": "Endocrinology",
+      "provider": "David White",
+      "specialty": "Gastroenterology",
+      "insurance": "medicare"
+     }
+    ]
+   },
+   "data_quality": {
+    "flags": [],
+    "medication_caveat": "This extract records no stop dates -- END_DATE and DISCON_TIME are empty and every order reads Active -- so the list below is what was ever STARTED, not what is currently taken. Same-class repeats are almost certainly sequential switches; check the start dates.",
+    "same_class_repeats": [
+     {
+      "class": "SNRI",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Venlafaxine XR 75 mg",
+        "started": "2026-02-03"
+       },
+       {
+        "agent": "Venlafaxine XR 75 mg",
+        "started": "2023-03-20"
+       }
+      ],
+      "days_apart": 1051
+     },
+     {
+      "class": "NdRI",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Bupropion XL 150 mg",
+        "started": "2026-01-08"
+       },
+       {
+        "agent": "Bupropion XL 150 mg",
+        "started": "2024-10-22"
+       }
+      ],
+      "days_apart": 443
+     },
+     {
+      "class": "SSRI",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Sertraline 50 mg",
+        "started": "2025-07-19"
+       },
+       {
+        "agent": "Sertraline 50 mg",
+        "started": "2022-12-04"
+       }
+      ],
+      "days_apart": 958
+     },
+     {
+      "class": "Benzodiazepine",
+      "n": 2,
+      "agents": [
+       {
+        "agent": "Alprazolam 0.25 mg",
+        "started": "2024-10-23"
+       },
+       {
+        "agent": "Alprazolam 0.25 mg",
+        "started": "2022-11-18"
+       }
+      ],
+      "days_apart": 705
+     }
+    ]
+   },
+   "conditions": [
+    {
+     "icd10": "F41.1",
+     "name": "Generalized Anxiety Disorder"
+    }
+   ],
+   "medications": {
+    "by_class": {
+     "SNRI": [
+      {
+       "agent": "Venlafaxine XR 75 mg",
+       "started": "2026-02-03"
+      },
+      {
+       "agent": "Venlafaxine XR 75 mg",
+       "started": "2023-03-20"
+      }
+     ],
+     "NdRI": [
+      {
+       "agent": "Bupropion XL 150 mg",
+       "started": "2026-01-08"
+      },
+      {
+       "agent": "Bupropion XL 150 mg",
+       "started": "2024-10-22"
+      }
+     ],
+     "SSRI": [
+      {
+       "agent": "Sertraline 50 mg",
+       "started": "2025-07-19"
+      },
+      {
+       "agent": "Sertraline 50 mg",
+       "started": "2022-12-04"
+      }
+     ],
+     "Benzodiazepine": [
+      {
+       "agent": "Alprazolam 0.25 mg",
+       "started": "2024-10-23"
+      },
+      {
+       "agent": "Alprazolam 0.25 mg",
+       "started": "2022-11-18"
+      }
+     ]
+    },
+    "distinct_agents": 4
+   },
+   "vitals": {
+    "blood_pressure": {
+     "reading": "162/79",
+     "stage": "stage 2",
+     "pulse_pressure": 83,
+     "thresholds": "ACC/AHA 2017",
+     "implausible": false
+    },
+    "heart_rate": 92.0,
+    "temperature": 98.4,
+    "resp_rate": 14.0,
+    "weight_lb": 174.0,
+    "bmi": 23.3,
+    "recorded": "2025-10-01"
+   },
+   "labs": {
+    "abnormal": [
+     {
+      "analyte": "CBC \u2014 Hemoglobin",
+      "value": 20.6,
+      "unit": "g/dL",
+      "reference": "12.0-17.5",
+      "date": "2026-01-13"
+     }
+    ],
+    "normal_count": 4
+   },
+   "outstanding_orders": [
+    {
+     "test": "CBC \u2014 Hemoglobin",
+     "ordered": "2025-09-30",
+     "months_open": 8
+    },
+    {
+     "test": "CBC \u2014 WBC",
+     "ordered": "2025-10-01",
+     "months_open": 7
+    },
+    {
+     "test": "Vitamin D 25-OH",
+     "ordered": "2025-10-01",
+     "months_open": 7
+    }
+   ],
+   "care_gaps": [],
+   "panel_findings": [],
+   "note_reconciliation": {
+    "conflicts": [
+     {
+      "field": "care claimed vs delivered",
+      "brief_says": "Record shows all labs ordered at the 2025-10-01 visit (Vitamin D 25-OH, CBC \u2014 WBC, CBC \u2014 Hemoglobin) were never resulted.",
+      "note_says": "Note from 2025-10-01 states 'Preventive labs ordered per condition-specific guidelines.'",
+      "severity": "medium",
+      "why_it_matters": "A clinician reading the note might assume monitoring was completed, but no results were ever returned. This creates a potential gap in care and the patient may need repeat testing."
+     }
+    ],
+    "checked": [
+     "medications",
+     "conditions",
+     "vitals",
+     "care claimed vs delivered"
+    ],
+    "note_count": 2
+   }
+  },
+  "fingerprint": "b6bf37035b4a98e0",
+  "saved_at": "2026-09-21T02:44:46+00:00"
  }
 }
